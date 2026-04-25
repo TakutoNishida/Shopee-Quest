@@ -1,0 +1,33 @@
+{
+  "name": "Quest Board — Shopee業務RPG",
+  "short_name": "Quest Board",
+  "description": "月間目標を毎日のクエストに変える、コミュニティ自由研究プロジェクト",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ede2c5",
+  "theme_color": "#2a1810",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["productivity", "lifestyle"]
+}
