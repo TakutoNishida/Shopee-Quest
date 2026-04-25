@@ -16,7 +16,7 @@
 
 <!-- ソーシャル共有 -->
 <meta property="og:title" content="Quest Board — Shopee業務RPG">
-<meta property="og:description" content="月間目標を毎日のクエストに変える、コミュニティ自由研究プロジェクト">
+<meta property="og:description" content="月間目標を毎日のクエストに変える、Shopee業務RPG">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -932,47 +932,233 @@
   .reward-close:hover { background: var(--gold); color: var(--ink); }
 
   /* === 配信設定 === */
+  .config-section {
+    padding: 4px 0 8px;
+  }
+  .config-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+  .config-section-title .config-status {
+    margin-left: auto;
+    font-size: 10px;
+    background: var(--parchment-dark);
+    color: var(--ink-soft);
+    padding: 3px 10px;
+    border: 1px solid var(--ink-faint);
+    letter-spacing: 0.15em;
+    font-weight: 700;
+  }
+  .config-section-title .config-status.connected {
+    background: var(--emerald);
+    color: var(--parchment);
+    border-color: var(--emerald);
+  }
+  .config-help {
+    font-size: 11px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    background: var(--parchment);
+    padding: 8px 12px;
+    border-left: 3px solid var(--gold);
+    margin-bottom: 10px;
+  }
+  .config-divider {
+    border: none;
+    border-top: 1px dashed var(--ink-faint);
+    margin: 16px 0;
+  }
   .config-row {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 10px 0;
-    border-bottom: 1px dashed var(--ink-faint);
+    gap: 10px;
+    padding: 8px 0;
     flex-wrap: wrap;
   }
   .config-row:last-child { border-bottom: none; }
   .config-label {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     min-width: 90px;
+    letter-spacing: 0.05em;
+  }
+  .config-mini-label {
+    font-size: 10px;
+    color: var(--ink-faint);
+    font-style: italic;
   }
   .config-input {
     border: 1px solid var(--ink);
     background: var(--parchment);
-    padding: 6px 10px;
+    padding: 7px 10px;
     font-family: 'Noto Serif JP', serif;
     font-size: 13px;
     flex: 1;
     min-width: 100px;
+    color: var(--ink);
   }
-  .channel-pills {
+  .config-input:focus {
+    outline: 2px solid var(--gold);
+    outline-offset: 1px;
+  }
+  .config-toggle-eye {
+    background: var(--parchment-dark);
+    border: 1px solid var(--ink);
+    width: 36px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .config-toggle-eye:hover {
+    background: var(--ink);
+  }
+  .config-test-btn-small {
+    background: var(--parchment-dark);
+    border: 1px solid var(--ink);
+    padding: 6px 12px;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .config-test-btn-small:hover {
+    background: var(--gold);
+  }
+  .config-test-btn-small:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .config-hint {
+    font-size: 10px;
+    color: var(--ink-faint);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  .config-export {
+    width: 100%;
+    height: 200px;
+    border: 1px solid var(--ink);
+    background: #1a1208;
+    color: #b8893f;
+    padding: 12px;
+    font-family: 'DotGothic16', 'Courier New', monospace;
+    font-size: 11px;
+    line-height: 1.5;
+    resize: vertical;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    box-shadow: inset 2px 2px 0 rgba(0,0,0,0.3);
+  }
+  .config-export:focus {
+    outline: 1px solid var(--gold);
+  }
+  .config-info code {
+    background: var(--ink);
+    color: var(--gold);
+    padding: 2px 6px;
+    font-family: 'DotGothic16', monospace;
+    font-size: 11px;
+  }
+  .config-help code {
+    background: var(--ink);
+    color: var(--gold);
+    padding: 2px 6px;
+    font-family: 'DotGothic16', monospace;
+    font-size: 11px;
+  }
+  .config-action-row {
     display: flex;
-    gap: 6px;
+    gap: 8px;
+    margin-top: 14px;
     flex-wrap: wrap;
   }
-  .channel-pill {
-    background: var(--parchment);
-    border: 1px solid var(--ink);
-    padding: 5px 14px;
+  .config-test-btn,
+  .config-save-btn {
+    flex: 1;
+    min-width: 140px;
+    padding: 10px 14px;
     font-family: 'Noto Serif JP', serif;
-    font-size: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
     cursor: pointer;
-    user-select: none;
+    border: 1px solid var(--ink);
     transition: all 0.15s;
   }
-  .channel-pill.active {
+  .config-test-btn {
+    background: var(--parchment-dark);
+    color: var(--ink);
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .config-test-btn:hover {
+    background: var(--gold);
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .config-save-btn {
     background: var(--ink);
     color: var(--parchment);
+    box-shadow: 2px 2px 0 var(--gold-deep);
+  }
+  .config-save-btn:hover {
+    background: var(--gold-deep);
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .config-test-btn:active,
+  .config-save-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+  .config-test-btn:disabled,
+  .config-save-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+  .config-result {
+    margin-top: 10px;
+    padding: 10px 12px;
+    font-size: 12px;
+    line-height: 1.6;
+    display: none;
+  }
+  .config-result.show { display: block; }
+  .config-result.success {
+    background: rgba(45, 90, 61, 0.15);
+    border-left: 3px solid var(--emerald);
+    color: var(--emerald);
+    font-weight: 700;
+  }
+  .config-result.error {
+    background: rgba(139, 26, 26, 0.1);
+    border-left: 3px solid var(--crimson);
+    color: var(--crimson);
+    font-weight: 700;
+  }
+  .config-info {
+    margin-top: 14px;
+    font-size: 11px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    padding: 10px 12px;
+    background: var(--parchment-dark);
+    border: 1px dashed var(--ink-faint);
+  }
+  .config-info strong {
+    color: var(--ink);
+    font-size: 12px;
+  }
+  .discord-mark {
+    font-size: 18px;
   }
 
   /* === 励ましメッセージ === */
@@ -1177,7 +1363,7 @@
     <div class="hero-header">
       <div class="hero-content">
         <div class="greeting" id="greeting">GOOD MORNING</div>
-        <div class="player-name">たくと</div>
+        <div class="player-name">トルネコ</div>
         <div class="meta" id="heroMeta">
           4月25日(土) ・ 月の残り稼働日 <strong>11日</strong><br>
           越境貿易 商人ランク <strong>Lv.7</strong>
@@ -1364,20 +1550,72 @@
         <span>DELIVERY</span>
         <span class="ja">配信設定</span>
       </div>
-      <div class="config-row">
-        <span class="config-label">朝の配信</span>
-        <input type="time" class="config-input" value="07:30">
+
+      <div class="config-help">
+        💡 <strong>配信は別リポジトリ「quest-board-bot」が担当します。</strong><br>
+        ここで設定を作成→コピーして、botリポジトリのSecretsに貼り付ければ毎朝の配信が始まります。
       </div>
-      <div class="config-row">
-        <span class="config-label">日報リマインド</span>
-        <input type="time" class="config-input" value="21:00">
-      </div>
-      <div class="config-row">
-        <span class="config-label">配信先</span>
-        <div class="channel-pills">
-          <div class="channel-pill active">💚 LINE</div>
-          <div class="channel-pill">💜 Discord</div>
+
+      <!-- Discord Webhook -->
+      <div class="config-section">
+        <div class="config-section-title">
+          <span class="discord-mark">💜</span>
+          <span>Discord Webhook URL</span>
         </div>
+        <div class="config-row">
+          <input type="password" class="config-input" id="discordWebhook"
+                 placeholder="https://discord.com/api/webhooks/..." autocomplete="off">
+          <button class="config-toggle-eye" id="toggleEye" type="button">👁</button>
+          <button class="config-test-btn-small" id="testDeliveryBtn">📨 テスト送信</button>
+        </div>
+        <div class="config-hint">
+          Discordチャンネル設定 → 連携サービス → ウェブフック で取得
+        </div>
+      </div>
+
+      <hr class="config-divider">
+
+      <!-- 配信時刻 -->
+      <div class="config-section">
+        <div class="config-section-title">
+          <span>⏰</span>
+          <span>朝の配信時刻</span>
+        </div>
+        <div class="config-row">
+          <span class="config-label">配信時刻</span>
+          <input type="time" class="config-input" id="morningTime" value="07:30">
+        </div>
+      </div>
+
+      <hr class="config-divider">
+
+      <!-- セットアップ用エクスポート -->
+      <div class="config-section">
+        <div class="config-section-title">
+          <span>📋</span>
+          <span>セットアップ情報をコピー</span>
+        </div>
+        <div class="config-help">
+          以下のJSONを <code>USER_CONFIG_JSON</code> としてbotリポジトリのSecretsに登録してください
+        </div>
+        <textarea class="config-export" id="configExport" readonly></textarea>
+        <div class="config-action-row">
+          <button class="config-test-btn" id="copyConfigBtn">📋 JSONをコピー</button>
+          <button class="config-save-btn" id="updateExportBtn">🔄 最新の進捗で再生成</button>
+        </div>
+      </div>
+
+      <div class="config-result" id="deliveryResult"></div>
+
+      <div class="config-info">
+        <strong>セットアップ手順</strong><br>
+        1. botリポジトリ（<code>quest-board-bot</code>）を Fork<br>
+        2. Settings → Secrets で <code>DISCORD_WEBHOOK_URL</code> を登録<br>
+        3. 同じく <code>USER_CONFIG_JSON</code> に上の生成済みJSONを貼り付け<br>
+        4. Actions タブから「Run workflow」でテスト実行<br>
+        5. 翌朝から自動配信開始 🎉<br>
+        <br>
+        詳しい手順は botリポジトリの README を参照
       </div>
     </div>
 
@@ -1388,7 +1626,7 @@
       </div>
       <div class="config-row">
         <span class="config-label">呼び名</span>
-        <input type="text" class="config-input" value="たくと">
+        <input type="text" class="config-input" value="トルネコ">
       </div>
       <div class="config-row">
         <span class="config-label">商人ランク</span>
@@ -1402,9 +1640,10 @@
         <span class="ja">この試作版について</span>
       </div>
       <div style="font-size: 12px; color: var(--ink-soft); line-height: 1.8;">
-        コミュニティ自由研究プロジェクト「Quest Board」<br>
-        Shopee業務を毎日ちょっと楽しくする実験。完全プライベート、進捗は他人に見えません。<br>
-        本実装ではGitHub Actionsで毎朝のタスク配信、LINE Bot/Discord Webhookでワンタップ報告を実現します。
+        <strong style="color: var(--ink);">Quest Board</strong><br>
+        Shopee業務を毎日のクエストに変える、進捗管理ツール。<br>
+        完全プライベート、進捗は誰にも見えません。<br>
+        GitHub Actions × Discord Webhook で毎朝のタスク自動配信に対応しています。
       </div>
     </div>
 
@@ -1472,7 +1711,7 @@ function loadState() {
 // 状態（初期値）
 // ===================================================================
 const defaultState = {
-  player: 'たくと',
+  player: 'トルネコ',
   level: 7,
   goals: [
     { id: 1, icon: '📦', name: '出品',   target: 100, done: 47 },
@@ -1530,6 +1769,11 @@ const defaultState = {
     { id: 'rocket',   icon: '🚀', name: '月行きチケット',   unlocked: false, isNew: false },
     { id: 'dragon',   icon: '🐉', name: 'ドラゴン1頭(要餌)', unlocked: false, isNew: false },
   ],
+  delivery: {
+    discordWebhook: '',
+    morningTime: '07:30',
+    timezone: 'Asia/Tokyo',
+  },
 };
 
 // ストレージから復元、なければデフォルト
@@ -1538,6 +1782,10 @@ const state = loaded ? { ...defaultState, ...loaded } : { ...defaultState };
 // SetだけJSONに保存できないので明示的に復活
 if (!(state.submittedDates instanceof Set)) {
   state.submittedDates = new Set(state.submittedDates || []);
+}
+// delivery設定も古い保存データに無い場合は補完
+if (!state.delivery) {
+  state.delivery = { ...defaultState.delivery };
 }
 
 // ===================================================================
@@ -2263,12 +2511,151 @@ function isSafari() {
   return /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS/.test(ua);
 }
 
-if (isIOS() && isSafari() && !isStandalone() && !localStorage.getItem(BANNER_DISMISSED_KEY)) {
-  // iOS Safariの場合は「ホーム画面に追加」を案内（自動インストール不可なので）
-  setTimeout(() => {
-    installBanner.classList.add('show');
-  }, 3000);
+// ===================================================================
+// 配信設定（Discord連携 + 設定エクスポート）
+// ===================================================================
+const discordWebhookInput = document.getElementById('discordWebhook');
+const morningTimeInput = document.getElementById('morningTime');
+const testDeliveryBtn = document.getElementById('testDeliveryBtn');
+const copyConfigBtn = document.getElementById('copyConfigBtn');
+const updateExportBtn = document.getElementById('updateExportBtn');
+const configExport = document.getElementById('configExport');
+const deliveryResult = document.getElementById('deliveryResult');
+const toggleEye = document.getElementById('toggleEye');
+
+function loadDeliveryConfig() {
+  discordWebhookInput.value = state.delivery.discordWebhook || '';
+  morningTimeInput.value = state.delivery.morningTime || '07:30';
+  generateExportJSON();
 }
+
+function saveDeliveryConfig() {
+  state.delivery.discordWebhook = discordWebhookInput.value.trim();
+  state.delivery.morningTime = morningTimeInput.value;
+  saveState();
+}
+
+// 設定エクスポートJSON生成
+function generateExportJSON() {
+  // カレンダー状態を off_days / half_days / trip_days に分解
+  const off_days = [];
+  const half_days = [];
+  const trip_days = [];
+  for (const [k, v] of Object.entries(state.calStatus)) {
+    if (v === 'off') off_days.push(k);
+    else if (v === 'half') half_days.push(k);
+    else if (v === 'trip') trip_days.push(k);
+  }
+
+  const config = {
+    goals: state.goals.map(g => ({
+      icon: g.icon,
+      name: g.name,
+      target: g.target,
+      done: g.done,
+    })),
+    off_days: off_days.sort(),
+    half_days: half_days.sort(),
+    trip_days: trip_days.sort(),
+  };
+
+  configExport.value = JSON.stringify(config, null, 2);
+}
+
+// パスワード表示切替
+toggleEye.addEventListener('click', () => {
+  const isPwd = discordWebhookInput.type === 'password';
+  discordWebhookInput.type = isPwd ? 'text' : 'password';
+  toggleEye.textContent = isPwd ? '🙈' : '👁';
+});
+
+function isValidDiscordWebhook(url) {
+  if (!url) return false;
+  return /^https:\/\/(canary\.|ptb\.)?discord(app)?\.com\/api\/webhooks\/\d+\/[\w-]+/i.test(url);
+}
+
+function showResult(message, type) {
+  deliveryResult.textContent = message;
+  deliveryResult.className = 'config-result show ' + type;
+}
+
+function hideResult() {
+  deliveryResult.classList.remove('show');
+}
+
+// テスト送信（直接Discord Webhookに）
+testDeliveryBtn.addEventListener('click', async () => {
+  hideResult();
+  const url = discordWebhookInput.value.trim();
+  if (!isValidDiscordWebhook(url)) {
+    showResult('⚠ Discord Webhook URLの形式が正しくありません', 'error');
+    return;
+  }
+
+  testDeliveryBtn.disabled = true;
+  testDeliveryBtn.textContent = '送信中…';
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: 'Quest Board ⚔',
+        embeds: [{
+          title: '🎯 テスト配信',
+          description: 'Discord連携のテスト送信です。\nこのメッセージが届けば、Webhook URLは正しく設定されています。',
+          color: 0xb8893f,
+          fields: [
+            { name: '👤 プレイヤー', value: state.player || '名前未設定', inline: true },
+            { name: '🔥 連続日数', value: `${state.streak} 日`, inline: true },
+          ],
+          footer: { text: 'Quest Board • テスト送信' },
+          timestamp: new Date().toISOString(),
+        }]
+      })
+    });
+
+    if (res.ok) {
+      saveDeliveryConfig();
+      showResult('✓ テスト送信成功！Discordチャンネルを確認してください', 'success');
+    } else {
+      showResult(`⚠ 送信失敗 (HTTP ${res.status})。Webhook URLを確認してください`, 'error');
+    }
+  } catch (e) {
+    showResult('⚠ ネットワークエラー: ' + e.message, 'error');
+  } finally {
+    testDeliveryBtn.disabled = false;
+    testDeliveryBtn.textContent = '📨 テスト送信';
+  }
+});
+
+// JSONをクリップボードにコピー
+copyConfigBtn.addEventListener('click', async () => {
+  hideResult();
+  generateExportJSON();
+  try {
+    await navigator.clipboard.writeText(configExport.value);
+    showResult('✓ JSONをクリップボードにコピーしました。GitHubのSecretsに貼り付けてください', 'success');
+  } catch (e) {
+    // フォールバック：textareaを選択状態にして手動コピー
+    configExport.select();
+    showResult('⚠ 自動コピー失敗。手動で Cmd/Ctrl+C を押してコピーしてください', 'error');
+  }
+});
+
+// 最新の進捗で再生成
+updateExportBtn.addEventListener('click', () => {
+  generateExportJSON();
+  showResult('✓ 最新の進捗で再生成しました。再コピーしてください', 'success');
+});
+
+// 入力変更で自動保存
+[discordWebhookInput, morningTimeInput].forEach(el => {
+  el.addEventListener('change', saveDeliveryConfig);
+});
+
+// 初期表示
+loadDeliveryConfig();
 </script>
 </body>
 </html>

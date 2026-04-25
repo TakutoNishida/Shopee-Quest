@@ -1,10 +1,10 @@
 # ⚔ Quest Board
 
-> Shopee業務を毎日のクエストに変える、コミュニティ自由研究プロジェクト
+> Shopee業務を毎日のクエストに変える、個人用進捗管理ツール
 
 月間目標を残稼働日で割って毎日のタスクに自動分解し、ワンタップで進捗管理。日報の連続提出をストリーク化、達成でバッジや架空商品が手に入る、ちょっと笑える業務管理ツールです。
 
-**完全プライベート設計** — あなたの進捗は、あなたしか見えません。
+**完全プライベート設計** — 進捗データは自分のブラウザ内にのみ保存され、外部には送信されません。
 
 ---
 
@@ -19,6 +19,7 @@
 - **励ましメッセージ** — 進捗ペースに応じた声がけ
 - **PWA対応** — スマホのホーム画面に追加してアプリのように使える
 - **オフライン動作** — 一度開けば電波無くても動く
+- **Discord配信連携** — GitHub Actionsで毎朝のタスクを自動でDiscordに通知
 
 ---
 
@@ -26,10 +27,7 @@
 
 ### 1. ブラウザで開く
 
-公開URLにスマホかPCのブラウザでアクセス:
-```
-https://YOUR-USERNAME.github.io/quest-board/
-```
+公開URLにスマホかPCのブラウザでアクセス。
 
 ### 2. ホーム画面に追加（推奨）
 
@@ -66,61 +64,39 @@ https://YOUR-USERNAME.github.io/quest-board/
 
 ---
 
-## 自分用にカスタマイズして公開する
-
-自分のコミュニティ用に立ち上げたい場合:
-
-### 必要なもの
-- GitHubアカウント（無料）
-- これだけ。
-
-### 手順
-
-1. **このリポジトリをFork**（右上のForkボタン）
-2. **Settings → Pages** を開く
-3. **Source** を「Deploy from a branch」、Branchを「main」「/(root)」に設定
-4. 数分後、`https://あなたのユーザー名.github.io/quest-board/` でアクセスできるようになる
-5. URLをコミュニティに共有
-
-### 中身を変えたい場合
-
-- **`index.html`**: メインのアプリ本体。デフォルト目標やキャラ名はここに書いてある（ファイル内の `defaultState` を編集）
-- **`manifest.json`**: アプリ名・説明
-- **`icon.svg`**: アプリアイコン
-
-ファイルを編集して main ブランチにcommit/pushすれば、数分後に反映されます。
-
----
-
 ## データの保存について
 
-すべての進捗データは **あなたのブラウザ内** に保存されます（localStorage）。
+すべての進捗データは **このブラウザ内** に保存されます（localStorage）。
 
-- ✅ サーバーにはデータを送りません（完全プライベート）
-- ✅ 他人には絶対に見えません
+- ✅ サーバーにはデータを送りません
+- ✅ 外部からは見えません
 - ⚠️ ブラウザのキャッシュをクリアするとデータが消えます
 - ⚠️ 別の端末（スマホ↔PC）でデータ同期はされません
 
-クラウド同期や複数端末対応は今後のロードマップで検討中です。
-
 ---
 
-## 今後追加したい機能
+## Discord配信機能
 
-- [ ] LINE/Discord 自動配信（GitHub Actionsで毎朝のタスク通知）
-- [ ] Supabaseなどのクラウド保存（端末間同期）
-- [ ] 月次レポートの自動生成
-- [ ] 達成バッジを SNS シェアできる画像出力
-- [ ] 招待制のグループ機能（仲間内だけで励まし合う）
+毎朝のタスク配信は別リポジトリ「**quest-board-bot**」が担当します。
+
+セットアップの流れ:
+1. アプリの「設定」タブでDiscord Webhook URLを入力
+2. 「📋 JSONをコピー」で設定情報をコピー
+3. quest-board-bot をFork
+4. Settings → Secrets で `DISCORD_WEBHOOK_URL` と `USER_CONFIG_JSON` を登録
+5. 翌朝からDiscordに自動配信が始まります
+
+詳しくは quest-board-bot のREADMEを参照。
 
 ---
 
 ## 技術スタック
 
-- 純粋なHTML / CSS / JavaScript（フレームワークなし）
+- HTML / CSS / JavaScript（フレームワークなし）
 - ストレージ: localStorage
 - ホスティング: GitHub Pages
 - PWA: Service Worker + Web App Manifest
+- 配信: Python + GitHub Actions + Discord Webhook
 - フォント: Google Fonts (Noto Serif JP, Cinzel, DotGothic16)
 
 依存ライブラリゼロ。HTMLファイル1個 + 設定ファイル数個で完結します。
@@ -129,6 +105,4 @@ https://YOUR-USERNAME.github.io/quest-board/
 
 ## ライセンス
 
-MIT License — 自由に使ってください。改変・再配布も歓迎です。
-
-コミュニティの自由研究として作られました。フィードバック・改善案・PRはいつでも歓迎します。
+MIT License
