@@ -2,8 +2,22 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>クエストボード — Shopee業務RPG</title>
+
+<!-- PWA: マニフェスト -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2a1810">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Quest Board">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+
+<!-- ソーシャル共有 -->
+<meta property="og:title" content="Quest Board — Shopee業務RPG">
+<meta property="og:description" content="月間目標を毎日のクエストに変える、Shopee業務RPG">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Noto+Serif+JP:wght@500;700;900&family=DotGothic16&display=swap" rel="stylesheet">
@@ -434,6 +448,32 @@
     position: relative;
     z-index: 2;
   }
+  .streak-date-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .streak-date-label {
+    font-size: 10px;
+    color: var(--parchment-dark);
+    letter-spacing: 0.2em;
+  }
+  .streak-date-select {
+    background: var(--parchment-light);
+    color: var(--ink);
+    border: 1px solid var(--gold);
+    padding: 6px 10px;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    min-width: 200px;
+  }
+  .streak-date-select:focus {
+    outline: 2px solid var(--gold);
+  }
   .streak-btn {
     background: var(--gold);
     color: var(--ink);
@@ -469,6 +509,70 @@
     letter-spacing: 0.15em;
     position: relative;
     z-index: 2;
+  }
+  .streak-history {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px dashed rgba(184, 137, 63, 0.4);
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    position: relative;
+    z-index: 2;
+  }
+  .streak-day-cell {
+    width: 36px;
+    text-align: center;
+  }
+  .streak-day-dow {
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    color: var(--parchment-dark);
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .streak-day-mark {
+    width: 30px;
+    height: 30px;
+    margin: 0 auto;
+    border: 1px solid var(--gold);
+    background: rgba(184, 137, 63, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DotGothic16', monospace;
+    font-size: 12px;
+    color: var(--parchment);
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .streak-day-mark.submitted {
+    background: var(--gold);
+    color: var(--ink);
+    font-weight: 900;
+  }
+  .streak-day-mark.off-day {
+    background: var(--crimson-deep);
+    border-color: var(--crimson);
+    color: var(--parchment-dark);
+    cursor: default;
+  }
+  .streak-day-mark.today {
+    border: 2px solid var(--parchment);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+  }
+  .streak-day-mark:hover:not(.off-day) {
+    transform: scale(1.15);
+  }
+  .streak-day-mark .check {
+    font-size: 14px;
+  }
+  .streak-day-date {
+    font-family: 'DotGothic16', monospace;
+    font-size: 9px;
+    color: var(--parchment-dark);
+    margin-top: 4px;
+    letter-spacing: 0.05em;
   }
 
   /* === バッジコレクション === */
@@ -828,47 +932,233 @@
   .reward-close:hover { background: var(--gold); color: var(--ink); }
 
   /* === 配信設定 === */
+  .config-section {
+    padding: 4px 0 8px;
+  }
+  .config-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+  .config-section-title .config-status {
+    margin-left: auto;
+    font-size: 10px;
+    background: var(--parchment-dark);
+    color: var(--ink-soft);
+    padding: 3px 10px;
+    border: 1px solid var(--ink-faint);
+    letter-spacing: 0.15em;
+    font-weight: 700;
+  }
+  .config-section-title .config-status.connected {
+    background: var(--emerald);
+    color: var(--parchment);
+    border-color: var(--emerald);
+  }
+  .config-help {
+    font-size: 11px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    background: var(--parchment);
+    padding: 8px 12px;
+    border-left: 3px solid var(--gold);
+    margin-bottom: 10px;
+  }
+  .config-divider {
+    border: none;
+    border-top: 1px dashed var(--ink-faint);
+    margin: 16px 0;
+  }
   .config-row {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 10px 0;
-    border-bottom: 1px dashed var(--ink-faint);
+    gap: 10px;
+    padding: 8px 0;
     flex-wrap: wrap;
   }
   .config-row:last-child { border-bottom: none; }
   .config-label {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     min-width: 90px;
+    letter-spacing: 0.05em;
+  }
+  .config-mini-label {
+    font-size: 10px;
+    color: var(--ink-faint);
+    font-style: italic;
   }
   .config-input {
     border: 1px solid var(--ink);
     background: var(--parchment);
-    padding: 6px 10px;
+    padding: 7px 10px;
     font-family: 'Noto Serif JP', serif;
     font-size: 13px;
     flex: 1;
     min-width: 100px;
+    color: var(--ink);
   }
-  .channel-pills {
+  .config-input:focus {
+    outline: 2px solid var(--gold);
+    outline-offset: 1px;
+  }
+  .config-toggle-eye {
+    background: var(--parchment-dark);
+    border: 1px solid var(--ink);
+    width: 36px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .config-toggle-eye:hover {
+    background: var(--ink);
+  }
+  .config-test-btn-small {
+    background: var(--parchment-dark);
+    border: 1px solid var(--ink);
+    padding: 6px 12px;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .config-test-btn-small:hover {
+    background: var(--gold);
+  }
+  .config-test-btn-small:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .config-hint {
+    font-size: 10px;
+    color: var(--ink-faint);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  .config-export {
+    width: 100%;
+    height: 200px;
+    border: 1px solid var(--ink);
+    background: #1a1208;
+    color: #b8893f;
+    padding: 12px;
+    font-family: 'DotGothic16', 'Courier New', monospace;
+    font-size: 11px;
+    line-height: 1.5;
+    resize: vertical;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    box-shadow: inset 2px 2px 0 rgba(0,0,0,0.3);
+  }
+  .config-export:focus {
+    outline: 1px solid var(--gold);
+  }
+  .config-info code {
+    background: var(--ink);
+    color: var(--gold);
+    padding: 2px 6px;
+    font-family: 'DotGothic16', monospace;
+    font-size: 11px;
+  }
+  .config-help code {
+    background: var(--ink);
+    color: var(--gold);
+    padding: 2px 6px;
+    font-family: 'DotGothic16', monospace;
+    font-size: 11px;
+  }
+  .config-action-row {
     display: flex;
-    gap: 6px;
+    gap: 8px;
+    margin-top: 14px;
     flex-wrap: wrap;
   }
-  .channel-pill {
-    background: var(--parchment);
-    border: 1px solid var(--ink);
-    padding: 5px 14px;
+  .config-test-btn,
+  .config-save-btn {
+    flex: 1;
+    min-width: 140px;
+    padding: 10px 14px;
     font-family: 'Noto Serif JP', serif;
-    font-size: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
     cursor: pointer;
-    user-select: none;
+    border: 1px solid var(--ink);
     transition: all 0.15s;
   }
-  .channel-pill.active {
+  .config-test-btn {
+    background: var(--parchment-dark);
+    color: var(--ink);
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .config-test-btn:hover {
+    background: var(--gold);
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .config-save-btn {
     background: var(--ink);
     color: var(--parchment);
+    box-shadow: 2px 2px 0 var(--gold-deep);
+  }
+  .config-save-btn:hover {
+    background: var(--gold-deep);
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .config-test-btn:active,
+  .config-save-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+  .config-test-btn:disabled,
+  .config-save-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+  .config-result {
+    margin-top: 10px;
+    padding: 10px 12px;
+    font-size: 12px;
+    line-height: 1.6;
+    display: none;
+  }
+  .config-result.show { display: block; }
+  .config-result.success {
+    background: rgba(45, 90, 61, 0.15);
+    border-left: 3px solid var(--emerald);
+    color: var(--emerald);
+    font-weight: 700;
+  }
+  .config-result.error {
+    background: rgba(139, 26, 26, 0.1);
+    border-left: 3px solid var(--crimson);
+    color: var(--crimson);
+    font-weight: 700;
+  }
+  .config-info {
+    margin-top: 14px;
+    font-size: 11px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    padding: 10px 12px;
+    background: var(--parchment-dark);
+    border: 1px dashed var(--ink-faint);
+  }
+  .config-info strong {
+    color: var(--ink);
+    font-size: 12px;
+  }
+  .discord-mark {
+    font-size: 18px;
   }
 
   /* === 励ましメッセージ === */
@@ -975,11 +1265,78 @@
     letter-spacing: 0.3em;
     font-weight: 700;
   }
+
+  /* === iPhoneのノッチ対応 === */
+  nav {
+    padding-top: calc(10px + env(safe-area-inset-top));
+  }
+  main {
+    padding-bottom: calc(100px + env(safe-area-inset-bottom));
+  }
+
+  /* === インストール案内バナー === */
+  .install-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--ink);
+    color: var(--parchment);
+    border-top: 2px solid var(--gold);
+    padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+    z-index: 200;
+    display: none;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
+    animation: slideUp 0.4s ease-out;
+  }
+  .install-banner.show { display: flex; }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .install-banner .ib-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .install-banner .ib-text {
+    flex: 1;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .install-banner .ib-text strong {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 2px;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+  .install-banner .ib-btn {
+    background: var(--gold);
+    color: var(--ink);
+    border: 1px solid var(--gold);
+    padding: 8px 14px;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .install-banner .ib-close {
+    background: transparent;
+    color: var(--parchment-dark);
+    border: 1px solid var(--ink-faint);
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
 </style>
 </head>
 <body>
-
-<div class="demo-banner">DEMO PROTOTYPE — 試作版・操作してみてください</div>
 
 <nav>
   <div class="nav-inner">
@@ -1006,7 +1363,7 @@
     <div class="hero-header">
       <div class="hero-content">
         <div class="greeting" id="greeting">GOOD MORNING</div>
-        <div class="player-name">たくと</div>
+        <div class="player-name">トルネコ</div>
         <div class="meta" id="heroMeta">
           4月25日(土) ・ 月の残り稼働日 <strong>11日</strong><br>
           越境貿易 商人ランク <strong>Lv.7</strong>
@@ -1029,12 +1386,21 @@
       <div class="streak-flame">🔥</div>
       <div class="streak-num" id="streakNum">23</div>
       <div class="streak-label">連続提出 / DAILY REPORT STREAK</div>
+
       <div class="streak-action">
-        <button class="streak-btn" id="streakBtn">本日分 提出記録</button>
+        <div class="streak-date-row">
+          <span class="streak-date-label">対象日</span>
+          <select class="streak-date-select" id="streakDateSelect"></select>
+        </div>
+        <button class="streak-btn" id="streakBtn">提出を記録する</button>
       </div>
+
       <div class="streak-meta" id="streakMeta">
-        ※4月25日(土)分として記録します
+        過去日も後から記録OK・連続が復活することもあります
       </div>
+
+      <!-- 直近7日の提出状況 -->
+      <div class="streak-history" id="streakHistory"></div>
     </div>
 
     <!-- 今日のタスク -->
@@ -1181,24 +1547,25 @@
 
     <div class="card">
       <div class="card-title">
-        <span>DELIVERY</span>
-        <span class="ja">配信設定</span>
+        <span>DATA EXPORT</span>
+        <span class="ja">データ書き出し</span>
       </div>
-      <div class="config-row">
-        <span class="config-label">朝の配信</span>
-        <input type="time" class="config-input" value="07:30">
+
+      <div class="config-help">
+        💾 進捗データを JSON 形式で書き出せます。<br>
+        バックアップ、別端末への移行、自動化との連携などに使えます。
       </div>
-      <div class="config-row">
-        <span class="config-label">日報リマインド</span>
-        <input type="time" class="config-input" value="21:00">
-      </div>
-      <div class="config-row">
-        <span class="config-label">配信先</span>
-        <div class="channel-pills">
-          <div class="channel-pill active">💚 LINE</div>
-          <div class="channel-pill">💜 Discord</div>
+
+      <!-- セットアップ用エクスポート -->
+      <div class="config-section">
+        <textarea class="config-export" id="configExport" readonly></textarea>
+        <div class="config-action-row">
+          <button class="config-test-btn" id="copyConfigBtn">📋 JSONをコピー</button>
+          <button class="config-save-btn" id="updateExportBtn">🔄 最新の進捗で再生成</button>
         </div>
       </div>
+
+      <div class="config-result" id="deliveryResult"></div>
     </div>
 
     <div class="card">
@@ -1208,11 +1575,16 @@
       </div>
       <div class="config-row">
         <span class="config-label">呼び名</span>
-        <input type="text" class="config-input" value="たくと">
+        <input type="text" class="config-input" id="playerNameInput" placeholder="例: トルネコ">
       </div>
       <div class="config-row">
         <span class="config-label">商人ランク</span>
-        <input type="text" class="config-input" value="Lv.7 越境貿易商" readonly style="background: var(--parchment-dark);">
+        <input type="text" class="config-input" id="playerLevelDisplay" readonly style="background: var(--parchment-dark);">
+      </div>
+      <div class="config-row" style="margin-top: 8px;">
+        <button class="config-test-btn" id="resetDataBtn" style="flex:1;">
+          🔄 全データをリセット
+        </button>
       </div>
     </div>
 
@@ -1222,9 +1594,10 @@
         <span class="ja">この試作版について</span>
       </div>
       <div style="font-size: 12px; color: var(--ink-soft); line-height: 1.8;">
-        コミュニティ自由研究プロジェクト「Quest Board」<br>
-        Shopee業務を毎日ちょっと楽しくする実験。完全プライベート、進捗は他人に見えません。<br>
-        本実装ではGitHub Actionsで毎朝のタスク配信、LINE Bot/Discord Webhookでワンタップ報告を実現します。
+        <strong style="color: var(--ink);">Quest Board</strong><br>
+        Shopee業務を毎日のクエストに変える、進捗管理ツール。<br>
+        完全プライベート、進捗は誰にも見えません。<br>
+        GitHub Actions × Discord Webhook で毎朝のタスク自動配信に対応しています。
       </div>
     </div>
 
@@ -1244,25 +1617,72 @@
   </div>
 </div>
 
+<!-- iOS向けインストール案内バナー -->
+<div class="install-banner" id="installBanner">
+  <div class="ib-icon">📲</div>
+  <div class="ib-text">
+    <strong>ホーム画面に追加</strong>
+    Safariの共有ボタン → 「ホーム画面に追加」
+  </div>
+  <button class="ib-btn" id="installBtn" style="display:none;">追加</button>
+  <button class="ib-close" id="installClose">×</button>
+</div>
+
 <script>
 // ===================================================================
-// 状態（localStorageでも本番では持つが、デモなのでメモリ内）
+// 永続化（localStorage）
 // ===================================================================
-const state = {
-  player: 'たくと',
+const STORAGE_KEY = 'quest-board-state-v1';
+
+function saveState() {
+  try {
+    const serializable = {
+      ...state,
+      submittedDates: Array.from(state.submittedDates),  // SetはJSON化できないのでArray化
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(serializable));
+  } catch (e) {
+    console.warn('保存に失敗:', e);
+  }
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const obj = JSON.parse(raw);
+    if (obj.submittedDates && Array.isArray(obj.submittedDates)) {
+      obj.submittedDates = new Set(obj.submittedDates);
+    }
+    return obj;
+  } catch (e) {
+    console.warn('読み込み失敗:', e);
+    return null;
+  }
+}
+
+// ===================================================================
+// 状態（初期値）
+// ===================================================================
+const defaultState = {
+  player: 'トルネコ',
   level: 7,
   goals: [
     { id: 1, icon: '📦', name: '出品',   target: 100, done: 47 },
     { id: 2, icon: '✏️', name: '商品編集', target: 50,  done: 32 },
     { id: 3, icon: '🔍', name: 'リサーチ', target: 30,  done: 18 },
   ],
-  todayProgress: { 1: 2, 2: 1, 3: 0 },  // 今日の作業実績
+  todayProgress: { 1: 2, 2: 1, 3: 0 },
   streak: 23,
-  streakSubmittedToday: false,
-  // カレンダー（簡易: 日付→種別 を持つ）
-  // 'normal' | 'off' | 'half' | 'trip'
+  submittedDates: new Set([
+    '2026-04-03','2026-04-04','2026-04-05','2026-04-06','2026-04-07',
+    '2026-04-08','2026-04-09','2026-04-10','2026-04-11','2026-04-12',
+    '2026-04-13','2026-04-14','2026-04-15','2026-04-16','2026-04-17',
+    '2026-04-18','2026-04-19','2026-04-20','2026-04-21','2026-04-22',
+    '2026-04-23','2026-04-24',
+  ]),
   calStatus: {
-    '2026-04-26': 'off',  // 日曜
+    '2026-04-26': 'off',
     '2026-04-19': 'off',
     '2026-04-12': 'off',
     '2026-04-05': 'off',
@@ -1304,6 +1724,14 @@ const state = {
     { id: 'dragon',   icon: '🐉', name: 'ドラゴン1頭(要餌)', unlocked: false, isNew: false },
   ],
 };
+
+// ストレージから復元、なければデフォルト
+const loaded = loadState();
+const state = loaded ? { ...defaultState, ...loaded } : { ...defaultState };
+// SetだけJSONに保存できないので明示的に復活
+if (!(state.submittedDates instanceof Set)) {
+  state.submittedDates = new Set(state.submittedDates || []);
+}
 
 // ===================================================================
 // タブ切替
@@ -1413,6 +1841,7 @@ function renderTodayTasks() {
         goal.done = Math.max(0, goal.done - 1);
         state.todayProgress[id] = next;
       }
+      saveState();
       renderTodayTasks();
       renderProgress();
     });
@@ -1510,6 +1939,7 @@ function renderGoals() {
       const goal = state.goals.find(g => g.id === id);
       if (field === 'target') goal.target = parseInt(input.value) || 0;
       else goal[field] = input.value;
+      saveState();
       renderProgress();
       renderTodayTasks();
     });
@@ -1520,6 +1950,7 @@ function renderGoals() {
       const id = parseInt(btn.dataset.id);
       state.goals = state.goals.filter(g => g.id !== id);
       delete state.todayProgress[id];
+      saveState();
       renderGoals();
       renderProgress();
       renderTodayTasks();
@@ -1538,6 +1969,7 @@ document.getElementById('addGoalBtn').addEventListener('click', () => {
     done: 0,
   });
   state.todayProgress[newId] = 0;
+  saveState();
   renderGoals();
   renderProgress();
   renderTodayTasks();
@@ -1630,10 +2062,12 @@ function toggleCalDay(key) {
   if (next === 'normal') delete state.calStatus[key];
   else state.calStatus[key] = next;
 
+  saveState();
   renderCalendar();
   renderProgress();
   renderTodayTasks();
   updateHeroMeta();
+  updateStreakDisplay();
 }
 
 document.getElementById('calPrev').addEventListener('click', () => {
@@ -1749,28 +2183,190 @@ document.getElementById('rewardModal').addEventListener('click', (e) => {
 });
 
 // ===================================================================
-// 日報ストリーク提出
+// 日報ストリーク（日付選択＋過去遡及対応）
 // ===================================================================
-const streakBtn = document.getElementById('streakBtn');
-streakBtn.addEventListener('click', () => {
-  if (state.streakSubmittedToday) return;
-  state.streak++;
-  state.streakSubmittedToday = true;
-  document.getElementById('streakNum').textContent = state.streak;
-  streakBtn.textContent = '✓ 4/25分 記録済み';
-  streakBtn.classList.add('done');
+const TODAY = new Date(2026, 3, 25);  // デモ固定: 4/25
+const DOW_SHORT = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+const DOW_JA = ['日','月','火','水','木','金','土'];
 
-  // 連続◯日でバッジ獲得を演出（デモ）
-  if (state.streak === 24) {
-    setTimeout(() => {
-      showReward({
-        banner: '━━ 紋章獲得 ━━',
-        title: '新たな称号',
-        icon: '🔥',
-        name: '継続24日',
-        desc: '今日もまた一日、続いた。あなたの炎は確かに燃えている。',
+function dateKey(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function formatJP(d) {
+  return `${d.getMonth()+1}月${d.getDate()}日(${DOW_JA[d.getDay()]})`;
+}
+
+// 連続日数を計算（今日から遡って、未提出 or 休日に当たるまで）
+function calcStreak() {
+  let count = 0;
+  let cursor = new Date(TODAY);
+
+  // 今日が未提出なら、昨日からカウント開始（締切前なのでまだ途切れてない）
+  if (!state.submittedDates.has(dateKey(cursor))) {
+    cursor.setDate(cursor.getDate() - 1);
+  }
+
+  while (true) {
+    const k = dateKey(cursor);
+    const calStatus = state.calStatus[k];
+    if (calStatus === 'off' || calStatus === 'trip') {
+      // 休日はスキップ（連続が途切れない）
+      cursor.setDate(cursor.getDate() - 1);
+      continue;
+    }
+    if (state.submittedDates.has(k)) {
+      count++;
+      cursor.setDate(cursor.getDate() - 1);
+    } else {
+      break;
+    }
+  }
+  return count;
+}
+
+// 日付セレクタ生成（過去14日 + 今日 + 翌日まで）
+function populateDateSelect() {
+  const sel = document.getElementById('streakDateSelect');
+  sel.innerHTML = '';
+  const candidates = [];
+  for (let offset = -14; offset <= 1; offset++) {
+    const d = new Date(TODAY);
+    d.setDate(d.getDate() + offset);
+    candidates.push(d);
+  }
+  // 新しい順に並べる
+  candidates.reverse().forEach(d => {
+    const k = dateKey(d);
+    const submitted = state.submittedDates.has(k);
+    const opt = document.createElement('option');
+    opt.value = k;
+    let label = formatJP(d);
+    if (k === dateKey(TODAY)) label += ' [今日]';
+    else if (k === dateKey(new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate() - 1))) label += ' [昨日]';
+    if (submitted) label += '  ✓提出済';
+    opt.textContent = label;
+    sel.appendChild(opt);
+  });
+
+  // デフォルト選択：今日が未提出なら今日、提出済みなら最も近い未提出日
+  let defaultKey = dateKey(TODAY);
+  if (state.submittedDates.has(defaultKey)) {
+    for (let offset = -1; offset >= -14; offset--) {
+      const d = new Date(TODAY);
+      d.setDate(d.getDate() + offset);
+      const k = dateKey(d);
+      const calStatus = state.calStatus[k];
+      if (calStatus === 'off' || calStatus === 'trip') continue;
+      if (!state.submittedDates.has(k)) {
+        defaultKey = k;
+        break;
+      }
+    }
+  }
+  sel.value = defaultKey;
+  updateStreakBtnLabel();
+}
+
+function updateStreakBtnLabel() {
+  const sel = document.getElementById('streakDateSelect');
+  const btn = document.getElementById('streakBtn');
+  const k = sel.value;
+  const isSubmitted = state.submittedDates.has(k);
+  if (isSubmitted) {
+    btn.textContent = '✓ 提出取消';
+    btn.classList.add('done');
+  } else {
+    btn.textContent = '提出を記録する';
+    btn.classList.remove('done');
+  }
+}
+
+// 直近7日の履歴グリッド
+function renderStreakHistory() {
+  const container = document.getElementById('streakHistory');
+  container.innerHTML = '';
+
+  // 過去7日（今日含む）
+  for (let offset = -6; offset <= 0; offset++) {
+    const d = new Date(TODAY);
+    d.setDate(d.getDate() + offset);
+    const k = dateKey(d);
+    const calStatus = state.calStatus[k];
+    const isOff = calStatus === 'off' || calStatus === 'trip';
+    const isSubmitted = state.submittedDates.has(k);
+    const isToday = offset === 0;
+
+    const cell = document.createElement('div');
+    cell.className = 'streak-day-cell';
+
+    let markClass = 'streak-day-mark';
+    if (isSubmitted) markClass += ' submitted';
+    if (isOff) markClass += ' off-day';
+    if (isToday) markClass += ' today';
+
+    let inner = '';
+    if (isSubmitted) inner = '<span class="check">✓</span>';
+    else if (isOff) inner = '<span style="font-size:14px;">🏖</span>';
+    else inner = '<span style="opacity:0.4;">·</span>';
+
+    cell.innerHTML = `
+      <div class="streak-day-dow">${DOW_SHORT[d.getDay()]}</div>
+      <div class="${markClass}" data-key="${k}">${inner}</div>
+      <div class="streak-day-date">${d.getMonth()+1}/${d.getDate()}</div>
+    `;
+
+    if (!isOff) {
+      cell.querySelector('.streak-day-mark').addEventListener('click', () => {
+        document.getElementById('streakDateSelect').value = k;
+        updateStreakBtnLabel();
+        document.getElementById('streakBtn').focus();
       });
-    }, 600);
+    }
+    container.appendChild(cell);
+  }
+}
+
+function updateStreakDisplay() {
+  state.streak = calcStreak();
+  document.getElementById('streakNum').textContent = state.streak;
+  populateDateSelect();
+  renderStreakHistory();
+}
+
+// セレクタ変更時：ボタンラベル更新
+document.getElementById('streakDateSelect').addEventListener('change', updateStreakBtnLabel);
+
+// 提出ボタン
+document.getElementById('streakBtn').addEventListener('click', () => {
+  const sel = document.getElementById('streakDateSelect');
+  const k = sel.value;
+  const wasSubmitted = state.submittedDates.has(k);
+  const prevStreak = calcStreak();
+
+  if (wasSubmitted) {
+    state.submittedDates.delete(k);
+  } else {
+    state.submittedDates.add(k);
+  }
+
+  saveState();
+  updateStreakDisplay();
+  const newStreak = calcStreak();
+
+  // 新規バッジ獲得演出（連続日数の節目）
+  if (!wasSubmitted && newStreak > prevStreak) {
+    const milestones = { 7: '🔥 継続の人 7日', 14: '⚡ 継続の人 14日', 30: '💎 継続の人 30日', 60: '👑 継続の人 60日', 100: '🏛 継続の人 100日' };
+    if (milestones[newStreak]) {
+      setTimeout(() => {
+        showReward({
+          banner: '━━ 紋章獲得 ━━',
+          title: '新たな称号',
+          icon: milestones[newStreak].split(' ')[0],
+          name: milestones[newStreak].substring(2),
+          desc: `${newStreak}日連続で日報を提出した者の証。続けることが、最大の才能。`,
+        });
+      }, 400);
+    }
   }
 });
 
@@ -1795,8 +2391,167 @@ renderGoals();
 renderCalendar();
 renderBadges();
 updateHeroMeta();
+updateStreakDisplay();
 
 document.getElementById('todayDate').textContent = '04.25';
+
+// ===================================================================
+// Service Worker 登録（PWA: オフライン対応）
+// ===================================================================
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(err => {
+      console.warn('Service Worker 登録失敗:', err);
+    });
+  });
+}
+
+// ===================================================================
+// インストールバナー
+// ===================================================================
+let deferredInstallPrompt = null;
+const installBanner = document.getElementById('installBanner');
+const installBtn = document.getElementById('installBtn');
+const installClose = document.getElementById('installClose');
+const BANNER_DISMISSED_KEY = 'quest-board-install-dismissed';
+
+// Android Chrome等でインストール可能になった時
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  if (!localStorage.getItem(BANNER_DISMISSED_KEY) && !isStandalone()) {
+    installBtn.style.display = 'inline-block';
+    installBanner.querySelector('.ib-text strong').textContent = 'アプリとしてインストール';
+    installBanner.querySelector('.ib-text').lastChild.textContent = '右の「追加」ボタンを押してください';
+    installBanner.classList.add('show');
+  }
+});
+
+installBtn.addEventListener('click', async () => {
+  if (!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  const { outcome } = await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  if (outcome === 'accepted') {
+    installBanner.classList.remove('show');
+  }
+});
+
+installClose.addEventListener('click', () => {
+  installBanner.classList.remove('show');
+  localStorage.setItem(BANNER_DISMISSED_KEY, '1');
+});
+
+function isStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches ||
+         window.navigator.standalone === true;
+}
+
+// iOS判定 → Safari限定でインストール案内バナーを出す
+function isIOS() {
+  return /iPhone|iPad|iPod/i.test(navigator.userAgent) && !window.MSStream;
+}
+function isSafari() {
+  const ua = navigator.userAgent;
+  return /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS/.test(ua);
+}
+
+// ===================================================================
+// データ書き出し（JSON エクスポート）
+// ===================================================================
+const copyConfigBtn = document.getElementById('copyConfigBtn');
+const updateExportBtn = document.getElementById('updateExportBtn');
+const configExport = document.getElementById('configExport');
+const deliveryResult = document.getElementById('deliveryResult');
+
+// 設定エクスポートJSON生成
+function generateExportJSON() {
+  const off_days = [];
+  const half_days = [];
+  const trip_days = [];
+  for (const [k, v] of Object.entries(state.calStatus)) {
+    if (v === 'off') off_days.push(k);
+    else if (v === 'half') half_days.push(k);
+    else if (v === 'trip') trip_days.push(k);
+  }
+
+  const config = {
+    goals: state.goals.map(g => ({
+      icon: g.icon,
+      name: g.name,
+      target: g.target,
+      done: g.done,
+    })),
+    off_days: off_days.sort(),
+    half_days: half_days.sort(),
+    trip_days: trip_days.sort(),
+  };
+
+  configExport.value = JSON.stringify(config, null, 2);
+}
+
+function showResult(message, type) {
+  deliveryResult.textContent = message;
+  deliveryResult.className = 'config-result show ' + type;
+}
+
+function hideResult() {
+  deliveryResult.classList.remove('show');
+}
+
+// JSONをクリップボードにコピー
+copyConfigBtn.addEventListener('click', async () => {
+  hideResult();
+  generateExportJSON();
+  try {
+    await navigator.clipboard.writeText(configExport.value);
+    showResult('✓ JSONをクリップボードにコピーしました', 'success');
+  } catch (e) {
+    configExport.select();
+    showResult('⚠ 自動コピー失敗。手動で Cmd/Ctrl+C を押してコピーしてください', 'error');
+  }
+});
+
+// 最新の進捗で再生成
+updateExportBtn.addEventListener('click', () => {
+  generateExportJSON();
+  showResult('✓ 最新の進捗で再生成しました', 'success');
+});
+
+// 初期表示
+generateExportJSON();
+
+// ===================================================================
+// プロフィール（呼び名 + リセット機能）
+// ===================================================================
+const playerNameInput = document.getElementById('playerNameInput');
+const playerLevelDisplay = document.getElementById('playerLevelDisplay');
+const resetDataBtn = document.getElementById('resetDataBtn');
+
+function loadProfile() {
+  playerNameInput.value = state.player || 'トルネコ';
+  playerLevelDisplay.value = `Lv.${state.level} 越境貿易商`;
+}
+
+playerNameInput.addEventListener('input', () => {
+  const newName = playerNameInput.value.trim() || 'トルネコ';
+  state.player = newName;
+  saveState();
+  // ヘッダーのプレイヤー名も即座に更新
+  const headerName = document.querySelector('.hero-header .player-name');
+  if (headerName) headerName.textContent = newName;
+});
+
+resetDataBtn.addEventListener('click', () => {
+  if (confirm('本当に全データをリセットしますか？\n\n全ての進捗、目標、カレンダー、日報記録が消えます。\n（架空商品やバッジも初期状態に戻ります）')) {
+    if (confirm('本当の本当に？\n\nこの操作は取り消せません。')) {
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+  }
+});
+
+loadProfile();
 </script>
 </body>
 </html>
