@@ -787,6 +787,56 @@
     font-style: italic;
   }
 
+  /* === 過去年入力 === */
+  .past-year-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--ink-faint);
+  }
+  .past-year-row:last-child {
+    border-bottom: none;
+  }
+  .past-year-row .past-year-input {
+    flex: 0 0 90px;
+    border: 1px solid var(--ink);
+    background: var(--parchment);
+    padding: 5px 8px;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 12px;
+  }
+  .past-year-row .past-year-amount {
+    flex: 1;
+    border: 1px solid var(--ink);
+    background: var(--parchment);
+    padding: 5px 8px;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 12px;
+    min-width: 100px;
+  }
+  .past-year-row .past-year-info {
+    flex: 0 0 auto;
+    font-size: 10px;
+    color: var(--ink-faint);
+    font-style: italic;
+    padding: 0 4px;
+  }
+  .past-year-row .past-year-delete {
+    background: transparent;
+    border: 1px solid var(--ink-faint);
+    color: var(--ink-soft);
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .past-year-row .past-year-delete:hover {
+    background: var(--crimson);
+    color: var(--parchment);
+    border-color: var(--crimson);
+  }
+
   /* === 殿堂 === */
   .hall-row {
     display: flex;
@@ -1956,6 +2006,74 @@
   <!-- ⑤ 設定 -->
   <!-- ============================== -->
   <section class="page" id="page-config">
+
+    <!-- 初期設定（過去実績の引き継ぎ） -->
+    <div class="card">
+      <div class="card-title">
+        <span>INITIAL SETUP</span>
+        <span class="ja">初期設定・過去実績の引き継ぎ</span>
+      </div>
+
+      <div class="config-help">
+        💎 これまでにShopeeで稼いだ実績がある方は入力すると、
+        生涯累計と商人歴に反映されます。<br>
+        スキップしても問題ありません（全部0スタート）。後から変更可能。
+      </div>
+
+      <!-- 開始時期 -->
+      <div class="config-section">
+        <div class="config-section-title">
+          <span>⏰</span>
+          <span>商人開始時期</span>
+        </div>
+        <div class="config-row">
+          <select class="config-input" id="setupStartYear" style="flex:0 0 120px;"></select>
+          <select class="config-input" id="setupStartMonth" style="flex:0 0 100px;"></select>
+          <span class="config-mini-label">商人歴の計算に使われます</span>
+        </div>
+      </div>
+
+      <hr class="config-divider">
+
+      <!-- これまでの累計 -->
+      <div class="config-section">
+        <div class="config-section-title">
+          <span>💰</span>
+          <span>これまでの累計手残り利益</span>
+        </div>
+        <div class="config-row">
+          <input type="number" class="config-input" id="setupPastLifetime" placeholder="例: 2500000" min="0" style="flex:1;">
+          <span class="config-mini-label">円・厳密じゃなくてOK</span>
+        </div>
+      </div>
+
+      <hr class="config-divider">
+
+      <!-- 過去年の実績 -->
+      <div class="config-section">
+        <div class="config-section-title">
+          <span>📜</span>
+          <span>過去年の実績（任意）</span>
+        </div>
+        <div class="config-help" style="margin-top: 4px;">
+          年ごとの最終ランクを「殿堂」に並べたい方はこちら。<br>
+          上の「累計」と二重カウントしないため、こちらに入れた金額は累計に**追加**で加算されません。
+        </div>
+
+        <div id="setupYearlyArea"></div>
+
+        <div class="config-action-row" style="margin-top: 8px;">
+          <button class="config-test-btn" id="setupAddYearBtn">+ 過去年を追加</button>
+        </div>
+      </div>
+
+      <hr class="config-divider">
+
+      <div class="config-action-row">
+        <button class="config-save-btn" id="setupSaveBtn">⚔ 初期設定を保存</button>
+      </div>
+      <div class="config-result" id="setupResult"></div>
+    </div>
 
     <div class="card">
       <div class="card-title">
@@ -3610,6 +3728,182 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ===================================================================
+// 初期設定（過去実績の引き継ぎ）
+// ===================================================================
+let setupPastYearsBuffer = []; // 編集中の過去年データ
+
+function renderInitialSetup() {
+  // 開始時期セレクト初期化
+  const yearSel = document.getElementById('setupStartYear');
+  const monthSel = document.getElementById('setupStartMonth');
+  if (!yearSel || !monthSel) return;
+
+  if (yearSel.options.length === 0) {
+    // 空欄option
+    const empty = document.createElement('option');
+    empty.value = '';
+    empty.textContent = '— 未設定 —';
+    yearSel.appendChild(empty);
+    const currentY = getCurrentYear();
+    for (let y = currentY; y >= currentY - 30; y--) {
+      const opt = document.createElement('option');
+      opt.value = y;
+      opt.textContent = `${y}年`;
+      yearSel.appendChild(opt);
+    }
+  }
+  if (monthSel.options.length === 0) {
+    for (let m = 1; m <= 12; m++) {
+      const opt = document.createElement('option');
+      opt.value = String(m).padStart(2, '0');
+      opt.textContent = `${m}月`;
+      monthSel.appendChild(opt);
+    }
+  }
+
+  // 既存の値を反映
+  if (state.earnings.startedAt) {
+    const [y, m] = state.earnings.startedAt.split('-');
+    yearSel.value = y;
+    monthSel.value = m;
+  }
+
+  const pastInput = document.getElementById('setupPastLifetime');
+  if (pastInput) {
+    pastInput.value = state.earnings.pastLifetime || '';
+  }
+
+  // 過去年バッファを既存データから初期化
+  setupPastYearsBuffer = [];
+  const history = state.earnings.yearlyHistory || {};
+  for (const [y, v] of Object.entries(history)) {
+    setupPastYearsBuffer.push({ year: y, amount: v.amount });
+  }
+  setupPastYearsBuffer.sort((a, b) => Number(b.year) - Number(a.year));
+
+  renderPastYears();
+}
+
+function renderPastYears() {
+  const area = document.getElementById('setupYearlyArea');
+  if (!area) return;
+
+  if (setupPastYearsBuffer.length === 0) {
+    area.innerHTML = '<div class="earnings-empty">過去年の実績はまだ追加されていません</div>';
+    return;
+  }
+
+  let html = '';
+  setupPastYearsBuffer.forEach((item, index) => {
+    const lvInfo = state.scale && SCALE_PRESETS[state.scale]
+      ? calcLvForAmount(item.amount, state.scale)
+      : null;
+    html += `
+      <div class="past-year-row">
+        <input type="number" class="past-year-input" placeholder="年"
+               value="${item.year}" min="2000" max="2099"
+               data-index="${index}" data-field="year">
+        <input type="number" class="past-year-amount" placeholder="年間手残り（円）"
+               value="${item.amount || ''}" min="0"
+               data-index="${index}" data-field="amount">
+        <span class="past-year-info">${lvInfo ? `Lv.${lvInfo.lv} ${formatRankName(lvInfo.name)}` : ''}</span>
+        <button class="past-year-delete" data-index="${index}">×</button>
+      </div>
+    `;
+  });
+  area.innerHTML = html;
+
+  // イベントバインド
+  area.querySelectorAll('input').forEach(input => {
+    input.addEventListener('input', (e) => {
+      const index = parseInt(e.target.dataset.index);
+      const field = e.target.dataset.field;
+      if (field === 'year') {
+        setupPastYearsBuffer[index].year = e.target.value;
+      } else {
+        setupPastYearsBuffer[index].amount = parseInt(e.target.value) || 0;
+      }
+      // 表示更新（Lv表示）
+      renderPastYears();
+    });
+  });
+  area.querySelectorAll('.past-year-delete').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const index = parseInt(btn.dataset.index);
+      setupPastYearsBuffer.splice(index, 1);
+      renderPastYears();
+    });
+  });
+}
+
+function calcLvForAmount(amount, scale) {
+  const preset = SCALE_PRESETS[scale];
+  if (!preset) return null;
+  let current = preset.thresholds[0];
+  for (const t of preset.thresholds) {
+    if (amount >= t.amount) current = t;
+  }
+  return current;
+}
+
+function saveInitialSetup() {
+  // 開始時期
+  const y = document.getElementById('setupStartYear').value;
+  const m = document.getElementById('setupStartMonth').value;
+  if (y && m) {
+    state.earnings.startedAt = `${y}-${m}`;
+  } else {
+    state.earnings.startedAt = null;
+  }
+
+  // 累計
+  const past = parseInt(document.getElementById('setupPastLifetime').value);
+  state.earnings.pastLifetime = isNaN(past) ? 0 : Math.max(0, past);
+
+  // 過去年
+  const newHistory = {};
+  for (const item of setupPastYearsBuffer) {
+    if (!item.year || !item.amount) continue;
+    const yKey = String(item.year);
+    const lvInfo = state.scale && SCALE_PRESETS[state.scale]
+      ? calcLvForAmount(item.amount, state.scale)
+      : null;
+    newHistory[yKey] = {
+      amount: item.amount,
+      lv: lvInfo ? lvInfo.lv : 0,
+      title: lvInfo ? lvInfo.name : '記録のみ',
+    };
+  }
+  state.earnings.yearlyHistory = newHistory;
+
+  saveState();
+
+  // 結果表示
+  const result = document.getElementById('setupResult');
+  result.textContent = '✓ 初期設定を保存しました';
+  result.className = 'config-result show success';
+  setTimeout(() => {
+    result.classList.remove('show');
+  }, 3000);
+
+  // 関連UIを再描画
+  renderRankCard();
+  renderHallOfFame();
+}
+
+// 過去年を追加
+function addPastYearRow() {
+  setupPastYearsBuffer.push({ year: getCurrentYear() - 1, amount: 0 });
+  renderPastYears();
+}
+
+// 初期設定ボタンの直接バインド（DOMContentLoaded対策）
+const setupSaveBtn = document.getElementById('setupSaveBtn');
+if (setupSaveBtn) setupSaveBtn.addEventListener('click', saveInitialSetup);
+const setupAddBtn = document.getElementById('setupAddYearBtn');
+if (setupAddBtn) setupAddBtn.addEventListener('click', addPastYearRow);
+
+// ===================================================================
 // 挨拶のヘッダー（時間帯）
 // ===================================================================
 function updateHeroMeta() {
@@ -3640,6 +3934,7 @@ renderBadges();
 renderRankCard();
 renderEarningsInput();
 renderHallOfFame();
+renderInitialSetup();
 updateHeroMeta();
 updateStreakDisplay();
 autoOpenScaleModalIfNeeded();
