@@ -2836,7 +2836,7 @@ function renderCalendar() {
 
   // 日付セル
   const today = new Date();
-  const todayKey = '2026-04-25';
+  const todayKey = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
 
   for (let d = 1; d <= lastDate; d++) {
     const key = `${calYear}-${String(calMonth).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
