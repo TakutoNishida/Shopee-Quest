@@ -43,9 +43,11 @@
   html, body {
     background: var(--parchment);
     color: var(--ink);
-    font-family: 'Noto Serif JP', serif;
+    font-family: 'DotGothic16', monospace;
     min-height: 100vh;
     overflow-x: hidden;
+    image-rendering: pixelated;
+    letter-spacing: 0.04em;
   }
 
   body::before {
@@ -99,17 +101,21 @@
   .tab {
     background: transparent;
     color: var(--parchment);
-    border: none;
-    padding: 5px 10px;
-    font-family: 'Noto Serif JP', serif;
-    font-size: 11px;
+    border: 2px solid transparent;
+    padding: 5px 11px;
+    font-family: 'DotGothic16', monospace;
+    font-size: 13px;
     font-weight: 700;
     cursor: pointer;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     transition: all 0.15s;
   }
   .tab:hover { background: rgba(184, 137, 63, 0.3); }
-  .tab.active { background: var(--gold); color: var(--ink); }
+  .tab.active {
+    background: var(--gold);
+    color: var(--ink);
+    border-color: var(--gold);
+  }
 
   main {
     position: relative;
@@ -130,10 +136,12 @@
   /* === カード共通 === */
   .card {
     background: var(--parchment-light);
-    border: 1px solid var(--ink);
-    box-shadow: 4px 4px 0 var(--ink);
-    padding: 16px 18px;
-    margin-bottom: 18px;
+    border: 3px solid var(--ink);
+    box-shadow:
+      4px 4px 0 var(--gold-deep),
+      4px 4px 0 1px var(--ink);
+    padding: 18px 18px;
+    margin-bottom: 22px;
     position: relative;
   }
   .card-title {
@@ -142,7 +150,7 @@
     font-weight: 700;
     letter-spacing: 0.2em;
     color: var(--ink);
-    border-bottom: 1px solid var(--ink-faint);
+    border-bottom: 2px dashed var(--ink-faint);
     padding-bottom: 8px;
     margin-bottom: 14px;
     display: flex;
@@ -150,16 +158,26 @@
     gap: 8px;
   }
   .card-title .ja {
-    font-family: 'Noto Serif JP', serif;
-    font-size: 14px;
-    font-weight: 900;
+    font-family: 'DotGothic16', monospace;
+    font-size: 15px;
+    font-weight: 700;
     letter-spacing: 0.1em;
+  }
+  .card-title .ja::before {
+    content: '【';
+    color: var(--ink-faint);
+    margin-right: 2px;
+  }
+  .card-title .ja::after {
+    content: '】';
+    color: var(--ink-faint);
+    margin-left: 2px;
   }
   .card-title .accent {
     margin-left: auto;
     font-family: 'DotGothic16', monospace;
-    font-size: 10px;
-    color: var(--ink-soft);
+    font-size: 11px;
+    color: var(--gold-deep);
     letter-spacing: 0.15em;
   }
 
@@ -189,23 +207,29 @@
   }
   .hero-content { position: relative; z-index: 2; }
   .hero-header .greeting {
-    font-size: 11px;
+    font-family: 'DotGothic16', monospace;
+    font-size: 12px;
     color: var(--gold);
     letter-spacing: 0.3em;
     margin-bottom: 4px;
   }
   .hero-header .player-name {
-    font-family: 'Cinzel', serif;
-    font-size: 22px;
+    font-family: 'DotGothic16', monospace;
+    font-size: 24px;
     font-weight: 700;
     margin-bottom: 4px;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
   }
   .hero-header .meta {
-    font-size: 11px;
+    font-family: 'DotGothic16', monospace;
+    font-size: 12px;
     color: var(--parchment-dark);
-    letter-spacing: 0.1em;
-    line-height: 1.6;
+    letter-spacing: 0.05em;
+    line-height: 1.7;
+  }
+  .hero-header .meta strong {
+    color: var(--gold);
+    font-weight: normal;
   }
   .level-shield {
     width: 64px;
@@ -271,9 +295,14 @@
   }
   .today-task .task-info { flex: 1; min-width: 0; }
   .today-task .task-name {
-    font-size: 14px;
+    font-family: 'DotGothic16', monospace;
+    font-size: 15px;
     font-weight: 700;
     letter-spacing: 0.05em;
+  }
+  .today-task .task-name::before {
+    content: '▼ ';
+    color: var(--gold-deep);
   }
   .today-task .task-amount {
     font-size: 11px;
@@ -352,21 +381,42 @@
     width: 100%;
     height: 14px;
     background: var(--parchment-dark);
-    border: 1px solid var(--ink);
+    border: 2px solid var(--ink);
     overflow: hidden;
     position: relative;
   }
   .progress-bar-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--gold) 0%, var(--rust) 100%);
-    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--gold);
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--gold-deep) 0px,
+      var(--gold-deep) 4px,
+      var(--gold) 4px,
+      var(--gold) 8px
+    );
+    transition: width 0.6s steps(20, end);
     position: relative;
   }
   .progress-bar-fill.complete {
-    background: linear-gradient(90deg, var(--emerald) 0%, #4d7a5a 100%);
+    background: var(--emerald);
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--emerald) 0px,
+      var(--emerald) 4px,
+      #4d7a5a 4px,
+      #4d7a5a 8px
+    );
   }
   .progress-bar-fill.behind {
-    background: linear-gradient(90deg, var(--crimson) 0%, var(--rust) 100%);
+    background: var(--crimson);
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--crimson) 0px,
+      var(--crimson) 4px,
+      var(--rust) 4px,
+      var(--rust) 8px
+    );
   }
   .progress-bar-marker {
     position: absolute;
@@ -426,22 +476,27 @@
     50% { transform: scale(1.05) rotate(1deg); }
   }
   .streak-num {
-    font-family: 'Cinzel', serif;
-    font-size: 48px;
-    font-weight: 900;
+    font-family: 'DotGothic16', monospace;
+    font-size: 56px;
+    font-weight: 700;
     color: var(--gold);
     line-height: 1;
     margin-bottom: 4px;
-    text-shadow: 0 0 12px rgba(184, 137, 63, 0.4);
+    letter-spacing: 0.05em;
+    text-shadow:
+      3px 3px 0 var(--ink),
+      6px 6px 0 rgba(184, 137, 63, 0.3);
     position: relative;
     z-index: 2;
   }
   .streak-label {
-    font-size: 11px;
+    font-family: 'DotGothic16', monospace;
+    font-size: 12px;
     color: var(--parchment-dark);
     letter-spacing: 0.4em;
     position: relative;
     z-index: 2;
+    margin-top: 8px;
   }
   .streak-action {
     margin-top: 16px;
@@ -465,7 +520,7 @@
     color: var(--ink);
     border: 1px solid var(--gold);
     padding: 6px 10px;
-    font-family: 'Noto Serif JP', serif;
+    font-family: 'DotGothic16', monospace;
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
@@ -479,7 +534,7 @@
     color: var(--ink);
     border: 1px solid var(--parchment);
     padding: 12px 28px;
-    font-family: 'Noto Serif JP', serif;
+    font-family: 'DotGothic16', monospace;
     font-size: 14px;
     font-weight: 900;
     letter-spacing: 0.2em;
@@ -695,7 +750,7 @@
     border: 1px solid var(--ink-faint);
     color: var(--ink-soft);
     padding: 4px 10px;
-    font-family: 'Noto Serif JP', serif;
+    font-family: 'DotGothic16', monospace;
     font-size: 10px;
     cursor: pointer;
     letter-spacing: 0.05em;
@@ -768,7 +823,7 @@
     border: 1px solid var(--ink);
     background: var(--parchment);
     padding: 7px 8px;
-    font-family: 'Noto Serif JP', serif;
+    font-family: 'DotGothic16', monospace;
     font-size: 12px;
     color: var(--ink);
   }
@@ -781,7 +836,7 @@
     color: var(--parchment);
     border: 1px solid var(--ink);
     padding: 7px 14px;
-    font-family: 'Noto Serif JP', serif;
+    font-family: 'DotGothic16', monospace;
     font-size: 12px;
     font-weight: 700;
     cursor: pointer;
@@ -850,7 +905,7 @@
     border: 1px solid var(--ink);
     background: var(--parchment);
     padding: 5px 8px;
-    font-family: 'Noto Serif JP', serif;
+    font-family: 'DotGothic16', monospace;
     font-size: 12px;
   }
   .past-year-row .past-year-amount {
@@ -858,7 +913,7 @@
     border: 1px solid var(--ink);
     background: var(--parchment);
     padding: 5px 8px;
-    font-family: 'Noto Serif JP', serif;
+    font-family: 'DotGothic16', monospace;
     font-size: 12px;
     min-width: 100px;
   }
@@ -1000,7 +1055,7 @@
     background: var(--parchment-dark);
     border: 1px solid var(--ink);
     padding: 8px;
-    font-family: 'Noto Serif JP', serif;
+    font-family: 'DotGothic16', monospace;
     font-size: 12px;
     cursor: pointer;
     letter-spacing: 0.1em;
@@ -1079,8 +1134,8 @@
     border: none;
     background: transparent;
     border-bottom: 1px solid var(--ink-faint);
-    font-family: 'Noto Serif JP', serif;
-    font-size: 14px;
+    font-family: 'DotGothic16', monospace;
+    font-size: 15px;
     color: var(--ink);
     padding: 4px 0;
     width: 100%;
@@ -1124,7 +1179,7 @@
     background: transparent;
     border: 1px dashed var(--ink-faint);
     color: var(--ink-soft);
-    font-family: 'Noto Serif JP', serif;
+    font-family: 'DotGothic16', monospace;
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
@@ -1317,7 +1372,7 @@
     margin-bottom: 8px;
   }
   .reward-title {
-    font-family: 'Noto Serif JP', serif;
+    font-family: 'DotGothic16', monospace;
     font-size: 20px;
     font-weight: 900;
     margin-bottom: 18px;
@@ -1336,7 +1391,7 @@
     100% { transform: scale(1); }
   }
   .reward-name {
-    font-family: 'Noto Serif JP', serif;
+    font-family: 'DotGothic16', monospace;
     font-size: 18px;
     font-weight: 900;
     margin-bottom: 10px;
@@ -1353,7 +1408,7 @@
     color: var(--parchment);
     border: 1px solid var(--gold);
     padding: 10px 32px;
-    font-family: 'Noto Serif JP', serif;
+    font-family: 'DotGothic16', monospace;
     font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.2em;
@@ -1427,7 +1482,7 @@
     border: 1px solid var(--ink);
     background: var(--parchment);
     padding: 7px 10px;
-    font-family: 'Noto Serif JP', serif;
+    font-family: 'DotGothic16', monospace;
     font-size: 13px;
     flex: 1;
     min-width: 100px;
@@ -1453,7 +1508,7 @@
     background: var(--parchment-dark);
     border: 1px solid var(--ink);
     padding: 6px 12px;
-    font-family: 'Noto Serif JP', serif;
+    font-family: 'DotGothic16', monospace;
     font-size: 11px;
     font-weight: 700;
     cursor: pointer;
@@ -1515,7 +1570,7 @@
     flex: 1;
     min-width: 140px;
     padding: 10px 14px;
-    font-family: 'Noto Serif JP', serif;
+    font-family: 'DotGothic16', monospace;
     font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.1em;
@@ -1593,41 +1648,61 @@
 
   /* === 励ましメッセージ === */
   .pep-talk {
-    background: linear-gradient(135deg, var(--gold) 0%, var(--rust) 100%);
+    background: var(--parchment-dark);
     color: var(--ink);
-    padding: 14px 16px;
-    border: 1px solid var(--ink);
-    box-shadow: 3px 3px 0 var(--ink);
-    margin-bottom: 18px;
+    padding: 16px 18px;
+    border: 3px solid var(--ink);
+    box-shadow:
+      3px 3px 0 var(--gold-deep),
+      3px 3px 0 1px var(--ink);
+    margin-bottom: 22px;
     position: relative;
   }
   .pep-talk::before {
     content: '〝';
     position: absolute;
-    top: -8px;
-    left: 8px;
+    top: -10px;
+    left: 10px;
     background: var(--ink);
     color: var(--gold);
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 900;
+    border: 2px solid var(--ink);
+  }
+  .pep-talk::after {
+    content: '▼';
+    position: absolute;
+    bottom: -8px;
+    right: 14px;
+    color: var(--gold-deep);
+    font-size: 14px;
+    animation: pep-blink 1.2s steps(2) infinite;
+    background: var(--parchment-dark);
+    padding: 0 4px;
+  }
+  @keyframes pep-blink {
+    50% { opacity: 0.3; }
   }
   .pep-talk-text {
-    font-size: 13px;
+    font-family: 'DotGothic16', monospace;
+    font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.05em;
-    line-height: 1.6;
+    line-height: 1.8;
+    color: var(--ink);
   }
   .pep-talk-author {
-    margin-top: 6px;
-    font-size: 10px;
-    color: var(--ink-soft);
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--ink-faint);
     text-align: right;
     font-style: italic;
+    font-family: 'DotGothic16', monospace;
   }
 
   /* === タブ別の特殊配置 === */
@@ -1772,7 +1847,7 @@
   .badge-toast-name {
     font-size: 14px;
     font-weight: 700;
-    font-family: 'Noto Serif JP', serif;
+    font-family: 'DotGothic16', monospace;
   }
   .install-banner .ib-icon {
     font-size: 28px;
@@ -1795,7 +1870,7 @@
     color: var(--ink);
     border: 1px solid var(--gold);
     padding: 8px 14px;
-    font-family: 'Noto Serif JP', serif;
+    font-family: 'DotGothic16', monospace;
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.1em;
