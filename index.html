@@ -1296,6 +1296,48 @@
     from { transform: translateY(100%); }
     to { transform: translateY(0); }
   }
+
+  /* === バッジ獲得トースト === */
+  .badge-toast {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120%);
+    background: var(--ink);
+    color: var(--parchment);
+    border: 2px solid var(--gold);
+    padding: 14px 20px;
+    z-index: 250;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 4px 4px 0 var(--gold-deep);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    max-width: calc(100vw - 32px);
+  }
+  .badge-toast.show {
+    transform: translateX(-50%) translateY(0);
+  }
+  .badge-toast-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+  }
+  .badge-toast-text {
+    line-height: 1.3;
+  }
+  .badge-toast-title {
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 0.3em;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .badge-toast-name {
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Noto Serif JP', serif;
+  }
   .install-banner .ib-icon {
     font-size: 28px;
     flex-shrink: 0;
@@ -1447,7 +1489,7 @@
       </div>
       <div style="font-size: 13px; line-height: 1.9; color: var(--ink-soft);">
         <strong style="color: var(--ink);">月間目標 ÷ 残稼働日数 = 1日の推奨</strong><br>
-        休日・出張・半日設定された日は自動で除外されます。<br>
+        休日・外出・半日設定された日は自動で除外されます。<br>
         遅れていれば翌日に上乗せ、進んでいれば翌日は軽く調整されます。
       </div>
     </div>
@@ -1476,13 +1518,13 @@
           <span class="cal-legend-swatch swatch-half"></span>半日
         </div>
         <div class="cal-legend-item">
-          <span class="cal-legend-swatch swatch-trip"></span>出張
+          <span class="cal-legend-swatch swatch-trip"></span>外出
         </div>
       </div>
 
       <div class="cal-info">
-        日付をタップして種別を切替: <strong>通常 → 休日 → 半日 → 出張 → 通常</strong> の順に変わります。<br>
-        休日・出張は<strong>配信が自動停止</strong>、半日は<strong>目標が半分</strong>になります。
+        日付をタップして種別を切替: <strong>通常 → 休日 → 半日 → 外出 → 通常</strong> の順に変わります。<br>
+        休日・外出は<strong>配信が自動停止</strong>、半日は<strong>目標が半分</strong>になります。
       </div>
     </div>
 
@@ -1505,7 +1547,7 @@
         <div class="stat-tile">
           <div class="stat-label">OFF</div>
           <div class="stat-value" id="statOff">7</div>
-          <div class="stat-unit">休日・出張</div>
+          <div class="stat-unit">休日・外出</div>
         </div>
       </div>
     </div>
@@ -1696,22 +1738,40 @@ const defaultState = {
     '2026-04-28': 'half',
   },
   badges: [
-    { id: 'first',     icon: '🌱', name: '初月達成',     unlocked: true,  isNew: false },
-    { id: 'streak3',   icon: '🌿', name: '三日坊主突破', unlocked: true,  isNew: false },
-    { id: 'streak7',   icon: '🔥', name: '継続の人 7日', unlocked: true,  isNew: false },
-    { id: 'streak14',  icon: '⚡', name: '継続の人 14日',unlocked: true,  isNew: false },
-    { id: 'streak30',  icon: '💎', name: '継続の人 30日',unlocked: false, isNew: false },
-    { id: 'early',     icon: '🌅', name: '早起き王',     unlocked: true,  isNew: true  },
-    { id: 'night',     icon: '🦉', name: '夜の戦士',     unlocked: true,  isNew: false },
-    { id: 'perfect',   icon: '💯', name: '完全制覇',     unlocked: false, isNew: false },
-    { id: 'over',      icon: '🚀', name: '超過達成',     unlocked: false, isNew: false },
-    { id: 'comeback',  icon: '📈', name: '挽回王',       unlocked: true,  isNew: false },
-    { id: 'sniper',    icon: '🎯', name: '狙撃手',       unlocked: false, isNew: false },
-    { id: 'rest',      icon: '🏝', name: '休む勇気',     unlocked: true,  isNew: false },
-    { id: 'phoenix',   icon: '🪶', name: '不死鳥',       unlocked: false, isNew: false },
-    { id: 'long',      icon: '📝', name: '長文家',       unlocked: false, isNew: false },
-    { id: 'fast',      icon: '⚡', name: '速攻提出',     unlocked: true,  isNew: false },
-    { id: 'silent',    icon: '🤫', name: '無口な英雄',   unlocked: false, isNew: false },
+    // ストリーク系（6個・月次リセット）
+    { id: 'streak1',   icon: '👣', name: '1日目',        category: 'streak', monthly: true,  desc: '月内1日提出' },
+    { id: 'streak3',   icon: '🌿', name: '3日目',        category: 'streak', monthly: true,  desc: '月内3日提出' },
+    { id: 'streak7',   icon: '🔥', name: '7日目',        category: 'streak', monthly: true,  desc: '月内7日提出' },
+    { id: 'streak14',  icon: '⚡', name: '14日目',       category: 'streak', monthly: true,  desc: '月内14日提出' },
+    { id: 'streak20',  icon: '🌟', name: '20日目',       category: 'streak', monthly: true,  desc: '月内20日提出' },
+    { id: 'fullattend',icon: '💎', name: '完全皆勤',     category: 'streak', monthly: true,  desc: '月の全日提出' },
+
+    // 段階的達成（4個・月次）
+    { id: 'bronze',    icon: '🥉', name: '25%達成',      category: 'progress', monthly: true, desc: '月内全目標25%' },
+    { id: 'silver',    icon: '🥈', name: '50%達成',      category: 'progress', monthly: true, desc: '月内全目標50%' },
+    { id: 'gold',      icon: '🥇', name: '75%達成',      category: 'progress', monthly: true, desc: '月内全目標75%' },
+    { id: 'perfect',   icon: '💯', name: '完全制覇',     category: 'progress', monthly: true, desc: '月内全目標100%' },
+
+    // スピード達成（3個・月次）
+    { id: 'turtle',    icon: '🐢', name: '月内達成',     category: 'speed',  monthly: true, desc: '月末までに100%達成' },
+    { id: 'speed',     icon: '⚡', name: 'スピードクリア', category: 'speed', monthly: true, desc: '20日までに100%達成' },
+    { id: 'flash',     icon: '💨', name: '神速達成',     category: 'speed',  monthly: true, desc: '15日までに100%達成' },
+
+    // 連続達成（3個・永続）
+    { id: 'stable',    icon: '📈', name: '安定の覇者',   category: 'combo',  monthly: false, desc: '2ヶ月連続で完全制覇' },
+    { id: 'mountain',  icon: '🏔', name: '動かざる山',   category: 'combo',  monthly: false, desc: '3ヶ月連続で完全制覇' },
+    { id: 'crown',     icon: '👑', name: '不動の王',     category: 'combo',  monthly: false, desc: '6ヶ月連続で完全制覇' },
+
+    // 特別達成（2個）
+    { id: 'first',     icon: '🌱', name: '初月達成',     category: 'special', monthly: false, desc: '初めて全目標100%達成' },
+    { id: 'over',      icon: '🚀', name: '超過達成',     category: 'special', monthly: true,  desc: '月内全目標120%達成' },
+
+    // 行動系（2個・永続）
+    { id: 'early',     icon: '🌅', name: '早起き王',     category: 'action', monthly: false, desc: '04〜06時にタスク+ボタン' },
+    { id: 'night',     icon: '🦉', name: '夜の戦士',     category: 'action', monthly: false, desc: '23〜02時にタスク+ボタン' },
+
+    // 心の余裕系（1個・永続）
+    { id: 'rest',      icon: '🏝', name: '休む勇気',     category: 'rest',   monthly: false, desc: '月内に休日3日以上設定' },
   ],
   treasury: [
     { id: 'gold',     icon: '🥇', name: '金メッキの自分像', unlocked: true,  isNew: false },
@@ -1732,6 +1792,32 @@ const state = loaded ? { ...defaultState, ...loaded } : { ...defaultState };
 if (!(state.submittedDates instanceof Set)) {
   state.submittedDates = new Set(state.submittedDates || []);
 }
+
+// バッジは定義(defaultState)から最新を持ってきて、ユーザーの取得状態だけマージ
+// 既存の保存データに無い新バッジも追加される設計
+const savedBadgeStates = {};
+if (loaded && loaded.badges) {
+  for (const b of loaded.badges) {
+    savedBadgeStates[b.id] = {
+      unlocked: b.unlocked || false,
+      isNew: b.isNew || false,
+      unlockedAt: b.unlockedAt || null,
+      unlockedMonth: b.unlockedMonth || null,
+      monthlyHistory: b.monthlyHistory || [],
+    };
+  }
+}
+state.badges = defaultState.badges.map(def => {
+  const saved = savedBadgeStates[def.id] || {};
+  return {
+    ...def,
+    unlocked: saved.unlocked || false,
+    isNew: saved.isNew || false,
+    unlockedAt: saved.unlockedAt || null,
+    unlockedMonth: saved.unlockedMonth || null,
+    monthlyHistory: saved.monthlyHistory || [],
+  };
+});
 
 // ===================================================================
 // タブ切替
@@ -1842,6 +1928,7 @@ function renderTodayTasks() {
         state.todayProgress[id] = next;
       }
       saveState();
+      checkAllBadges('task_increment');
       renderTodayTasks();
       renderProgress();
     });
@@ -2063,6 +2150,7 @@ function toggleCalDay(key) {
   else state.calStatus[key] = next;
 
   saveState();
+  checkAllBadges('calendar');
   renderCalendar();
   renderProgress();
   renderTodayTasks();
@@ -2080,6 +2168,251 @@ document.getElementById('calNext').addEventListener('click', () => {
   if (calMonth > 12) { calMonth = 1; calYear++; }
   renderCalendar();
 });
+
+// ===================================================================
+// バッジ自動授与システム
+// ===================================================================
+
+// 現在の月のキー (YYYY-MM)
+function currentMonthKey(date) {
+  const d = date || TODAY;
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+}
+
+// 月内の提出日数を計算
+function countMonthlySubmissions(monthKey) {
+  let count = 0;
+  for (const d of state.submittedDates) {
+    if (d.startsWith(monthKey)) count++;
+  }
+  return count;
+}
+
+// 月の暦日数を取得
+function getDaysInMonth(monthKey) {
+  const [y, m] = monthKey.split('-').map(Number);
+  return new Date(y, m, 0).getDate();
+}
+
+// 月内の最高達成率を計算（全目標の最低達成率を返す = ボトルネック）
+function calcMonthMinProgress() {
+  if (state.goals.length === 0) return 0;
+  let minRatio = Infinity;
+  for (const g of state.goals) {
+    const ratio = g.target > 0 ? g.done / g.target : 0;
+    if (ratio < minRatio) minRatio = ratio;
+  }
+  return minRatio === Infinity ? 0 : minRatio;
+}
+
+// 月内の休日数（off + trip）
+function countMonthlyOffDays(monthKey) {
+  let count = 0;
+  for (const [k, v] of Object.entries(state.calStatus)) {
+    if (k.startsWith(monthKey) && (v === 'off' || v === 'trip')) count++;
+  }
+  return count;
+}
+
+// バッジ取得処理（重複チェック・通知付き）
+function unlockBadge(id, options = {}) {
+  const badge = state.badges.find(b => b.id === id);
+  if (!badge) return false;
+
+  const monthKey = options.monthKey || currentMonthKey();
+
+  if (badge.monthly) {
+    // 月次バッジ：今月まだ取得してない場合のみ
+    if (badge.unlockedMonth === monthKey) return false;
+    badge.unlocked = true;
+    badge.isNew = true;
+    badge.unlockedMonth = monthKey;
+    badge.unlockedAt = new Date().toISOString();
+    if (!badge.monthlyHistory.includes(monthKey)) {
+      badge.monthlyHistory.push(monthKey);
+    }
+  } else {
+    // 永続バッジ：既に取得済みなら何もしない
+    if (badge.unlocked) return false;
+    badge.unlocked = true;
+    badge.isNew = true;
+    badge.unlockedAt = new Date().toISOString();
+  }
+
+  if (!options.silent) {
+    showBadgeToast(badge);
+  }
+  return true;
+}
+
+// 月次バッジのリセット（月またぎ時）
+function resetMonthlyBadgesIfNeeded() {
+  const nowMonth = currentMonthKey();
+  let changed = false;
+  for (const b of state.badges) {
+    if (b.monthly && b.unlockedMonth && b.unlockedMonth !== nowMonth) {
+      b.unlocked = false;
+      b.isNew = false;
+      b.unlockedMonth = null;
+      changed = true;
+    }
+  }
+  return changed;
+}
+
+// 全バッジの判定実行
+function checkAllBadges(trigger) {
+  resetMonthlyBadgesIfNeeded();
+
+  const monthKey = currentMonthKey();
+  const submissionCount = countMonthlySubmissions(monthKey);
+  const daysInMonth = getDaysInMonth(monthKey);
+  const minProgress = calcMonthMinProgress();
+  const offDays = countMonthlyOffDays(monthKey);
+  const today = TODAY.getDate();
+
+  const unlocked = [];
+
+  // ストリーク系（月次）
+  if (submissionCount >= 1)  if (unlockBadge('streak1'))   unlocked.push('streak1');
+  if (submissionCount >= 3)  if (unlockBadge('streak3'))   unlocked.push('streak3');
+  if (submissionCount >= 7)  if (unlockBadge('streak7'))   unlocked.push('streak7');
+  if (submissionCount >= 14) if (unlockBadge('streak14'))  unlocked.push('streak14');
+  if (submissionCount >= 20) if (unlockBadge('streak20'))  unlocked.push('streak20');
+  if (submissionCount >= daysInMonth) if (unlockBadge('fullattend')) unlocked.push('fullattend');
+
+  // 段階的達成（月次）
+  if (minProgress >= 0.25) if (unlockBadge('bronze'))  unlocked.push('bronze');
+  if (minProgress >= 0.50) if (unlockBadge('silver'))  unlocked.push('silver');
+  if (minProgress >= 0.75) if (unlockBadge('gold'))    unlocked.push('gold');
+  if (minProgress >= 1.00) if (unlockBadge('perfect')) unlocked.push('perfect');
+
+  // 超過達成
+  if (minProgress >= 1.20) if (unlockBadge('over')) unlocked.push('over');
+
+  // スピード達成（100%達成日が15日/20日/月末以内）
+  if (minProgress >= 1.00) {
+    if (today <= daysInMonth) if (unlockBadge('turtle')) unlocked.push('turtle');
+    if (today <= 20)          if (unlockBadge('speed'))  unlocked.push('speed');
+    if (today <= 15)          if (unlockBadge('flash'))  unlocked.push('flash');
+  }
+
+  // 連続達成（過去の月含むperfectバッジの履歴を見る）
+  const perfectBadge = state.badges.find(b => b.id === 'perfect');
+  if (perfectBadge && perfectBadge.monthlyHistory.length >= 2) {
+    if (hasConsecutiveMonths(perfectBadge.monthlyHistory, 2)) {
+      if (unlockBadge('stable')) unlocked.push('stable');
+    }
+  }
+  if (perfectBadge && perfectBadge.monthlyHistory.length >= 3) {
+    if (hasConsecutiveMonths(perfectBadge.monthlyHistory, 3)) {
+      if (unlockBadge('mountain')) unlocked.push('mountain');
+    }
+  }
+  if (perfectBadge && perfectBadge.monthlyHistory.length >= 6) {
+    if (hasConsecutiveMonths(perfectBadge.monthlyHistory, 6)) {
+      if (unlockBadge('crown')) unlocked.push('crown');
+    }
+  }
+
+  // 初月達成（perfect初取得時）
+  if (minProgress >= 1.00 && !state.badges.find(b => b.id === 'first').unlocked) {
+    if (unlockBadge('first')) unlocked.push('first');
+  }
+
+  // 行動系（時刻ベース、+ボタン押した時のみ判定）
+  if (trigger === 'task_increment') {
+    const hour = new Date().getHours();
+    if (hour >= 4 && hour < 6) {
+      if (unlockBadge('early')) unlocked.push('early');
+    }
+    if (hour >= 23 || hour < 2) {
+      if (unlockBadge('night')) unlocked.push('night');
+    }
+  }
+
+  // 休む勇気（休日3日以上）
+  if (offDays >= 3) {
+    if (unlockBadge('rest')) unlocked.push('rest');
+  }
+
+  if (unlocked.length > 0) {
+    saveState();
+    renderBadges();
+  }
+
+  return unlocked;
+}
+
+// 月の連続性をチェック（履歴に「直近N連続月」があるか）
+function hasConsecutiveMonths(monthKeys, n) {
+  if (monthKeys.length < n) return false;
+  const sorted = [...monthKeys].sort();
+  // 直近のmonthKeyから遡って連続性確認
+  for (let i = sorted.length - 1; i >= n - 1; i--) {
+    let consecutive = true;
+    for (let j = 0; j < n - 1; j++) {
+      const cur = sorted[i - j];
+      const prev = sorted[i - j - 1];
+      if (!isPreviousMonth(prev, cur)) {
+        consecutive = false;
+        break;
+      }
+    }
+    if (consecutive) return true;
+  }
+  return false;
+}
+
+function isPreviousMonth(prev, cur) {
+  const [py, pm] = prev.split('-').map(Number);
+  const [cy, cm] = cur.split('-').map(Number);
+  if (cy === py && cm === pm + 1) return true;
+  if (cy === py + 1 && pm === 12 && cm === 1) return true;
+  return false;
+}
+
+// バッジ取得トースト通知
+let toastQueue = [];
+let toastShowing = false;
+
+function showBadgeToast(badge) {
+  toastQueue.push(badge);
+  if (!toastShowing) {
+    showNextToast();
+  }
+}
+
+function showNextToast() {
+  if (toastQueue.length === 0) {
+    toastShowing = false;
+    return;
+  }
+  toastShowing = true;
+  const badge = toastQueue.shift();
+
+  let toast = document.getElementById('badgeToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'badgeToast';
+    toast.className = 'badge-toast';
+    document.body.appendChild(toast);
+  }
+
+  toast.innerHTML = `
+    <span class="badge-toast-icon">${badge.icon}</span>
+    <div class="badge-toast-text">
+      <div class="badge-toast-title">紋章獲得</div>
+      <div class="badge-toast-name">「${badge.name}」</div>
+    </div>
+  `;
+  toast.classList.add('show');
+
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(showNextToast, 400);
+  }, 3000);
+}
 
 // ===================================================================
 // バッジ・宝物庫
@@ -2140,15 +2473,34 @@ function renderBadges() {
 
 function getBadgeDesc(id) {
   const map = {
-    first:    '初めての月間目標を達成した者の証。すべてはここから始まる。',
-    streak3:  '3日続いた者だけが知る、習慣の入口の景色。',
-    streak7:  '7日連続で日報を提出した者にのみ与えられる、習慣の証。',
-    streak14: '2週間続いた。もう三日坊主とは呼ばせない。',
-    early:    '朝7時前に最初のタスクを記録した者の称号。早起きは三文の徳。',
-    night:    '22時以降の作業報告が積み重なった者の称号。働き者と言うべきか。',
-    comeback: '月の半ばで遅れ、最後に挽回した者の証。諦めない者の称号。',
-    rest:     '達成済みの月で、堂々と休息日を取れた者の証。休む勇気もまた、力。',
-    fast:     '提出が早い者の証。先手必勝。',
+    // ストリーク系
+    streak1:    '今月、最初の一歩を踏み出した者の証。',
+    streak3:    '3日続いた者だけが知る、習慣の入口の景色。',
+    streak7:    '今月7日も日報を提出した者の証。',
+    streak14:   '2週間提出した者の証。もう三日坊主とは呼ばせない。',
+    streak20:   '今月20日も提出した者の証。継続の達人。',
+    fullattend: '月の全日提出した者の伝説の証。完全皆勤賞。',
+    // 段階的達成
+    bronze:     '今月の全目標を25%達成。良いスタートだ。',
+    silver:     '今月の全目標を50%達成。半分まで来た。',
+    gold:       '今月の全目標を75%達成。あと一息で完全制覇。',
+    perfect:    '今月の全目標を100%達成。月間目標完全制覇。',
+    // スピード達成
+    turtle:     '月末までに全目標を達成。最後にきっちり仕上げる者。',
+    speed:      '月の20日までに全目標達成。鮮やかなスピード。',
+    flash:      '月の15日までに全目標達成。神速の商人。',
+    // 連続達成
+    stable:     '2ヶ月連続で完全制覇。安定の覇者。',
+    mountain:   '3ヶ月連続で完全制覇。動かざる山のごとく。',
+    crown:      '6ヶ月連続で完全制覇。不動の王の証。',
+    // 特別達成
+    first:      '初めての月間目標を達成した者の証。すべてはここから始まる。',
+    over:       '月内全目標を120%超え達成。文字通りの超過達成。',
+    // 行動系
+    early:      '朝の04〜06時にタスクを記録した者の称号。早起きは三文の徳。',
+    night:      '23〜02時の作業記録を残した者の称号。夜の戦士と言うべきか。',
+    // 心の余裕系
+    rest:       '月内に休日を3日以上設定した者の証。休む勇気もまた、力。',
   };
   return map[id] || 'この紋章には、まだ伝説が刻まれていない。';
 }
@@ -2341,7 +2693,6 @@ document.getElementById('streakBtn').addEventListener('click', () => {
   const sel = document.getElementById('streakDateSelect');
   const k = sel.value;
   const wasSubmitted = state.submittedDates.has(k);
-  const prevStreak = calcStreak();
 
   if (wasSubmitted) {
     state.submittedDates.delete(k);
@@ -2351,22 +2702,10 @@ document.getElementById('streakBtn').addEventListener('click', () => {
 
   saveState();
   updateStreakDisplay();
-  const newStreak = calcStreak();
 
-  // 新規バッジ獲得演出（連続日数の節目）
-  if (!wasSubmitted && newStreak > prevStreak) {
-    const milestones = { 7: '🔥 継続の人 7日', 14: '⚡ 継続の人 14日', 30: '💎 継続の人 30日', 60: '👑 継続の人 60日', 100: '🏛 継続の人 100日' };
-    if (milestones[newStreak]) {
-      setTimeout(() => {
-        showReward({
-          banner: '━━ 紋章獲得 ━━',
-          title: '新たな称号',
-          icon: milestones[newStreak].split(' ')[0],
-          name: milestones[newStreak].substring(2),
-          desc: `${newStreak}日連続で日報を提出した者の証。続けることが、最大の才能。`,
-        });
-      }, 400);
-    }
+  // 新バッジ判定（提出後）
+  if (!wasSubmitted) {
+    checkAllBadges('submission');
   }
 });
 
