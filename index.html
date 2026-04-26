@@ -1938,7 +1938,7 @@
     <div class="card streak-card">
       <div class="streak-flame">🔥</div>
       <div class="streak-num" id="streakNum">23</div>
-      <div class="streak-label">連続提出 / DAILY REPORT STREAK</div>
+      <div class="streak-label">日報 連続提出 / DAILY REPORT STREAK</div>
 
       <div class="streak-action">
         <div class="streak-date-row">
@@ -3529,11 +3529,17 @@ function renderStreakHistory() {
   }
 }
 
-function updateStreakDisplay() {
+function updateStreakDisplay(preserveSelection) {
   state.streak = calcStreak();
   document.getElementById('streakNum').textContent = state.streak;
+  // 現在の選択を保持
+  const currentKey = preserveSelection ? document.getElementById('streakDateSelect').value : null;
   populateDateSelect();
+  if (currentKey) {
+    document.getElementById('streakDateSelect').value = currentKey;
+  }
   renderStreakHistory();
+  updateStreakBtnLabel();
 }
 
 // セレクタ変更時：ボタンラベル更新
@@ -3552,7 +3558,7 @@ document.getElementById('streakBtn').addEventListener('click', () => {
   }
 
   saveState();
-  updateStreakDisplay();
+  updateStreakDisplay(true); // 選択日を保持
 
   // 新バッジ判定（提出後）
   if (!wasSubmitted) {
