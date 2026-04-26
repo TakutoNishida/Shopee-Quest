@@ -2472,12 +2472,12 @@ const defaultState = {
   },
   badges: [
     // ストリーク系（6個・月次リセット）
-    { id: 'streak1',   icon: '👣', name: '1日目',        category: 'streak', monthly: true,  desc: '月内1日提出' },
-    { id: 'streak3',   icon: '🌿', name: '3日目',        category: 'streak', monthly: true,  desc: '月内3日提出' },
-    { id: 'streak7',   icon: '🔥', name: '7日目',        category: 'streak', monthly: true,  desc: '月内7日提出' },
-    { id: 'streak14',  icon: '⚡', name: '14日目',       category: 'streak', monthly: true,  desc: '月内14日提出' },
-    { id: 'streak20',  icon: '🌟', name: '20日目',       category: 'streak', monthly: true,  desc: '月内20日提出' },
-    { id: 'fullattend',icon: '💎', name: '完全皆勤',     category: 'streak', monthly: true,  desc: '月の全日提出' },
+    { id: 'streak1',   icon: '👣', name: '1日目',        category: 'streak', monthly: true,  desc: '月内1日 日報提出' },
+    { id: 'streak3',   icon: '🌿', name: '3日目',        category: 'streak', monthly: true,  desc: '月内3日 日報提出' },
+    { id: 'streak7',   icon: '🔥', name: '7日目',        category: 'streak', monthly: true,  desc: '月内7日 日報提出' },
+    { id: 'streak14',  icon: '⚡', name: '14日目',       category: 'streak', monthly: true,  desc: '月内14日 日報提出' },
+    { id: 'streak20',  icon: '🌟', name: '20日目',       category: 'streak', monthly: true,  desc: '月内20日 日報提出' },
+    { id: 'fullattend',icon: '💎', name: '完全皆勤',     category: 'streak', monthly: true,  desc: '月の全日 日報提出' },
 
     // 段階的達成（4個・月次）
     { id: 'bronze',    icon: '🥉', name: '25%達成',      category: 'progress', monthly: true, desc: '月内全目標25%' },
@@ -3339,12 +3339,12 @@ function renderBadges() {
 function getBadgeDesc(id) {
   const map = {
     // ストリーク系
-    streak1:    '今月、最初の一歩を踏み出した者の証。',
-    streak3:    '3日続いた者だけが知る、習慣の入口の景色。',
-    streak7:    '今月7日も日報を提出した者の証。',
-    streak14:   '2週間提出した者の証。もう三日坊主とは呼ばせない。',
-    streak20:   '今月20日も提出した者の証。継続の達人。',
-    fullattend: '月の全日提出した者の伝説の証。完全皆勤賞。',
+    streak1:    '今月、最初の日報を提出した者の証。最初の一歩を踏み出した。',
+    streak3:    '今月3日も日報を提出した者の証。習慣の入口の景色。',
+    streak7:    '今月7日も日報を提出した者の証。継続の入口。',
+    streak14:   '今月14日も日報を提出した者の証。もう三日坊主とは呼ばせない。',
+    streak20:   '今月20日も日報を提出した者の証。継続の達人。',
+    fullattend: '月の全日、日報を提出した者の伝説の証。完全皆勤賞。',
     // 段階的達成
     bronze:     '今月の全目標を25%達成。良いスタートだ。',
     silver:     '今月の全目標を50%達成。半分まで来た。',
