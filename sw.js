@@ -1,10 +1,9 @@
 // Quest Board Service Worker
 // オフラインでもアプリが起動するようにキャッシュ
+// 注意: index.htmlはネットワーク優先（常に最新を取得）
 
-const CACHE_VERSION = 'quest-board-v1';
+const CACHE_VERSION = 'quest-board-v2';
 const CACHE_FILES = [
-  './',
-  './index.html',
   './manifest.json',
   './icon.svg',
   './icon-192.png',
@@ -17,7 +16,6 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_VERSION).then((cache) => {
       return cache.addAll(CACHE_FILES).catch((err) => {
         console.warn('一部キャッシュ失敗:', err);
-        // 失敗しても続行（一部ファイルが無くても動く）
       });
     })
   );
@@ -36,13 +34,26 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// リクエスト時：キャッシュ優先、無ければネットワーク
+// リクエスト時：HTMLは常にネットワーク優先、それ以外はキャッシュ優先
 self.addEventListener('fetch', (event) => {
-  // GETのみ対象
   if (event.request.method !== 'GET') return;
 
-  // 外部リソース（Google Fontsなど）はネットワーク優先＋キャッシュ
   const url = new URL(event.request.url);
+
+  // HTML系（ナビゲーション）→ ネットワーク優先（常に最新）
+  const isHTML = event.request.mode === 'navigate' ||
+                 url.pathname.endsWith('.html') ||
+                 url.pathname.endsWith('/');
+
+  if (isHTML) {
+    event.respondWith(
+      fetch(event.request)
+        .catch(() => caches.match(event.request) || caches.match('./index.html'))
+    );
+    return;
+  }
+
+  // 外部リソース：ネットワーク優先＋キャッシュ
   if (url.origin !== self.location.origin) {
     event.respondWith(
       fetch(event.request)
@@ -56,19 +67,15 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 同一オリジン：キャッシュ優先
+  // 同一オリジンのアセット：キャッシュ優先
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
       return fetch(event.request).then((res) => {
-        // 取得成功したらキャッシュにも追加
         const clone = res.clone();
         caches.open(CACHE_VERSION).then((cache) => cache.put(event.request, clone));
         return res;
       });
-    }).catch(() => {
-      // 完全オフラインかつキャッシュ無しの場合はindex.htmlを返す
-      return caches.match('./index.html');
-    })
+    }).catch(() => caches.match('./index.html'))
   );
 });
