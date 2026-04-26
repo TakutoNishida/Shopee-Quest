@@ -1918,12 +1918,9 @@
 
     <div class="hero-header">
       <div class="hero-content">
-        <div class="greeting" id="greeting">GOOD MORNING</div>
-        <div class="player-name">トルネコ</div>
-        <div class="meta" id="heroMeta">
-          4月25日(土) ・ 月の残り稼働日 <strong>11日</strong><br>
-          越境貿易 商人ランク <strong>Lv.7</strong>
-        </div>
+        <div class="greeting" id="greeting">&nbsp;</div>
+        <div class="player-name" id="playerName">トルネコ</div>
+        <div class="meta" id="heroMeta">&nbsp;</div>
       </div>
       <div class="level-shield">
         <span class="lv-label">LV</span>
@@ -2611,7 +2608,7 @@ function getRemainingWorkingDays(fromDate) {
 // 今日のタスク描画
 // ===================================================================
 function renderTodayTasks() {
-  const today = new Date(2026, 3, 25);  // デモ用に固定
+  const today = new Date();  // デモ用に固定
   const remaining = getRemainingWorkingDays(today);
   const list = document.getElementById('todayTasksList');
   list.innerHTML = '';
@@ -2681,7 +2678,7 @@ function renderTodayTasks() {
 // 月間進捗描画
 // ===================================================================
 function renderProgress() {
-  const today = new Date(2026, 3, 25);
+  const today = new Date();
   const remaining = getRemainingWorkingDays(today);
   const list = document.getElementById('progressList');
   list.innerHTML = '';
@@ -2838,7 +2835,7 @@ function renderCalendar() {
   }
 
   // 日付セル
-  const today = new Date(2026, 3, 25);
+  const today = new Date();
   const todayKey = '2026-04-25';
 
   for (let d = 1; d <= lastDate; d++) {
@@ -3402,7 +3399,7 @@ document.getElementById('rewardModal').addEventListener('click', (e) => {
 // ===================================================================
 // 日報ストリーク（日付選択＋過去遡及対応）
 // ===================================================================
-const TODAY = new Date(2026, 3, 25);  // デモ固定: 4/25
+const TODAY = new Date();  // デモ固定: 4/25
 const DOW_SHORT = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
 const DOW_JA = ['日','月','火','水','木','金','土'];
 
@@ -4057,9 +4054,84 @@ if (setupAddBtn) setupAddBtn.addEventListener('click', addPastYearRow);
 // ===================================================================
 // 挨拶のヘッダー（時間帯）
 // ===================================================================
+// 時間帯に応じた挨拶（ランダム）
+const GREETING_POOLS = {
+  morning:   [
+    '商人よ、目覚めの時だ',
+    'DAWN. 商いの始まり',
+    '太陽は昇った。お前はどうだ？',
+    'クエスト再開',
+    '今日も一歩、踏み出そう',
+  ],
+  noon: [
+    '商売は順調か',
+    '正午。手は止まっていないか',
+    'MIDDAY. 折り返し地点',
+    '昼餉の時。少し休んでもよい',
+    '今日の調子はどうだ',
+  ],
+  afternoon: [
+    '午後の励み',
+    'もうひと踏ん張り',
+    'AFTERNOON. 集中の時間',
+    '日が傾く前に、もう少し',
+    '日が暮れる前にやり遂げよう',
+  ],
+  evening: [
+    '今日もよく戦った',
+    'EVENING. 帳簿締めの時',
+    '日の終わり。今日の成果を確認しよう',
+    '夕暮れ。あと少しで休める',
+    'お疲れさま、旅人よ',
+  ],
+  night: [
+    'まだ立っているか',
+    '夜の戦士',
+    'LATE NIGHT. 静寂の時',
+    '無理は禁物。明日もある',
+    '夜更かしはほどほどに',
+  ],
+  deepnight: [
+    '夜明け前',
+    'DEEP NIGHT. 静寂の刻',
+    'もうすぐ朝が来る',
+    '眠らぬ商人',
+    'お前の旅、まだ続くか',
+  ],
+};
+
+function pickGreeting() {
+  const h = new Date().getHours();
+  let pool;
+  if (h >= 5 && h < 11)       pool = GREETING_POOLS.morning;
+  else if (h >= 11 && h < 14) pool = GREETING_POOLS.noon;
+  else if (h >= 14 && h < 18) pool = GREETING_POOLS.afternoon;
+  else if (h >= 18 && h < 22) pool = GREETING_POOLS.evening;
+  else if (h >= 22 || h < 3)  pool = GREETING_POOLS.night;
+  else                         pool = GREETING_POOLS.deepnight;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+// 「YYYY-MM-DD」を「M月D日(曜)」に
+const WEEKDAY_LABELS = ['日', '月', '火', '水', '木', '金', '土'];
+function formatTodayLabel(d) {
+  const m = d.getMonth() + 1;
+  const day = d.getDate();
+  const w = WEEKDAY_LABELS[d.getDay()];
+  return `${m}月${day}日(${w})`;
+}
+
 function updateHeroMeta() {
-  const today = new Date(2026, 3, 25);
+  const today = new Date();
   const remaining = getRemainingWorkingDays(today);
+
+  // 挨拶を更新
+  const greetingEl = document.getElementById('greeting');
+  if (greetingEl) greetingEl.textContent = pickGreeting();
+
+  // プレイヤー名を更新
+  const nameEl = document.getElementById('playerName');
+  if (nameEl) nameEl.textContent = state.player || 'トルネコ';
 
   const rank = getCurrentRank();
   let rankLine;
@@ -4070,7 +4142,7 @@ function updateHeroMeta() {
   }
 
   document.getElementById('heroMeta').innerHTML =
-    `4月25日(土) ・ 月の残り稼働日 <strong>${remaining.raw}日</strong><br>` + rankLine;
+    `${formatTodayLabel(today)} ・ 月の残り稼働日 <strong>${remaining.raw}日</strong><br>` + rankLine;
   document.getElementById('progressDays').textContent = `残${remaining.raw}日`;
 }
 
@@ -4090,7 +4162,13 @@ updateHeroMeta();
 updateStreakDisplay();
 autoOpenScaleModalIfNeeded();
 
-document.getElementById('todayDate').textContent = '04.25';
+// 今日の日付を本日タブの右上に
+(function setTodayDate() {
+  const d = new Date();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  document.getElementById('todayDate').textContent = `${m}.${day}`;
+})();
 
 // ===================================================================
 // Service Worker 登録（PWA: オフライン対応）
