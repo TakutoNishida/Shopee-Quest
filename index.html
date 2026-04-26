@@ -1808,22 +1808,22 @@
   /* === バッジ獲得トースト === */
   .badge-toast {
     position: fixed;
-    bottom: 90px;
+    bottom: 24px;
     left: 50%;
-    transform: translateX(-50%) translateY(120%);
+    transform: translateX(-50%) translateY(150%);
     background: var(--ink);
     color: var(--parchment);
     border: 3px solid var(--gold);
-    padding: 14px 20px;
+    padding: 12px 18px;
     z-index: 250;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
     /* ピクセル風の積層シャドウ */
     box-shadow:
       0 0 0 1px var(--ink),
-      6px 6px 0 var(--gold-deep),
-      6px 6px 0 1px var(--ink);
+      4px 4px 0 var(--gold-deep),
+      4px 4px 0 1px var(--ink);
     transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     pointer-events: none;
     max-width: calc(100vw - 32px);
@@ -3262,10 +3262,21 @@ function showNextToast() {
   `;
   toast.classList.add('show');
 
-  setTimeout(() => {
+  // タップで即座に閉じれるように
+  toast.style.pointerEvents = 'auto';
+  toast.style.cursor = 'pointer';
+
+  let dismissed = false;
+  const dismiss = () => {
+    if (dismissed) return;
+    dismissed = true;
     toast.classList.remove('show');
+    toast.style.pointerEvents = 'none';
     setTimeout(showNextToast, 400);
-  }, 3000);
+  };
+
+  toast.onclick = dismiss;
+  setTimeout(dismiss, 2200);
 }
 
 // ===================================================================
