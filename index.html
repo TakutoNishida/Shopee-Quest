@@ -554,8 +554,11 @@
   .streak-btn.done {
     background: var(--emerald);
     color: var(--parchment);
-    cursor: default;
-    pointer-events: none;
+    cursor: pointer;
+  }
+  .streak-btn.done:hover {
+    background: #1a4a2a;
+    color: var(--parchment);
   }
   .streak-meta {
     margin-top: 10px;
@@ -3551,29 +3554,14 @@ document.getElementById('streakBtn').addEventListener('click', () => {
   const k = sel.value;
   const wasSubmitted = state.submittedDates.has(k);
 
-  console.log('[DEBUG] ボタンクリック');
-  console.log('[DEBUG] 対象日:', k);
-  console.log('[DEBUG] 押す前 提出済み?:', wasSubmitted);
-  console.log('[DEBUG] 押す前 連続日数:', calcStreak());
-  console.log('[DEBUG] 押す前 submittedDates:', Array.from(state.submittedDates).sort());
-
   if (wasSubmitted) {
     state.submittedDates.delete(k);
-    console.log('[DEBUG] delete しました');
   } else {
     state.submittedDates.add(k);
-    console.log('[DEBUG] add しました');
   }
-
-  console.log('[DEBUG] 操作後 提出済み?:', state.submittedDates.has(k));
-  console.log('[DEBUG] 操作後 連続日数:', calcStreak());
-  console.log('[DEBUG] 操作後 submittedDates:', Array.from(state.submittedDates).sort());
 
   saveState();
   updateStreakDisplay(true); // 選択日を保持
-
-  console.log('[DEBUG] updateStreakDisplay呼んだ後 連続日数表示:',
-    document.getElementById('streakNum').textContent);
 
   // 新バッジ判定（提出後）
   if (!wasSubmitted) {
