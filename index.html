@@ -1087,6 +1087,10 @@
     background: var(--parchment-dark);
     filter: grayscale(0.8);
   }
+  .badge.locked:hover {
+    opacity: 0.6;
+    filter: grayscale(0.5);
+  }
   .badge .badge-icon {
     font-size: 32px;
     line-height: 1;
@@ -2119,18 +2123,6 @@
       <div class="badge-grid" id="badgeGrid"></div>
     </div>
 
-    <div class="card">
-      <div class="card-title">
-        <span>TREASURY</span>
-        <span class="ja">宝物庫</span>
-        <span class="accent">架空</span>
-      </div>
-      <div style="font-size: 12px; color: var(--ink-soft); margin-bottom: 12px; line-height: 1.7;">
-        ※すべて架空の品です。実物は届きませんが、心の中で大切にしてください。
-      </div>
-      <div class="badge-grid" id="treasuryGrid"></div>
-    </div>
-
   </section>
 
   <!-- ============================== -->
@@ -2274,7 +2266,7 @@
     <span class="reward-icon" id="rewardIcon">🏅</span>
     <div class="reward-name" id="rewardName">継続の人</div>
     <div class="reward-desc" id="rewardDesc">7日連続で日報を提出した者にのみ与えられる、習慣の証。</div>
-    <button class="reward-close" id="rewardClose">受け取る</button>
+    <button class="reward-close" id="rewardClose">閉じる</button>
   </div>
 </div>
 
@@ -2502,16 +2494,6 @@ const defaultState = {
 
     // 心の余裕系（1個・永続）
     { id: 'rest',      icon: '🏝', name: '休む勇気',     category: 'rest',   monthly: false, desc: '月内に休日3日以上設定' },
-  ],
-  treasury: [
-    { id: 'gold',     icon: '🥇', name: '金メッキの自分像', unlocked: true,  isNew: false },
-    { id: 'sushi',    icon: '🍣', name: '架空寿司ランチ',   unlocked: true,  isNew: false },
-    { id: 'onsen',    icon: '🛁', name: '架空温泉一泊券',   unlocked: true,  isNew: false },
-    { id: 'sofa',     icon: '🛋', name: '架空革張りソファ', unlocked: false, isNew: false },
-    { id: 'hawaii',   icon: '🏝', name: '架空ハワイ一週間', unlocked: false, isNew: false },
-    { id: 'island',   icon: '🏰', name: '無人島1区画 権利書', unlocked: false, isNew: false },
-    { id: 'rocket',   icon: '🚀', name: '月行きチケット',   unlocked: false, isNew: false },
-    { id: 'dragon',   icon: '🐉', name: 'ドラゴン1頭(要餌)', unlocked: false, isNew: false },
   ],
 };
 
@@ -3277,7 +3259,7 @@ function showNextToast() {
 }
 
 // ===================================================================
-// バッジ・宝物庫
+// バッジ
 // ===================================================================
 function renderBadges() {
   const grid = document.getElementById('badgeGrid');
@@ -3292,8 +3274,9 @@ function renderBadges() {
       <span class="badge-name">${b.name}</span>
       ${b.isNew ? '<span class="new-tag">NEW</span>' : ''}
     `;
-    if (b.unlocked) {
-      el.addEventListener('click', () => {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', () => {
+      if (b.unlocked) {
         showReward({
           banner: '━━ 紋章 ━━',
           title: '紋章の詳細',
@@ -3301,36 +3284,54 @@ function renderBadges() {
           name: b.name,
           desc: getBadgeDesc(b.id),
         });
-      });
-    }
+      } else {
+        showReward({
+          banner: '━━ 未獲得の紋章 ━━',
+          title: '獲得条件',
+          icon: b.icon,
+          name: b.name,
+          desc: getBadgeCondition(b.id),
+        });
+      }
+    });
     grid.appendChild(el);
   });
 
   document.getElementById('badgeCount').textContent = `${unlocked} / ${state.badges.length}`;
+}
 
-  // 宝物庫
-  const tg = document.getElementById('treasuryGrid');
-  tg.innerHTML = '';
-  state.treasury.forEach(t => {
-    const el = document.createElement('div');
-    el.className = 'badge' + (t.unlocked ? '' : ' locked');
-    el.innerHTML = `
-      <span class="badge-icon">${t.icon}</span>
-      <span class="badge-name">${t.name}</span>
-    `;
-    if (t.unlocked) {
-      el.addEventListener('click', () => {
-        showReward({
-          banner: '━━ 宝物庫より ━━',
-          title: 'お納めください',
-          icon: t.icon,
-          name: t.name,
-          desc: getTreasuryDesc(t.id),
-        });
-      });
-    }
-    tg.appendChild(el);
-  });
+function getBadgeCondition(id) {
+  const map = {
+    // ストリーク系
+    streak1:    '今月内に1日、日報を提出する。',
+    streak3:    '今月内に3日、日報を提出する。',
+    streak7:    '今月内に7日、日報を提出する。',
+    streak14:   '今月内に14日、日報を提出する。',
+    streak20:   '今月内に20日、日報を提出する。',
+    fullattend: '今月の全日（暦日すべて）日報を提出する。',
+    // 段階的達成
+    bronze:     '今月の全目標を25%まで達成する。',
+    silver:     '今月の全目標を50%まで達成する。',
+    gold:       '今月の全目標を75%まで達成する。',
+    perfect:    '今月の全目標を100%達成する。',
+    // スピード達成
+    turtle:     '今月末までに全目標を達成する。',
+    speed:      '今月の20日までに全目標を達成する。',
+    flash:      '今月の15日までに全目標を達成する。',
+    // 連続達成
+    stable:     '2ヶ月連続で月間目標を完全制覇する。',
+    mountain:   '3ヶ月連続で月間目標を完全制覇する。',
+    crown:      '6ヶ月連続で月間目標を完全制覇する。',
+    // 特別達成
+    first:      '初めて月間目標を100%達成する。',
+    over:       '今月の全目標を120%以上達成する。',
+    // 行動系
+    early:      '朝の04〜06時の時間帯にタスクを記録する。',
+    night:      '夜の23〜02時の時間帯にタスクを記録する。',
+    // 心の余裕系
+    rest:       '今月内に休日を3日以上設定する。',
+  };
+  return map[id] || '謎に包まれた紋章。条件は未だ明らかにされていない。';
 }
 
 function getBadgeDesc(id) {
@@ -3365,15 +3366,6 @@ function getBadgeDesc(id) {
     rest:       '月内に休日を3日以上設定した者の証。休む勇気もまた、力。',
   };
   return map[id] || 'この紋章には、まだ伝説が刻まれていない。';
-}
-
-function getTreasuryDesc(id) {
-  const map = {
-    gold:   '黄金の自分像。後光が眩しすぎて見えないが、確かにそこにある。',
-    sushi:  '架空の寿司10貫。脳内で味わうと美味しさは2倍。実害ゼロ。',
-    onsen:  '架空温泉、一泊二食付き。湯気だけ実装。露天風呂は心の中。',
-  };
-  return map[id] || '架空の品。心の中の宝物庫に大切に飾られている。';
 }
 
 // ===================================================================
