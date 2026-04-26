@@ -1107,6 +1107,22 @@
     opacity: 0.6;
     filter: grayscale(0.5);
   }
+  .badge.placeholder {
+    opacity: 0.25;
+    background: var(--parchment-dark);
+    filter: grayscale(1);
+    cursor: pointer;
+  }
+  .badge.placeholder:hover {
+    opacity: 0.45;
+  }
+  .badge.placeholder .badge-icon {
+    color: var(--ink-faint);
+  }
+  .badge.placeholder .badge-name {
+    color: var(--ink-faint);
+    font-style: italic;
+  }
   .badge .badge-icon {
     font-size: 32px;
     line-height: 1;
@@ -2491,6 +2507,7 @@ const defaultState = {
     { id: 'silver',    icon: '🥈', name: '50%達成',      category: 'progress', monthly: true, desc: '月内全目標50%' },
     { id: 'gold',      icon: '🥇', name: '75%達成',      category: 'progress', monthly: true, desc: '月内全目標75%' },
     { id: 'perfect',   icon: '💯', name: '完全制覇',     category: 'progress', monthly: true, desc: '月内全目標100%' },
+    { id: 'over',      icon: '🚀', name: '超過達成',     category: 'progress', monthly: true,  desc: '月内全目標120%達成' },
 
     // スピード達成（3個・月次）
     { id: 'flash',     icon: '💨', name: '神速達成',     category: 'speed',  monthly: true, desc: '15日までに100%達成' },
@@ -2503,13 +2520,6 @@ const defaultState = {
     { id: 'crown',     icon: '👑', name: '不動の王',     category: 'combo',  monthly: false, desc: '6ヶ月連続で完全制覇' },
     { id: 'eternal',   icon: '🗿', name: '悠久の覇者',   category: 'combo',  monthly: false, desc: '9ヶ月連続で完全制覇' },
     { id: 'legend',    icon: '🌟', name: '伝説の達人',   category: 'combo',  monthly: false, desc: '12ヶ月連続で完全制覇' },
-
-    // 特別達成（1個）
-    { id: 'over',      icon: '🚀', name: '超過達成',     category: 'special', monthly: true,  desc: '月内全目標120%達成' },
-
-    // 行動系（2個・永続）
-    { id: 'early',     icon: '🌅', name: '早起き王',     category: 'action', monthly: false, desc: '04〜06時にタスク+ボタン' },
-    { id: 'night',     icon: '🦉', name: '夜の戦士',     category: 'action', monthly: false, desc: '23〜02時にタスク+ボタン' },
   ],
 };
 
@@ -3174,17 +3184,6 @@ function checkAllBadges(trigger) {
     }
   }
 
-  // 行動系（時刻ベース、+ボタン押した時のみ判定）
-  if (trigger === 'task_increment') {
-    const hour = new Date().getHours();
-    if (hour >= 4 && hour < 6) {
-      if (unlockBadge('early')) unlocked.push('early');
-    }
-    if (hour >= 23 || hour < 2) {
-      if (unlockBadge('night')) unlocked.push('night');
-    }
-  }
-
   if (unlocked.length > 0) {
     saveState();
     renderBadges();
@@ -3282,13 +3281,20 @@ function renderBadges() {
   grid.innerHTML = '';
   let unlocked = 0;
 
-  // カテゴリ4列 + 「連続・行動・特別」を1列に統合
+  // カテゴリ4列 + 「連続」を1列に統合
   const cols = [
     { label: 'STREAK', cats: ['streak'] },
     { label: 'PROGRESS', cats: ['progress'] },
     { label: 'SPEED', cats: ['speed'] },
-    { label: 'COMBO', cats: ['combo', 'special', 'action'] },
+    { label: 'COMBO', cats: ['combo'] },
   ];
+
+  // 最大行数を決定（一番多いカテゴリに合わせる）
+  let maxRows = 0;
+  cols.forEach(col => {
+    const count = state.badges.filter(b => col.cats.includes(b.category)).length;
+    if (count > maxRows) maxRows = count;
+  });
 
   cols.forEach(col => {
     const colEl = document.createElement('div');
@@ -3298,8 +3304,8 @@ function renderBadges() {
     header.textContent = col.label;
     colEl.appendChild(header);
 
-    state.badges.forEach(b => {
-      if (!col.cats.includes(b.category)) return;
+    const colBadges = state.badges.filter(b => col.cats.includes(b.category));
+    colBadges.forEach(b => {
       if (b.unlocked) unlocked++;
 
       const el = document.createElement('div');
@@ -3332,6 +3338,27 @@ function renderBadges() {
       colEl.appendChild(el);
     });
 
+    // プレースホルダで段差を埋める
+    const fillCount = maxRows - colBadges.length;
+    for (let i = 0; i < fillCount; i++) {
+      const ph = document.createElement('div');
+      ph.className = 'badge placeholder';
+      ph.innerHTML = `
+        <span class="badge-icon">‽</span>
+        <span class="badge-name">????</span>
+      `;
+      ph.addEventListener('click', () => {
+        showReward({
+          banner: '━━ 未知の紋章 ━━',
+          title: '???',
+          icon: '‽',
+          name: '????',
+          desc: '謎に包まれた紋章。条件は未だ明らかにされていない。',
+        });
+      });
+      colEl.appendChild(ph);
+    }
+
     grid.appendChild(colEl);
   });
 
@@ -3362,11 +3389,8 @@ function getBadgeCondition(id) {
     crown:      '6ヶ月連続で月間目標を完全制覇する。',
     eternal:    '9ヶ月連続で月間目標を完全制覇する。',
     legend:     '12ヶ月連続で月間目標を完全制覇する。',
-    // 特別達成
+    // 超過達成
     over:       '今月の全目標を120%以上達成する。',
-    // 行動系
-    early:      '朝の04〜06時の時間帯にタスクを記録する。',
-    night:      '夜の23〜02時の時間帯にタスクを記録する。',
   };
   return map[id] || '謎に包まれた紋章。条件は未だ明らかにされていない。';
 }
@@ -3395,11 +3419,8 @@ function getBadgeDesc(id) {
     crown:      '6ヶ月連続で完全制覇。不動の王の証。',
     eternal:    '9ヶ月連続で完全制覇。悠久の時を制した覇者。',
     legend:     '12ヶ月連続で完全制覇。伝説に至った達人。',
-    // 特別達成
+    // 超過達成
     over:       '月内全目標を120%超え達成。文字通りの超過達成。',
-    // 行動系
-    early:      '朝の04〜06時にタスクを記録した者の称号。早起きは三文の徳。',
-    night:      '23〜02時の作業記録を残した者の称号。夜の戦士と言うべきか。',
   };
   return map[id] || 'この紋章には、まだ伝説が刻まれていない。';
 }
