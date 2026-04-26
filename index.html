@@ -2234,13 +2234,13 @@
 
     <div class="card">
       <div class="card-title">
-        <span>DATA EXPORT</span>
-        <span class="ja">データ書き出し</span>
+        <span>BACKUP</span>
+        <span class="ja">バックアップ</span>
       </div>
 
       <div class="config-help">
         💾 進捗データを JSON 形式で書き出せます。<br>
-        バックアップ、別端末への移行、自動化との連携などに使えます。
+        端末買い替え時の引っ越し、万一のためのバックアップとしてお使いください。
       </div>
 
       <!-- セットアップ用エクスポート -->
@@ -2249,6 +2249,18 @@
         <div class="config-action-row">
           <button class="config-test-btn" id="copyConfigBtn">📋 JSONをコピー</button>
           <button class="config-save-btn" id="updateExportBtn">🔄 最新の進捗で再生成</button>
+        </div>
+      </div>
+
+      <!-- 復元 -->
+      <div class="config-section" style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--ink-faint);">
+        <div class="config-help" style="margin-bottom: 8px;">
+          📂 バックアップから復元する場合は、JSONを貼り付けて<br>
+          「復元する」を押してください。
+        </div>
+        <textarea class="config-export" id="configImport" placeholder='{"goals": [...], ...} のJSONを貼り付け' style="background: var(--parchment); color: var(--ink);"></textarea>
+        <div class="config-action-row">
+          <button class="config-test-btn" id="restoreBtn">📂 JSONから復元</button>
         </div>
       </div>
 
@@ -2278,13 +2290,13 @@
     <div class="card">
       <div class="card-title">
         <span>ABOUT</span>
-        <span class="ja">この試作版について</span>
+        <span class="ja">このアプリについて</span>
       </div>
       <div style="font-size: 12px; color: var(--ink-soft); line-height: 1.8;">
         <strong style="color: var(--ink);">Quest Board</strong><br>
         Shopee業務を毎日のクエストに変える、進捗管理ツール。<br>
-        完全プライベート、進捗は誰にも見えません。<br>
-        GitHub Actions × Discord Webhook で毎朝のタスク自動配信に対応しています。
+        データはあなたの端末にのみ保存され、誰にも共有されません。<br>
+        無料・インストール不要・オープンに使えます。
       </div>
     </div>
 
@@ -4340,6 +4352,62 @@ copyConfigBtn.addEventListener('click', async () => {
 updateExportBtn.addEventListener('click', () => {
   generateExportJSON();
   showResult('✓ 最新の進捗で再生成しました', 'success');
+});
+
+// 復元（JSONからデータを上書き）
+const restoreBtn = document.getElementById('restoreBtn');
+const configImport = document.getElementById('configImport');
+
+restoreBtn.addEventListener('click', () => {
+  hideResult();
+  const text = configImport.value.trim();
+  if (!text) {
+    showResult('⚠ 復元するJSONを貼り付けてください', 'error');
+    return;
+  }
+
+  // JSON parse
+  let imported;
+  try {
+    imported = JSON.parse(text);
+  } catch (e) {
+    showResult('⚠ JSONの形式が不正です。コピー漏れや余分な文字がないか確認してください', 'error');
+    return;
+  }
+
+  // 必須フィールド確認（最低限）
+  if (!imported || typeof imported !== 'object') {
+    showResult('⚠ データの形式が不正です', 'error');
+    return;
+  }
+  const hasGoals = Array.isArray(imported.goals);
+  const hasBadges = Array.isArray(imported.badges);
+  if (!hasGoals && !hasBadges) {
+    showResult('⚠ Quest BoardのJSONではないようです', 'error');
+    return;
+  }
+
+  // 確認ダイアログ
+  const ok = confirm(
+    '⚠ 警告\n\n' +
+    '現在のデータが完全に上書きされます。\n' +
+    '元に戻すことはできません。\n\n' +
+    '本当に復元しますか？'
+  );
+  if (!ok) return;
+
+  // ローカルストレージを直接書き換えてリロード
+  try {
+    // submittedDates が Set だった場合の対応
+    if (imported.submittedDates && !Array.isArray(imported.submittedDates)) {
+      imported.submittedDates = Array.from(imported.submittedDates);
+    }
+    localStorage.setItem('quest-board-state-v1', JSON.stringify(imported));
+    showResult('✓ 復元しました。ページを再読み込みします...', 'success');
+    setTimeout(() => location.reload(), 1200);
+  } catch (e) {
+    showResult('⚠ 保存に失敗しました: ' + e.message, 'error');
+  }
 });
 
 // 初期表示
