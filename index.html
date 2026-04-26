@@ -1957,7 +1957,7 @@
     <div class="hero-header">
       <div class="hero-content">
         <div class="greeting" id="greeting">&nbsp;</div>
-        <div class="player-name" id="playerName">トルネコ</div>
+        <div class="player-name" id="playerName">ゲスト</div>
         <div class="meta" id="heroMeta">&nbsp;</div>
       </div>
       <div class="level-shield">
@@ -2274,7 +2274,7 @@
       </div>
       <div class="config-row">
         <span class="config-label">呼び名</span>
-        <input type="text" class="config-input" id="playerNameInput" placeholder="例: トルネコ">
+        <input type="text" class="config-input" id="playerNameInput" placeholder="例: あなたの名前">
       </div>
       <div class="config-row">
         <span class="config-label">商人ランク</span>
@@ -2463,7 +2463,7 @@ const LIFETIME_TITLES = [
 // 状態（初期値）
 // ===================================================================
 const defaultState = {
-  player: 'トルネコ',
+  player: 'ゲスト',
   level: 7, // 旧データ互換用、実際は計算で決まる
   scale: null, // 'light' | 'fullside' | 'pro' | 'master'、未選択時はnull
   earnings: {
@@ -4192,7 +4192,7 @@ function updateHeroMeta() {
 
   // プレイヤー名を更新
   const nameEl = document.getElementById('playerName');
-  if (nameEl) nameEl.textContent = state.player || 'トルネコ';
+  if (nameEl) nameEl.textContent = state.player || 'ゲスト';
 
   const rank = getCurrentRank();
   let rankLine;
@@ -4421,12 +4421,12 @@ const playerLevelDisplay = document.getElementById('playerLevelDisplay');
 const resetDataBtn = document.getElementById('resetDataBtn');
 
 function loadProfile() {
-  playerNameInput.value = state.player || 'トルネコ';
+  playerNameInput.value = state.player || 'ゲスト';
   playerLevelDisplay.value = `Lv.${state.level} 越境貿易商`;
 }
 
 playerNameInput.addEventListener('input', () => {
-  const newName = playerNameInput.value.trim() || 'トルネコ';
+  const newName = playerNameInput.value.trim() || 'ゲスト';
   state.player = newName;
   saveState();
   // ヘッダーのプレイヤー名も即座に更新
