@@ -589,11 +589,27 @@
     padding-top: 16px;
   }
   .rank-label {
-    font-size: 10px;
+    font-family: 'DotGothic16', monospace;
+    font-size: 11px;
     letter-spacing: 0.2em;
     color: var(--ink-soft);
     margin-bottom: 6px;
     font-weight: 700;
+    position: relative;
+    padding-left: 14px;
+  }
+  .rank-label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    background: var(--gold-deep);
+    box-shadow:
+      0 -3px 0 var(--gold),
+      0 3px 0 var(--gold);
   }
   .rank-title {
     font-family: 'Cinzel', serif;
@@ -603,46 +619,68 @@
     margin-bottom: 4px;
   }
   .rank-title .lv {
+    font-family: 'DotGothic16', monospace;
     color: var(--gold-deep);
     margin-right: 8px;
+    font-size: 26px;
+    letter-spacing: 0.05em;
   }
   .rank-amount {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--ink-soft);
     margin-bottom: 8px;
   }
   .rank-amount strong {
+    font-family: 'DotGothic16', monospace;
     color: var(--ink);
-    font-size: 16px;
+    font-size: 17px;
+    letter-spacing: 0.05em;
   }
   .rank-progress {
-    height: 8px;
-    background: var(--ink-faint);
-    border: 1px solid var(--ink);
+    height: 12px;
+    background: var(--parchment-dark);
+    border: 2px solid var(--ink);
     margin: 8px 0 6px;
     overflow: hidden;
     position: relative;
+    image-rendering: pixelated;
   }
   .rank-progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--gold) 0%, var(--gold-deep) 100%);
-    transition: width 0.4s;
+    background: var(--gold-deep);
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--gold-deep) 0px,
+      var(--gold-deep) 4px,
+      var(--gold) 4px,
+      var(--gold) 8px
+    );
+    transition: width 0.4s steps(20, end);
   }
   .rank-next {
     font-size: 11px;
     color: var(--ink-faint);
     font-style: italic;
   }
+  .rank-next strong {
+    font-family: 'DotGothic16', monospace;
+    color: var(--gold-deep);
+    font-style: normal;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+  }
   .rank-max-badge {
     display: inline-block;
     background: var(--gold-deep);
     color: var(--parchment);
-    font-size: 10px;
-    padding: 2px 10px;
-    letter-spacing: 0.2em;
+    font-family: 'DotGothic16', monospace;
+    font-size: 11px;
+    padding: 3px 10px;
+    letter-spacing: 0.25em;
     margin-left: 8px;
-    font-family: 'Cinzel', serif;
     font-weight: 700;
+    border: 2px solid var(--ink);
+    box-shadow: 2px 2px 0 var(--ink);
   }
   .rank-meta {
     font-size: 11px;
@@ -685,19 +723,28 @@
   .rank-set-btn {
     background: var(--ink);
     color: var(--parchment);
-    border: 1px solid var(--ink);
-    padding: 8px 18px;
-    font-family: 'Noto Serif JP', serif;
-    font-size: 12px;
+    border: 2px solid var(--ink);
+    padding: 10px 22px;
+    font-family: 'DotGothic16', monospace;
+    font-size: 13px;
     font-weight: 700;
     cursor: pointer;
-    letter-spacing: 0.1em;
-    box-shadow: 2px 2px 0 var(--gold-deep);
+    letter-spacing: 0.15em;
+    box-shadow:
+      3px 3px 0 var(--gold-deep),
+      3px 3px 0 1px var(--ink);
+    transition: all 0.1s;
   }
   .rank-set-btn:hover {
     background: var(--gold-deep);
-    transform: translate(-1px, -1px);
-    box-shadow: 3px 3px 0 var(--ink);
+    transform: translate(-2px, -2px);
+    box-shadow:
+      5px 5px 0 var(--ink),
+      5px 5px 0 1px var(--gold-deep);
+  }
+  .rank-set-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 var(--gold-deep);
   }
 
   /* === 実績入力 === */
@@ -847,10 +894,12 @@
   }
   .hall-row:last-child { border-bottom: none; }
   .hall-year {
-    font-family: 'Cinzel', serif;
+    font-family: 'DotGothic16', monospace;
     font-weight: 700;
     color: var(--gold-deep);
     min-width: 60px;
+    font-size: 16px;
+    letter-spacing: 0.05em;
   }
   .hall-rank {
     flex: 1;
@@ -865,6 +914,7 @@
     color: var(--ink-soft);
     margin-top: 2px;
     font-family: 'DotGothic16', monospace;
+    letter-spacing: 0.05em;
   }
 
   /* === 規模選択モーダル === */
@@ -1685,16 +1735,21 @@
     transform: translateX(-50%) translateY(120%);
     background: var(--ink);
     color: var(--parchment);
-    border: 2px solid var(--gold);
+    border: 3px solid var(--gold);
     padding: 14px 20px;
     z-index: 250;
     display: flex;
     align-items: center;
     gap: 14px;
-    box-shadow: 4px 4px 0 var(--gold-deep);
+    /* ピクセル風の積層シャドウ */
+    box-shadow:
+      0 0 0 1px var(--ink),
+      6px 6px 0 var(--gold-deep),
+      6px 6px 0 1px var(--ink);
     transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     pointer-events: none;
     max-width: calc(100vw - 32px);
+    image-rendering: pixelated;
   }
   .badge-toast.show {
     transform: translateX(-50%) translateY(0);
@@ -1707,7 +1762,8 @@
     line-height: 1.3;
   }
   .badge-toast-title {
-    font-size: 10px;
+    font-family: 'DotGothic16', monospace;
+    font-size: 11px;
     color: var(--gold);
     letter-spacing: 0.3em;
     font-weight: 700;
