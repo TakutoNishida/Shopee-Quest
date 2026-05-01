@@ -633,7 +633,6 @@
     letter-spacing: 0.05em;
   }
 
-  /* === バッジコレクション === */
   /* === ランクカード === */
   .rank-card {
     background: linear-gradient(180deg, var(--parchment) 0%, var(--parchment-dark) 100%);
@@ -1231,6 +1230,47 @@
     color: var(--ink);
   }
 
+  /* === 月切替セレクター（目標タブ） === */
+  .month-switcher {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    background: var(--parchment-dark);
+    border: 1px solid var(--ink);
+    padding: 8px 10px;
+    margin-bottom: 14px;
+  }
+  .month-switcher .ms-nav {
+    background: var(--parchment-light);
+    border: 1px solid var(--ink);
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    font-size: 14px;
+  }
+  .month-switcher .ms-nav:hover {
+    background: var(--ink);
+    color: var(--parchment);
+  }
+  .month-switcher .ms-label {
+    flex: 1;
+    text-align: center;
+    font-family: 'DotGothic16', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+  .month-switcher .ms-label .ms-tag {
+    display: inline-block;
+    margin-left: 6px;
+    font-size: 10px;
+    color: var(--gold-deep);
+    letter-spacing: 0.15em;
+  }
+
   /* === カレンダー === */
   .cal-header {
     display: flex;
@@ -1531,41 +1571,6 @@
     outline: 2px solid var(--gold);
     outline-offset: 1px;
   }
-  .config-toggle-eye {
-    background: var(--parchment-dark);
-    border: 1px solid var(--ink);
-    width: 36px;
-    height: 32px;
-    cursor: pointer;
-    font-size: 14px;
-    flex-shrink: 0;
-  }
-  .config-toggle-eye:hover {
-    background: var(--ink);
-  }
-  .config-test-btn-small {
-    background: var(--parchment-dark);
-    border: 1px solid var(--ink);
-    padding: 6px 12px;
-    font-family: 'DotGothic16', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    cursor: pointer;
-    flex-shrink: 0;
-  }
-  .config-test-btn-small:hover {
-    background: var(--gold);
-  }
-  .config-test-btn-small:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-  .config-hint {
-    font-size: 10px;
-    color: var(--ink-faint);
-    margin-top: 4px;
-    font-style: italic;
-  }
   .config-export {
     width: 100%;
     height: 200px;
@@ -1583,20 +1588,6 @@
   }
   .config-export:focus {
     outline: 1px solid var(--gold);
-  }
-  .config-info code {
-    background: var(--ink);
-    color: var(--gold);
-    padding: 2px 6px;
-    font-family: 'DotGothic16', monospace;
-    font-size: 11px;
-  }
-  .config-help code {
-    background: var(--ink);
-    color: var(--gold);
-    padding: 2px 6px;
-    font-family: 'DotGothic16', monospace;
-    font-size: 11px;
   }
   .config-action-row {
     display: flex;
@@ -1667,22 +1658,6 @@
     border-left: 3px solid var(--crimson);
     color: var(--crimson);
     font-weight: 700;
-  }
-  .config-info {
-    margin-top: 14px;
-    font-size: 11px;
-    color: var(--ink-soft);
-    line-height: 1.7;
-    padding: 10px 12px;
-    background: var(--parchment-dark);
-    border: 1px dashed var(--ink-faint);
-  }
-  .config-info strong {
-    color: var(--ink);
-    font-size: 12px;
-  }
-  .discord-mark {
-    font-size: 18px;
   }
 
   /* === 励ましメッセージ === */
@@ -1801,17 +1776,6 @@
     .streak-flame { font-size: 38px; }
   }
 
-  /* === デモ用バナー === */
-  .demo-banner {
-    background: var(--crimson);
-    color: var(--parchment);
-    text-align: center;
-    padding: 6px;
-    font-size: 11px;
-    letter-spacing: 0.3em;
-    font-weight: 700;
-  }
-
   /* === iPhoneのノッチ対応 === */
   nav {
     padding-top: calc(10px + env(safe-area-inset-top));
@@ -1857,7 +1821,6 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    /* ピクセル風の積層シャドウ */
     box-shadow:
       0 0 0 1px var(--ink),
       4px 4px 0 var(--gold-deep),
@@ -1949,9 +1912,7 @@
 
 <main>
 
-  <!-- ============================== -->
   <!-- ① ダッシュボード -->
-  <!-- ============================== -->
   <section class="page active" id="page-dashboard">
 
     <div class="hero-header">
@@ -1966,16 +1927,14 @@
       </div>
     </div>
 
-    <!-- 励ましメッセージ -->
     <div class="pep-talk" id="pepTalk">
       <div class="pep-talk-text" id="pepText">今月、ええペースやで。このまま行けば月末ニンマリや。</div>
       <div class="pep-talk-author">— 宿の主人より</div>
     </div>
 
-    <!-- 日報ストリーク -->
     <div class="card streak-card">
       <div class="streak-flame">🔥</div>
-      <div class="streak-num" id="streakNum">23</div>
+      <div class="streak-num" id="streakNum">0</div>
       <div class="streak-label">日報連続提出 / DAILY REPORT STREAK</div>
 
       <div class="streak-action">
@@ -1990,43 +1949,47 @@
         過去日も後から記録OK・連続が復活することもあります
       </div>
 
-      <!-- 直近7日の提出状況 -->
       <div class="streak-history" id="streakHistory"></div>
     </div>
 
-    <!-- 今日のタスク -->
     <div class="card">
       <div class="card-title">
         <span>QUESTS</span>
         <span class="ja">今日のタスク</span>
-        <span class="accent" id="todayDate">04.25</span>
+        <span class="accent" id="todayDate">--.--</span>
       </div>
       <div id="todayTasksList"></div>
     </div>
 
-    <!-- 月間進捗 -->
     <div class="card">
       <div class="card-title">
         <span>PROGRESS</span>
         <span class="ja">今月の進捗</span>
-        <span class="accent" id="progressDays">残11日</span>
+        <span class="accent" id="progressDays">残--日</span>
       </div>
       <div class="progress-list" id="progressList"></div>
     </div>
 
   </section>
 
-  <!-- ============================== -->
   <!-- ② 目標設定 -->
-  <!-- ============================== -->
   <section class="page" id="page-goals">
 
     <div class="card">
       <div class="card-title">
         <span>MONTHLY GOALS</span>
         <span class="ja">月間目標</span>
-        <span class="accent">4月分</span>
+        <span class="accent" id="goalsMonthLabel">--月分</span>
       </div>
+
+      <div class="month-switcher">
+        <button class="ms-nav" id="goalsMonthPrev">‹</button>
+        <div class="ms-label" id="goalsMonthDisplay">
+          2026年 5月 <span class="ms-tag" id="goalsMonthTag"></span>
+        </div>
+        <button class="ms-nav" id="goalsMonthNext">›</button>
+      </div>
+
       <div id="goalsList"></div>
       <button class="add-row-btn" id="addGoalBtn">＋ 項目を追加</button>
     </div>
@@ -2039,20 +2002,19 @@
       <div style="font-size: 13px; line-height: 1.9; color: var(--ink-soft);">
         <strong style="color: var(--ink);">月間目標 ÷ 残稼働日数 = 1日の推奨</strong><br>
         休日・外出・半日設定された日は自動で除外されます。<br>
-        遅れていれば翌日に上乗せ、進んでいれば翌日は軽く調整されます。
+        遅れていれば翌日に上乗せ、進んでいれば翌日は軽く調整されます。<br>
+        <span style="font-size: 11px; color: var(--ink-faint);">※ 月が変わると、前月の項目を雛形として持ち越します（達成数だけ0リセット）</span>
       </div>
     </div>
 
   </section>
 
-  <!-- ============================== -->
-  <!-- ③ カレンダー（予定） -->
-  <!-- ============================== -->
+  <!-- ③ カレンダー -->
   <section class="page" id="page-calendar">
 
     <div class="card">
       <div class="cal-header">
-        <div class="cal-month" id="calMonth">APRIL 2026</div>
+        <div class="cal-month" id="calMonth">--</div>
         <div class="cal-nav">
           <button class="cal-nav-btn" id="calPrev">‹</button>
           <button class="cal-nav-btn" id="calNext">›</button>
@@ -2085,17 +2047,17 @@
       <div class="stat-trio" id="calStats">
         <div class="stat-tile">
           <div class="stat-label">FULL</div>
-          <div class="stat-value" id="statFull">21</div>
+          <div class="stat-value" id="statFull">0</div>
           <div class="stat-unit">通常日</div>
         </div>
         <div class="stat-tile">
           <div class="stat-label">HALF</div>
-          <div class="stat-value" id="statHalf">2</div>
+          <div class="stat-value" id="statHalf">0</div>
           <div class="stat-unit">半日</div>
         </div>
         <div class="stat-tile">
           <div class="stat-label">OFF</div>
-          <div class="stat-value" id="statOff">7</div>
+          <div class="stat-value" id="statOff">0</div>
           <div class="stat-unit">休日・外出</div>
         </div>
       </div>
@@ -2103,24 +2065,18 @@
 
   </section>
 
-  <!-- ============================== -->
-  <!-- ④ バッジ・紋章 -->
-  <!-- ============================== -->
+  <!-- ④ バッジ -->
   <section class="page" id="page-badges">
 
-    <!-- 今年のランク -->
     <div class="card rank-card" id="rankCard">
       <div class="card-title">
         <span>RANK</span>
         <span class="ja">商人のランク</span>
         <span class="accent" id="rankYearLabel">2026年</span>
       </div>
-      <div id="rankCardContent">
-        <!-- JSで描画 -->
-      </div>
+      <div id="rankCardContent"></div>
     </div>
 
-    <!-- 月次実績入力 -->
     <div class="card">
       <div class="card-title">
         <span>EARNINGS</span>
@@ -2139,7 +2095,6 @@
       <div id="earningsHistoryArea"></div>
     </div>
 
-    <!-- 殿堂（過去年の記録） -->
     <div class="card" id="hallOfFameCard" style="display:none;">
       <div class="card-title">
         <span>HALL OF FAME</span>
@@ -2152,19 +2107,16 @@
       <div class="card-title">
         <span>EMBLEMS</span>
         <span class="ja">獲得した紋章</span>
-        <span class="accent" id="badgeCount">8 / 24</span>
+        <span class="accent" id="badgeCount">0 / 24</span>
       </div>
       <div class="badge-grid" id="badgeGrid"></div>
     </div>
 
   </section>
 
-  <!-- ============================== -->
   <!-- ⑤ 設定 -->
-  <!-- ============================== -->
   <section class="page" id="page-config">
 
-    <!-- 初期設定（過去実績の引き継ぎ） -->
     <div class="card">
       <div class="card-title">
         <span>INITIAL SETUP</span>
@@ -2177,7 +2129,6 @@
         スキップしても問題ありません（全部0スタート）。後から変更可能。
       </div>
 
-      <!-- 開始時期 -->
       <div class="config-section">
         <div class="config-section-title">
           <span>⏰</span>
@@ -2192,7 +2143,6 @@
 
       <hr class="config-divider">
 
-      <!-- これまでの累計 -->
       <div class="config-section">
         <div class="config-section-title">
           <span>💰</span>
@@ -2206,7 +2156,6 @@
 
       <hr class="config-divider">
 
-      <!-- 過去年の実績 -->
       <div class="config-section">
         <div class="config-section-title">
           <span>📜</span>
@@ -2243,7 +2192,6 @@
         端末買い替え時の引っ越し、万一のためのバックアップとしてお使いください。
       </div>
 
-      <!-- セットアップ用エクスポート -->
       <div class="config-section">
         <textarea class="config-export" id="configExport" readonly></textarea>
         <div class="config-action-row">
@@ -2252,7 +2200,6 @@
         </div>
       </div>
 
-      <!-- 復元 -->
       <div class="config-section" style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--ink-faint);">
         <div class="config-help" style="margin-bottom: 8px;">
           📂 バックアップから復元する場合は、JSONを貼り付けて<br>
@@ -2304,7 +2251,6 @@
 
 </main>
 
-<!-- ご褒美モーダル -->
 <div class="reward-modal" id="rewardModal">
   <div class="reward-content">
     <div class="reward-banner" id="rewardBanner">━━ 称号獲得 ━━</div>
@@ -2316,7 +2262,6 @@
   </div>
 </div>
 
-<!-- 規模選択モーダル -->
 <div class="scale-modal-overlay" id="scaleModalOverlay">
   <div class="scale-modal">
     <div class="scale-modal-title">⚔ あなたの活動規模は？</div>
@@ -2325,14 +2270,11 @@
       これに応じてレベルの目安が変わります。<br>
       （後から変更できます）
     </div>
-    <div id="scaleOptionsContainer">
-      <!-- JSで描画 -->
-    </div>
+    <div id="scaleOptionsContainer"></div>
     <button class="scale-modal-close" id="scaleModalCloseBtn">後で決める</button>
   </div>
 </div>
 
-<!-- iOS向けインストール案内バナー -->
 <div class="install-banner" id="installBanner">
   <div class="ib-icon">📲</div>
   <div class="ib-text">
@@ -2342,10 +2284,9 @@
   <button class="ib-btn" id="installBtn" style="display:none;">追加</button>
   <button class="ib-close" id="installClose">×</button>
 </div>
-
 <script>
 // ===================================================================
-// 永続化（localStorage）
+// 永続化
 // ===================================================================
 const STORAGE_KEY = 'quest-board-state-v1';
 
@@ -2353,11 +2294,11 @@ function saveState() {
   try {
     const serializable = {
       ...state,
-      submittedDates: Array.from(state.submittedDates),  // SetはJSON化できないのでArray化
+      submittedDates: Array.from(state.submittedDates),
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(serializable));
   } catch (e) {
-    console.warn('保存に失敗:', e);
+    console.warn('保存失敗:', e);
   }
 }
 
@@ -2377,7 +2318,22 @@ function loadState() {
 }
 
 // ===================================================================
-// 規模別レベルテーブル（年間手残り基準・8段階）
+// 月キーヘルパー
+// ===================================================================
+function ymKey(year, month) {
+  return `${year}-${String(month).padStart(2,'0')}`;
+}
+function getCurrentYearMonth() {
+  const d = new Date();
+  return ymKey(d.getFullYear(), d.getMonth() + 1);
+}
+function parseYM(key) {
+  const [y, m] = key.split('-').map(Number);
+  return { year: y, month: m };
+}
+
+// ===================================================================
+// 規模別レベルテーブル
 // ===================================================================
 const SCALE_PRESETS = {
   light: {
@@ -2385,14 +2341,14 @@ const SCALE_PRESETS = {
     range: '月 0〜10万円',
     description: 'まずは少しずつ始めたい方へ',
     thresholds: [
-      { lv: 1, name: '雑貨屋見習い',   amount: 0 },
-      { lv: 2, name: '露店の主',       amount: 50000 },
-      { lv: 3, name: '武器屋の番頭',   amount: 150000 },
-      { lv: 4, name: '商家の若旦那',   amount: 300000 },
-      { lv: 5, name: '旅の商人',       amount: 500000 },
+      { lv: 1, name: '雑貨屋見習い', amount: 0 },
+      { lv: 2, name: '露店の主', amount: 50000 },
+      { lv: 3, name: '武器屋の番頭', amount: 150000 },
+      { lv: 4, name: '商家の若旦那', amount: 300000 },
+      { lv: 5, name: '旅の商人', amount: 500000 },
       { lv: 6, name: '隊商を率いる者', amount: 750000 },
-      { lv: 7, name: '店主',           amount: 1000000 },
-      { lv: 8, name: '伝説の商人',     amount: 1200000 }, // MAX
+      { lv: 7, name: '店主', amount: 1000000 },
+      { lv: 8, name: '伝説の商人', amount: 1200000 },
     ],
   },
   fullside: {
@@ -2400,14 +2356,14 @@ const SCALE_PRESETS = {
     range: '月 10〜30万円',
     description: '本業の傍ら、本気で稼ぎたい方へ',
     thresholds: [
-      { lv: 1, name: '雑貨屋見習い',   amount: 0 },
-      { lv: 2, name: '露店の主',       amount: 150000 },
-      { lv: 3, name: '武器屋の番頭',   amount: 500000 },
-      { lv: 4, name: '商家の若旦那',   amount: 1000000 },
-      { lv: 5, name: '旅の商人',       amount: 1500000 },
+      { lv: 1, name: '雑貨屋見習い', amount: 0 },
+      { lv: 2, name: '露店の主', amount: 150000 },
+      { lv: 3, name: '武器屋の番頭', amount: 500000 },
+      { lv: 4, name: '商家の若旦那', amount: 1000000 },
+      { lv: 5, name: '旅の商人', amount: 1500000 },
       { lv: 6, name: '隊商を率いる者', amount: 2200000 },
-      { lv: 7, name: '店主',           amount: 3000000 },
-      { lv: 8, name: '伝説の商人',     amount: 3600000 },
+      { lv: 7, name: '店主', amount: 3000000 },
+      { lv: 8, name: '伝説の商人', amount: 3600000 },
     ],
   },
   pro: {
@@ -2415,14 +2371,14 @@ const SCALE_PRESETS = {
     range: '月 30〜100万円',
     description: '専業で取り組んでいる方へ',
     thresholds: [
-      { lv: 1, name: '雑貨屋見習い',   amount: 0 },
-      { lv: 2, name: '露店の主',       amount: 500000 },
-      { lv: 3, name: '武器屋の番頭',   amount: 1500000 },
-      { lv: 4, name: '商家の若旦那',   amount: 3000000 },
-      { lv: 5, name: '旅の商人',       amount: 5000000 },
+      { lv: 1, name: '雑貨屋見習い', amount: 0 },
+      { lv: 2, name: '露店の主', amount: 500000 },
+      { lv: 3, name: '武器屋の番頭', amount: 1500000 },
+      { lv: 4, name: '商家の若旦那', amount: 3000000 },
+      { lv: 5, name: '旅の商人', amount: 5000000 },
       { lv: 6, name: '隊商を率いる者', amount: 7500000 },
-      { lv: 7, name: '店主',           amount: 10000000 },
-      { lv: 8, name: '伝説の商人',     amount: 12000000 },
+      { lv: 7, name: '店主', amount: 10000000 },
+      { lv: 8, name: '伝説の商人', amount: 12000000 },
     ],
   },
   master: {
@@ -2430,119 +2386,139 @@ const SCALE_PRESETS = {
     range: '月 100万円〜',
     description: '大規模で動かしている方へ',
     thresholds: [
-      { lv: 1, name: '雑貨屋見習い',   amount: 0 },
-      { lv: 2, name: '露店の主',       amount: 1500000 },
-      { lv: 3, name: '武器屋の番頭',   amount: 4000000 },
-      { lv: 4, name: '商家の若旦那',   amount: 7500000 },
-      { lv: 5, name: '旅の商人',       amount: 12000000 },
+      { lv: 1, name: '雑貨屋見習い', amount: 0 },
+      { lv: 2, name: '露店の主', amount: 1500000 },
+      { lv: 3, name: '武器屋の番頭', amount: 4000000 },
+      { lv: 4, name: '商家の若旦那', amount: 7500000 },
+      { lv: 5, name: '旅の商人', amount: 12000000 },
       { lv: 6, name: '隊商を率いる者', amount: 17500000 },
-      { lv: 7, name: '店主',           amount: 23000000 },
-      { lv: 8, name: '伝説の商人',     amount: 30000000 },
+      { lv: 7, name: '店主', amount: 23000000 },
+      { lv: 8, name: '伝説の商人', amount: 30000000 },
     ],
   },
 };
 
-// 生涯称号（13段階・絶対値・累計手残り基準）
 const LIFETIME_TITLES = [
-  { name: '雑貨屋見習い',     amount: 0 },
-  { name: '露店の主',         amount: 500000 },
-  { name: '武器屋の番頭',     amount: 1000000 },
-  { name: '商家の若旦那',     amount: 2500000 },
-  { name: '旅の商人',         amount: 5000000 },
-  { name: '隊商を率いる者',   amount: 7500000 },
-  { name: '店主',             amount: 10000000 },
-  { name: '商業ギルド理事',   amount: 20000000 },
-  { name: '交易商',           amount: 30000000 },
-  { name: '貿易マイスター',   amount: 40000000 },
-  { name: '行商の達人',       amount: 50000000 },
-  { name: '商業界の重鎮',     amount: 75000000 },
-  { name: '伝説の商人',       amount: 100000000 }, // MAX
+  { name: '雑貨屋見習い', amount: 0 },
+  { name: '露店の主', amount: 500000 },
+  { name: '武器屋の番頭', amount: 1000000 },
+  { name: '商家の若旦那', amount: 2500000 },
+  { name: '旅の商人', amount: 5000000 },
+  { name: '隊商を率いる者', amount: 7500000 },
+  { name: '店主', amount: 10000000 },
+  { name: '商業ギルド理事', amount: 20000000 },
+  { name: '交易商', amount: 30000000 },
+  { name: '貿易マイスター', amount: 40000000 },
+  { name: '行商の達人', amount: 50000000 },
+  { name: '商業界の重鎮', amount: 75000000 },
+  { name: '伝説の商人', amount: 100000000 },
 ];
 
 // ===================================================================
-// 状態（初期値）
+// デフォルト状態（月別目標構造）
 // ===================================================================
+const DEFAULT_GOALS_TEMPLATE = [
+  { id: 1, icon: '📦', name: '出品', target: 100 },
+  { id: 2, icon: '✏️', name: '商品編集', target: 50 },
+  { id: 3, icon: '🔍', name: 'リサーチ', target: 30 },
+];
+
 const defaultState = {
   player: 'ゲスト',
-  level: 7, // 旧データ互換用、実際は計算で決まる
-  scale: null, // 'light' | 'fullside' | 'pro' | 'master'、未選択時はnull
+  level: 7,
+  scale: null,
   earnings: {
-    // {"2026-04": 145000, "2026-05": 200000, ...}
     monthly: {},
-    // 過去年の年間累計（殿堂用）
-    // {"2025": {amount: 6200000, lv: 7, title: "店主"}, ...}
     yearlyHistory: {},
-    // 初期設定で入力された「過去の累計」（生涯累計に加算される）
     pastLifetime: 0,
-    // 初期設定で入力された開始年月
-    startedAt: null, // "2024-01" のような形式
+    startedAt: null,
   },
-  goals: [
-    { id: 1, icon: '📦', name: '出品',   target: 100, done: 47 },
-    { id: 2, icon: '✏️', name: '商品編集', target: 50,  done: 32 },
-    { id: 3, icon: '🔍', name: 'リサーチ', target: 30,  done: 18 },
-  ],
-  todayProgress: { 1: 2, 2: 1, 3: 0 },
-  streak: 23,
-  submittedDates: new Set([
-    '2026-04-03','2026-04-04','2026-04-05','2026-04-06','2026-04-07',
-    '2026-04-08','2026-04-09','2026-04-10','2026-04-11','2026-04-12',
-    '2026-04-13','2026-04-14','2026-04-15','2026-04-16','2026-04-17',
-    '2026-04-18','2026-04-19','2026-04-20','2026-04-21','2026-04-22',
-    '2026-04-23','2026-04-24',
-  ]),
-  calStatus: {
-    '2026-04-26': 'off',
-    '2026-04-19': 'off',
-    '2026-04-12': 'off',
-    '2026-04-05': 'off',
-    '2026-04-30': 'trip',
-    '2026-05-01': 'trip',
-    '2026-05-02': 'off',
-    '2026-05-03': 'off',
-    '2026-05-04': 'off',
-    '2026-05-05': 'off',
-    '2026-04-27': 'half',
-    '2026-04-28': 'half',
-  },
+  // 月別の目標と達成数を保持
+  goalsByMonth: {},
+  // 月別の本日進捗（YYYY-MM-DD → {goalId: count}）
+  todayProgressByDate: {},
+  submittedDates: new Set(),
+  calStatus: {},
   badges: [
-    // ストリーク系（6個・月次リセット）
-    { id: 'streak1',   icon: '👣', name: '1日目',        category: 'streak', monthly: true,  desc: '月内1日 日報提出' },
-    { id: 'streak3',   icon: '🌿', name: '3日目',        category: 'streak', monthly: true,  desc: '月内3日 日報提出' },
-    { id: 'streak7',   icon: '🔥', name: '7日目',        category: 'streak', monthly: true,  desc: '月内7日 日報提出' },
-    { id: 'streak14',  icon: '⚡', name: '14日目',       category: 'streak', monthly: true,  desc: '月内14日 日報提出' },
-    { id: 'streak20',  icon: '⭐', name: '20日目',       category: 'streak', monthly: true,  desc: '月内20日 日報提出' },
-    { id: 'fullattend',icon: '💎', name: '完全皆勤',     category: 'streak', monthly: true,  desc: '月の全日 日報提出' },
-
-    // 段階的達成（4個・月次）
-    { id: 'bronze',    icon: '🥉', name: '25%達成',      category: 'progress', monthly: true, desc: '月内全目標25%' },
-    { id: 'silver',    icon: '🥈', name: '50%達成',      category: 'progress', monthly: true, desc: '月内全目標50%' },
-    { id: 'gold',      icon: '🥇', name: '75%達成',      category: 'progress', monthly: true, desc: '月内全目標75%' },
-    { id: 'perfect',   icon: '💯', name: '完全制覇',     category: 'progress', monthly: true, desc: '月内全目標100%' },
-    { id: 'over',      icon: '🚀', name: '超過達成',     category: 'progress', monthly: true,  desc: '月内全目標120%達成' },
-
-    // スピード達成（3個・月次）
-    { id: 'flash',     icon: '💨', name: '神速達成',     category: 'speed',  monthly: true, desc: '15日までに100%達成' },
-    { id: 'speed',     icon: '⚡', name: 'スピードクリア', category: 'speed', monthly: true, desc: '20日までに100%達成' },
-    { id: 'turtle',    icon: '🏁', name: '早期完遂',     category: 'speed',  monthly: true, desc: '25日までに100%達成' },
-
-    // 連続達成（5個・永続）
-    { id: 'stable',    icon: '📈', name: '安定の覇者',   category: 'combo',  monthly: false, desc: '2ヶ月連続で完全制覇' },
-    { id: 'mountain',  icon: '🏔', name: '動かざる山',   category: 'combo',  monthly: false, desc: '3ヶ月連続で完全制覇' },
-    { id: 'crown',     icon: '👑', name: '不動の王',     category: 'combo',  monthly: false, desc: '6ヶ月連続で完全制覇' },
-    { id: 'eternal',   icon: '🗿', name: '悠久の覇者',   category: 'combo',  monthly: false, desc: '9ヶ月連続で完全制覇' },
-    { id: 'legend',    icon: '🌟', name: '伝説の達人',   category: 'combo',  monthly: false, desc: '12ヶ月連続で完全制覇' },
+    { id: 'streak1', icon: '👣', name: '1日目', category: 'streak', monthly: true, desc: '月内1日 日報提出' },
+    { id: 'streak3', icon: '🌿', name: '3日目', category: 'streak', monthly: true, desc: '月内3日 日報提出' },
+    { id: 'streak7', icon: '🔥', name: '7日目', category: 'streak', monthly: true, desc: '月内7日 日報提出' },
+    { id: 'streak14', icon: '⚡', name: '14日目', category: 'streak', monthly: true, desc: '月内14日 日報提出' },
+    { id: 'streak20', icon: '⭐', name: '20日目', category: 'streak', monthly: true, desc: '月内20日 日報提出' },
+    { id: 'fullattend', icon: '💎', name: '完全皆勤', category: 'streak', monthly: true, desc: '月の全日 日報提出' },
+    { id: 'bronze', icon: '🥉', name: '25%達成', category: 'progress', monthly: true, desc: '月内全目標25%' },
+    { id: 'silver', icon: '🥈', name: '50%達成', category: 'progress', monthly: true, desc: '月内全目標50%' },
+    { id: 'gold', icon: '🥇', name: '75%達成', category: 'progress', monthly: true, desc: '月内全目標75%' },
+    { id: 'perfect', icon: '💯', name: '完全制覇', category: 'progress', monthly: true, desc: '月内全目標100%' },
+    { id: 'over', icon: '🚀', name: '超過達成', category: 'progress', monthly: true, desc: '月内全目標120%達成' },
+    { id: 'flash', icon: '💨', name: '神速達成', category: 'speed', monthly: true, desc: '15日までに100%達成' },
+    { id: 'speed', icon: '⚡', name: 'スピードクリア', category: 'speed', monthly: true, desc: '20日までに100%達成' },
+    { id: 'turtle', icon: '🏁', name: '早期完遂', category: 'speed', monthly: true, desc: '25日までに100%達成' },
+    { id: 'stable', icon: '📈', name: '安定の覇者', category: 'combo', monthly: false, desc: '2ヶ月連続で完全制覇' },
+    { id: 'mountain', icon: '🏔', name: '動かざる山', category: 'combo', monthly: false, desc: '3ヶ月連続で完全制覇' },
+    { id: 'crown', icon: '👑', name: '不動の王', category: 'combo', monthly: false, desc: '6ヶ月連続で完全制覇' },
+    { id: 'eternal', icon: '🗿', name: '悠久の覇者', category: 'combo', monthly: false, desc: '9ヶ月連続で完全制覇' },
+    { id: 'legend', icon: '🌟', name: '伝説の達人', category: 'combo', monthly: false, desc: '12ヶ月連続で完全制覇' },
   ],
 };
 
-// ストレージから復元、なければデフォルト
+// ===================================================================
+// 旧データ移行：旧 goals/todayProgress を新 goalsByMonth/todayProgressByDate に変換
+// ===================================================================
+function migrateOldData(loaded) {
+  if (!loaded) return;
+
+  // 旧 goals が存在 + goalsByMonth が無い or 空 → 移行
+  const hasOldGoals = Array.isArray(loaded.goals) && loaded.goals.length > 0;
+  const hasNewGoals = loaded.goalsByMonth && Object.keys(loaded.goalsByMonth).length > 0;
+
+  if (hasOldGoals && !hasNewGoals) {
+    // 旧データを「現在月以前」に格納するのが安全。日報提出履歴の最終月を採用
+    let targetMonth = getCurrentYearMonth();
+    if (loaded.submittedDates) {
+      const dates = Array.isArray(loaded.submittedDates)
+        ? loaded.submittedDates
+        : Array.from(loaded.submittedDates);
+      if (dates.length > 0) {
+        const sorted = [...dates].sort();
+        const last = sorted[sorted.length - 1];
+        if (last && last.length >= 7) {
+          targetMonth = last.substring(0, 7);
+        }
+      }
+    }
+    loaded.goalsByMonth = loaded.goalsByMonth || {};
+    loaded.goalsByMonth[targetMonth] = loaded.goals.map(g => ({
+      id: g.id,
+      icon: g.icon,
+      name: g.name,
+      target: g.target,
+      done: g.done || 0,
+    }));
+    delete loaded.goals;
+  }
+
+  // 旧 todayProgress を todayProgressByDate に移行
+  if (loaded.todayProgress && !loaded.todayProgressByDate) {
+    const todayKey = (() => {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    })();
+    loaded.todayProgressByDate = { [todayKey]: loaded.todayProgress };
+    delete loaded.todayProgress;
+  }
+}
+
+// ===================================================================
+// 状態初期化
+// ===================================================================
 const loaded = loadState();
+migrateOldData(loaded);
 const state = loaded ? { ...defaultState, ...loaded } : { ...defaultState };
-// SetだけJSONに保存できないので明示的に復活
+
 if (!(state.submittedDates instanceof Set)) {
   state.submittedDates = new Set(state.submittedDates || []);
 }
-// earningsの構造補完（古いデータ対応）
 if (!state.earnings) {
   state.earnings = { ...defaultState.earnings };
 } else {
@@ -2551,9 +2527,11 @@ if (!state.earnings) {
   if (state.earnings.pastLifetime === undefined) state.earnings.pastLifetime = 0;
   if (!state.earnings.startedAt) state.earnings.startedAt = null;
 }
+if (!state.goalsByMonth) state.goalsByMonth = {};
+if (!state.todayProgressByDate) state.todayProgressByDate = {};
+if (!state.calStatus) state.calStatus = {};
 
-// バッジは定義(defaultState)から最新を持ってきて、ユーザーの取得状態だけマージ
-// 既存の保存データに無い新バッジも追加される設計
+// バッジ定義をマージ
 const savedBadgeStates = {};
 if (loaded && loaded.badges) {
   for (const b of loaded.badges) {
@@ -2579,6 +2557,75 @@ state.badges = defaultState.badges.map(def => {
 });
 
 // ===================================================================
+// 月別目標アクセサ
+// ===================================================================
+// 指定月の目標を取得。存在しなければ前月の目標を雛形として作成
+function ensureMonthGoals(monthKey) {
+  if (state.goalsByMonth[monthKey]) {
+    return state.goalsByMonth[monthKey];
+  }
+
+  // 前月以前で最も新しい月を雛形に
+  const allKeys = Object.keys(state.goalsByMonth).sort();
+  let templateKey = null;
+  for (let i = allKeys.length - 1; i >= 0; i--) {
+    if (allKeys[i] < monthKey) {
+      templateKey = allKeys[i];
+      break;
+    }
+  }
+
+  let newGoals;
+  if (templateKey && state.goalsByMonth[templateKey]) {
+    // 前月から雛形コピー（doneは0リセット）
+    newGoals = state.goalsByMonth[templateKey].map(g => ({
+      id: g.id,
+      icon: g.icon,
+      name: g.name,
+      target: g.target,
+      done: 0,
+    }));
+  } else {
+    // 完全に空：デフォルトテンプレート
+    newGoals = DEFAULT_GOALS_TEMPLATE.map(g => ({
+      id: g.id,
+      icon: g.icon,
+      name: g.name,
+      target: g.target,
+      done: 0,
+    }));
+  }
+
+  state.goalsByMonth[monthKey] = newGoals;
+  saveState();
+  return newGoals;
+}
+
+// 現在月の目標
+function getCurrentGoals() {
+  return ensureMonthGoals(getCurrentYearMonth());
+}
+
+// 表示中（目標タブ）の月の目標
+let viewingMonth = getCurrentYearMonth(); // 目標タブで現在表示している月
+function getViewingGoals() {
+  return ensureMonthGoals(viewingMonth);
+}
+
+// 当日の進捗カウンタ（YYYY-MM-DD単位）
+function getTodayDateKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function getTodayProgress() {
+  const key = getTodayDateKey();
+  if (!state.todayProgressByDate[key]) {
+    state.todayProgressByDate[key] = {};
+  }
+  return state.todayProgressByDate[key];
+}
+
+// ===================================================================
 // タブ切替
 // ===================================================================
 document.querySelectorAll('.tab').forEach(tab => {
@@ -2593,7 +2640,7 @@ document.querySelectorAll('.tab').forEach(tab => {
 });
 
 // ===================================================================
-// 稼働日計算（カレンダーから）
+// 稼働日計算
 // ===================================================================
 function getWorkingDaysInMonth(year, month) {
   const lastDay = new Date(year, month, 0).getDate();
@@ -2625,20 +2672,28 @@ function getRemainingWorkingDays(fromDate) {
 }
 
 // ===================================================================
-// 今日のタスク描画
+// 今日のタスク
 // ===================================================================
 function renderTodayTasks() {
-  const today = new Date();  // デモ用に固定
+  const today = new Date();
   const remaining = getRemainingWorkingDays(today);
   const list = document.getElementById('todayTasksList');
   list.innerHTML = '';
 
-  state.goals.forEach(g => {
+  const goals = getCurrentGoals();
+  const todayProgress = getTodayProgress();
+
+  if (goals.length === 0) {
+    list.innerHTML = '<div style="text-align:center; padding: 20px; color: var(--ink-faint); font-style: italic;">今月の目標がまだ設定されていません<br>「目標」タブから追加してください</div>';
+    return;
+  }
+
+  goals.forEach(g => {
     const left = Math.max(0, g.target - g.done);
     const todayQuota = remaining.weighted > 0
       ? Math.ceil(left / remaining.weighted)
       : 0;
-    const todayDone = state.todayProgress[g.id] || 0;
+    const todayDone = todayProgress[g.id] || 0;
     const isComplete = todayDone >= todayQuota && todayQuota > 0;
 
     const el = document.createElement('div');
@@ -2662,16 +2717,18 @@ function renderTodayTasks() {
     btn.addEventListener('click', () => {
       const id = parseInt(btn.dataset.id);
       const d = parseInt(btn.dataset.d);
-      const cur = state.todayProgress[id] || 0;
+      const tp = getTodayProgress();
+      const cur = tp[id] || 0;
       const next = Math.max(0, cur + d);
 
-      if (d > 0) {
-        // 月間進捗にも加算
-        const goal = state.goals.find(g => g.id === id);
-        goal.done = Math.min(goal.target + 50, goal.done + 1);  // 上限ゆるめ
-        state.todayProgress[id] = next;
+      const goals = getCurrentGoals();
+      const goal = goals.find(g => g.id === id);
+      if (!goal) return;
 
-        // 達成チェック
+      if (d > 0) {
+        goal.done = Math.min(goal.target + 50, goal.done + 1);
+        tp[id] = next;
+
         if (goal.done === goal.target) {
           showReward({
             banner: '━━ 月間目標達成 ━━',
@@ -2682,9 +2739,8 @@ function renderTodayTasks() {
           });
         }
       } else if (d < 0 && cur > 0) {
-        const goal = state.goals.find(g => g.id === id);
         goal.done = Math.max(0, goal.done - 1);
-        state.todayProgress[id] = next;
+        tp[id] = next;
       }
       saveState();
       checkAllBadges('task_increment');
@@ -2695,7 +2751,7 @@ function renderTodayTasks() {
 }
 
 // ===================================================================
-// 月間進捗描画
+// 月間進捗
 // ===================================================================
 function renderProgress() {
   const today = new Date();
@@ -2703,12 +2759,15 @@ function renderProgress() {
   const list = document.getElementById('progressList');
   list.innerHTML = '';
 
-  state.goals.forEach(g => {
-    const ratio = g.target > 0 ? (g.done / g.target * 100) : 0;
-    const expectedRatio = remaining.raw > 0
-      ? ((1 - remaining.raw / 30) * 100)  // 簡易計算
-      : 100;
+  const goals = getCurrentGoals();
 
+  if (goals.length === 0) {
+    list.innerHTML = '<div style="text-align:center; padding: 20px; color: var(--ink-faint); font-style: italic;">目標未設定</div>';
+    return;
+  }
+
+  goals.forEach(g => {
+    const ratio = g.target > 0 ? (g.done / g.target * 100) : 0;
     const left = Math.max(0, g.target - g.done);
     const pace = remaining.weighted > 0 ? (left / remaining.weighted) : 0;
 
@@ -2737,20 +2796,21 @@ function renderProgress() {
     list.appendChild(el);
   });
 
-  // 励ましメッセージ更新
   updatePepTalk();
 }
 
 // ===================================================================
-// 励ましメッセージ
+// 励まし
 // ===================================================================
 function updatePepTalk() {
-  const total = state.goals.reduce((s, g) => s + g.done, 0);
-  const totalTarget = state.goals.reduce((s, g) => s + g.target, 0);
+  const goals = getCurrentGoals();
+  const total = goals.reduce((s, g) => s + g.done, 0);
+  const totalTarget = goals.reduce((s, g) => s + g.target, 0);
   const ratio = totalTarget > 0 ? total / totalTarget : 0;
 
   let msg = '';
-  if (ratio >= 1) msg = '月間目標、達成しちゃってるやん。月末までゆっくりしたらええ';
+  if (totalTarget === 0) msg = '今月の目標がまだ未設定です。「目標」タブから設定してね';
+  else if (ratio >= 1) msg = '月間目標、達成しちゃってるやん。月末までゆっくりしたらええ';
   else if (ratio >= 0.8) msg = '残り少し！もう一息で月間達成や';
   else if (ratio >= 0.6) msg = '今月、ええペースやで。このまま行けば月末ニンマリや';
   else if (ratio >= 0.4) msg = 'ぼちぼちペース。焦らず一個ずつ片付けていこ';
@@ -2761,12 +2821,37 @@ function updatePepTalk() {
 }
 
 // ===================================================================
-// 目標設定描画
+// 目標タブ：月別表示
 // ===================================================================
+function updateGoalsMonthDisplay() {
+  const { year, month } = parseYM(viewingMonth);
+  const display = document.getElementById('goalsMonthDisplay');
+  const tag = document.getElementById('goalsMonthTag');
+  const label = document.getElementById('goalsMonthLabel');
+
+  const currentKey = getCurrentYearMonth();
+  let tagText = '';
+  if (viewingMonth === currentKey) tagText = '【今月】';
+  else if (viewingMonth < currentKey) tagText = '【過去】';
+  else tagText = '【未来】';
+
+  display.innerHTML = `${year}年 ${month}月 <span class="ms-tag">${tagText}</span>`;
+  label.textContent = `${month}月分`;
+}
+
 function renderGoals() {
+  updateGoalsMonthDisplay();
+
+  const goals = ensureMonthGoals(viewingMonth);
   const list = document.getElementById('goalsList');
   list.innerHTML = '';
-  state.goals.forEach(g => {
+
+  if (goals.length === 0) {
+    list.innerHTML = '<div style="text-align:center; padding: 20px; color: var(--ink-faint); font-style: italic;">目標がまだありません<br>下の「+項目を追加」から作成できます</div>';
+    return;
+  }
+
+  goals.forEach(g => {
     const row = document.createElement('div');
     row.className = 'goal-row';
     row.innerHTML = `
@@ -2782,56 +2867,86 @@ function renderGoals() {
     input.addEventListener('change', () => {
       const id = parseInt(input.dataset.id);
       const field = input.dataset.field;
-      const goal = state.goals.find(g => g.id === id);
+      const goals = ensureMonthGoals(viewingMonth);
+      const goal = goals.find(g => g.id === id);
+      if (!goal) return;
       if (field === 'target') goal.target = parseInt(input.value) || 0;
       else goal[field] = input.value;
       saveState();
-      renderProgress();
-      renderTodayTasks();
+      // 表示中の月が現在月なら、ダッシュボードも更新
+      if (viewingMonth === getCurrentYearMonth()) {
+        renderProgress();
+        renderTodayTasks();
+      }
     });
   });
 
   list.querySelectorAll('.goal-remove').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = parseInt(btn.dataset.id);
-      state.goals = state.goals.filter(g => g.id !== id);
-      delete state.todayProgress[id];
+      state.goalsByMonth[viewingMonth] = state.goalsByMonth[viewingMonth].filter(g => g.id !== id);
       saveState();
       renderGoals();
-      renderProgress();
-      renderTodayTasks();
+      if (viewingMonth === getCurrentYearMonth()) {
+        renderProgress();
+        renderTodayTasks();
+      }
     });
   });
 }
 
 document.getElementById('addGoalBtn').addEventListener('click', () => {
-  const newId = Math.max(...state.goals.map(g => g.id), 0) + 1;
-  const icons = ['📋', '⚙️', '📊', '💡', '🎨', '📞'];
-  state.goals.push({
+  const goals = ensureMonthGoals(viewingMonth);
+  // 全月通しでユニークなID
+  let maxId = 0;
+  for (const monthGoals of Object.values(state.goalsByMonth)) {
+    for (const g of monthGoals) {
+      if (g.id > maxId) maxId = g.id;
+    }
+  }
+  const newId = maxId + 1;
+  const icons = ['📋', '⚙️', '📊', '💡', '🎨', '📞', '🛒', '📈'];
+  goals.push({
     id: newId,
     icon: icons[Math.floor(Math.random() * icons.length)],
     name: '新しい目標',
     target: 10,
     done: 0,
   });
-  state.todayProgress[newId] = 0;
   saveState();
   renderGoals();
-  renderProgress();
-  renderTodayTasks();
+  if (viewingMonth === getCurrentYearMonth()) {
+    renderProgress();
+    renderTodayTasks();
+  }
+});
+
+document.getElementById('goalsMonthPrev').addEventListener('click', () => {
+  const { year, month } = parseYM(viewingMonth);
+  let nm = month - 1, ny = year;
+  if (nm < 1) { nm = 12; ny--; }
+  viewingMonth = ymKey(ny, nm);
+  renderGoals();
+});
+document.getElementById('goalsMonthNext').addEventListener('click', () => {
+  const { year, month } = parseYM(viewingMonth);
+  let nm = month + 1, ny = year;
+  if (nm > 12) { nm = 1; ny++; }
+  viewingMonth = ymKey(ny, nm);
+  renderGoals();
 });
 
 // ===================================================================
 // カレンダー
 // ===================================================================
-let calYear = 2026;
-let calMonth = 4;
+const TODAY = new Date();
+let calYear = TODAY.getFullYear();
+let calMonth = TODAY.getMonth() + 1;
 
 function renderCalendar() {
   const grid = document.getElementById('calGrid');
   grid.innerHTML = '';
 
-  // 曜日ヘッダー
   ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].forEach((d, i) => {
     const el = document.createElement('div');
     el.className = 'cal-dow' + (i === 0 ? ' sun' : (i === 6 ? ' sat' : ''));
@@ -2839,22 +2954,18 @@ function renderCalendar() {
     grid.appendChild(el);
   });
 
-  // 月のラベル
   const monthNames = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
   document.getElementById('calMonth').textContent = `${monthNames[calMonth-1]} ${calYear}`;
 
-  // 1日の曜日と月の日数
   const firstDay = new Date(calYear, calMonth-1, 1).getDay();
   const lastDate = new Date(calYear, calMonth, 0).getDate();
 
-  // 空きマス
   for (let i = 0; i < firstDay; i++) {
     const empty = document.createElement('div');
     empty.className = 'cal-day empty';
     grid.appendChild(empty);
   }
 
-  // 日付セル
   const today = new Date();
   const todayKey = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
 
@@ -2889,7 +3000,6 @@ function renderCalendar() {
     grid.appendChild(cell);
   }
 
-  // 統計更新
   const stats = getWorkingDaysInMonth(calYear, calMonth);
   document.getElementById('statFull').textContent = stats.full;
   document.getElementById('statHalf').textContent = stats.half;
@@ -2904,7 +3014,6 @@ function toggleCalDay(key) {
     'half': 'trip',
     'trip': 'normal',
   }[cur];
-
   if (next === 'normal') delete state.calStatus[key];
   else state.calStatus[key] = next;
 
@@ -2929,16 +3038,13 @@ document.getElementById('calNext').addEventListener('click', () => {
 });
 
 // ===================================================================
-// バッジ自動授与システム
+// バッジ
 // ===================================================================
-
-// 現在の月のキー (YYYY-MM)
 function currentMonthKey(date) {
   const d = date || TODAY;
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
 }
 
-// 月内の提出日数を計算
 function countMonthlySubmissions(monthKey) {
   let count = 0;
   for (const d of state.submittedDates) {
@@ -2947,24 +3053,22 @@ function countMonthlySubmissions(monthKey) {
   return count;
 }
 
-// 月の暦日数を取得
 function getDaysInMonth(monthKey) {
   const [y, m] = monthKey.split('-').map(Number);
   return new Date(y, m, 0).getDate();
 }
 
-// 月内の最高達成率を計算（全目標の最低達成率を返す = ボトルネック）
 function calcMonthMinProgress() {
-  if (state.goals.length === 0) return 0;
+  const goals = getCurrentGoals();
+  if (goals.length === 0) return 0;
   let minRatio = Infinity;
-  for (const g of state.goals) {
+  for (const g of goals) {
     const ratio = g.target > 0 ? g.done / g.target : 0;
     if (ratio < minRatio) minRatio = ratio;
   }
   return minRatio === Infinity ? 0 : minRatio;
 }
 
-// 月内の休日数（off + trip）
 function countMonthlyOffDays(monthKey) {
   let count = 0;
   for (const [k, v] of Object.entries(state.calStatus)) {
@@ -2973,14 +3077,10 @@ function countMonthlyOffDays(monthKey) {
   return count;
 }
 
-// ===================================================================
-// ランク計算（年間レベル + 生涯称号）
-// ===================================================================
 function getCurrentYear() {
   return new Date().getFullYear();
 }
 
-// 今年の年間累計手残り（円）
 function calcYearlyEarnings(year) {
   const y = year || getCurrentYear();
   const prefix = `${y}-`;
@@ -2991,64 +3091,40 @@ function calcYearlyEarnings(year) {
   return total;
 }
 
-// 生涯累計手残り（過去年 + 今年 + 入力済みの過去累計）
 function calcLifetimeEarnings() {
   let total = state.earnings.pastLifetime || 0;
-  // 殿堂に保存された過去年の合計
   for (const v of Object.values(state.earnings.yearlyHistory || {})) {
     total += (v.amount || 0);
   }
-  // 今年の累計
   total += calcYearlyEarnings();
   return total;
 }
 
-// 規模に応じたレベル取得
 function getCurrentRank() {
   const scale = state.scale;
-  if (!scale || !SCALE_PRESETS[scale]) {
-    return null; // 未設定
-  }
+  if (!scale || !SCALE_PRESETS[scale]) return null;
   const preset = SCALE_PRESETS[scale];
   const earned = calcYearlyEarnings();
   let current = preset.thresholds[0];
   for (const t of preset.thresholds) {
-    if (earned >= t.amount) {
-      current = t;
-    }
+    if (earned >= t.amount) current = t;
   }
-  // 次のレベル
   const nextIndex = preset.thresholds.findIndex(t => t.lv > current.lv);
   const next = nextIndex >= 0 ? preset.thresholds[nextIndex] : null;
-  return {
-    current,
-    next,
-    earned,
-    isMax: !next,
-    presetLabel: preset.label,
-  };
+  return { current, next, earned, isMax: !next, presetLabel: preset.label };
 }
 
-// 生涯称号の取得
 function getLifetimeTitle() {
   const earned = calcLifetimeEarnings();
   let current = LIFETIME_TITLES[0];
   for (const t of LIFETIME_TITLES) {
-    if (earned >= t.amount) {
-      current = t;
-    }
+    if (earned >= t.amount) current = t;
   }
   const idx = LIFETIME_TITLES.findIndex(t => t.amount === current.amount);
   const next = idx + 1 < LIFETIME_TITLES.length ? LIFETIME_TITLES[idx + 1] : null;
-  return {
-    current,
-    next,
-    earned,
-    isMax: !next,
-  };
+  return { current, next, earned, isMax: !next };
 }
 
-// 商人歴（年月）
 function getMerchantAge() {
   if (!state.earnings.startedAt) return null;
   const [sy, sm] = state.earnings.startedAt.split('-').map(Number);
@@ -3064,15 +3140,11 @@ function getMerchantAge() {
   return `${years}年${months}ヶ月`;
 }
 
-// プレイヤー名で動的に「伝説の商人」の名前を埋める
 function formatRankName(name) {
-  if (name === '伝説の商人') {
-    return `伝説の商人 ${state.player}`;
-  }
+  if (name === '伝説の商人') return `伝説の商人 ${state.player}`;
   return name;
 }
 
-// 金額のフォーマット（万円・億円）
 function formatAmount(yen) {
   if (yen >= 100000000) {
     const oku = (yen / 100000000).toFixed(1).replace(/\.0$/, '');
@@ -3085,15 +3157,11 @@ function formatAmount(yen) {
   return `${yen.toLocaleString()}円`;
 }
 
-
 function unlockBadge(id, options = {}) {
   const badge = state.badges.find(b => b.id === id);
   if (!badge) return false;
-
   const monthKey = options.monthKey || currentMonthKey();
-
   if (badge.monthly) {
-    // 月次バッジ：今月まだ取得してない場合のみ
     if (badge.unlockedMonth === monthKey) return false;
     badge.unlocked = true;
     badge.isNew = true;
@@ -3103,20 +3171,15 @@ function unlockBadge(id, options = {}) {
       badge.monthlyHistory.push(monthKey);
     }
   } else {
-    // 永続バッジ：既に取得済みなら何もしない
     if (badge.unlocked) return false;
     badge.unlocked = true;
     badge.isNew = true;
     badge.unlockedAt = new Date().toISOString();
   }
-
-  if (!options.silent) {
-    showBadgeToast(badge);
-  }
+  if (!options.silent) showBadgeToast(badge);
   return true;
 }
 
-// 月次バッジのリセット（月またぎ時）
 function resetMonthlyBadgesIfNeeded() {
   const nowMonth = currentMonthKey();
   let changed = false;
@@ -3131,20 +3194,15 @@ function resetMonthlyBadgesIfNeeded() {
   return changed;
 }
 
-// 全バッジの判定実行
 function checkAllBadges(trigger) {
   resetMonthlyBadgesIfNeeded();
-
   const monthKey = currentMonthKey();
   const submissionCount = countMonthlySubmissions(monthKey);
   const daysInMonth = getDaysInMonth(monthKey);
   const minProgress = calcMonthMinProgress();
-  const offDays = countMonthlyOffDays(monthKey);
   const today = TODAY.getDate();
-
   const unlocked = [];
 
-  // ストリーク系（月次）
   if (submissionCount >= 1)  if (unlockBadge('streak1'))   unlocked.push('streak1');
   if (submissionCount >= 3)  if (unlockBadge('streak3'))   unlocked.push('streak3');
   if (submissionCount >= 7)  if (unlockBadge('streak7'))   unlocked.push('streak7');
@@ -3152,23 +3210,18 @@ function checkAllBadges(trigger) {
   if (submissionCount >= 20) if (unlockBadge('streak20'))  unlocked.push('streak20');
   if (submissionCount >= daysInMonth) if (unlockBadge('fullattend')) unlocked.push('fullattend');
 
-  // 段階的達成（月次）
   if (minProgress >= 0.25) if (unlockBadge('bronze'))  unlocked.push('bronze');
   if (minProgress >= 0.50) if (unlockBadge('silver'))  unlocked.push('silver');
   if (minProgress >= 0.75) if (unlockBadge('gold'))    unlocked.push('gold');
   if (minProgress >= 1.00) if (unlockBadge('perfect')) unlocked.push('perfect');
-
-  // 超過達成
   if (minProgress >= 1.20) if (unlockBadge('over')) unlocked.push('over');
 
-  // スピード達成（100%達成日が15日/20日/25日以内）
   if (minProgress >= 1.00) {
-    if (today <= 25)          if (unlockBadge('turtle')) unlocked.push('turtle');
-    if (today <= 20)          if (unlockBadge('speed'))  unlocked.push('speed');
-    if (today <= 15)          if (unlockBadge('flash'))  unlocked.push('flash');
+    if (today <= 25) if (unlockBadge('turtle')) unlocked.push('turtle');
+    if (today <= 20) if (unlockBadge('speed'))  unlocked.push('speed');
+    if (today <= 15) if (unlockBadge('flash'))  unlocked.push('flash');
   }
 
-  // 連続達成（過去の月含むperfectバッジの履歴を見る）
   const perfectBadge = state.badges.find(b => b.id === 'perfect');
   if (perfectBadge && perfectBadge.monthlyHistory.length >= 2) {
     if (hasConsecutiveMonths(perfectBadge.monthlyHistory, 2)) {
@@ -3200,15 +3253,12 @@ function checkAllBadges(trigger) {
     saveState();
     renderBadges();
   }
-
   return unlocked;
 }
 
-// 月の連続性をチェック（履歴に「直近N連続月」があるか）
 function hasConsecutiveMonths(monthKeys, n) {
   if (monthKeys.length < n) return false;
   const sorted = [...monthKeys].sort();
-  // 直近のmonthKeyから遡って連続性確認
   for (let i = sorted.length - 1; i >= n - 1; i--) {
     let consecutive = true;
     for (let j = 0; j < n - 1; j++) {
@@ -3232,15 +3282,12 @@ function isPreviousMonth(prev, cur) {
   return false;
 }
 
-// バッジ取得トースト通知
 let toastQueue = [];
 let toastShowing = false;
 
 function showBadgeToast(badge) {
   toastQueue.push(badge);
-  if (!toastShowing) {
-    showNextToast();
-  }
+  if (!toastShowing) showNextToast();
 }
 
 function showNextToast() {
@@ -3250,7 +3297,6 @@ function showNextToast() {
   }
   toastShowing = true;
   const badge = toastQueue.shift();
-
   let toast = document.getElementById('badgeToast');
   if (!toast) {
     toast = document.createElement('div');
@@ -3258,7 +3304,6 @@ function showNextToast() {
     toast.className = 'badge-toast';
     document.body.appendChild(toast);
   }
-
   toast.innerHTML = `
     <span class="badge-toast-icon">${badge.icon}</span>
     <div class="badge-toast-text">
@@ -3267,11 +3312,8 @@ function showNextToast() {
     </div>
   `;
   toast.classList.add('show');
-
-  // タップで即座に閉じれるように
   toast.style.pointerEvents = 'auto';
   toast.style.cursor = 'pointer';
-
   let dismissed = false;
   const dismiss = () => {
     if (dismissed) return;
@@ -3280,34 +3322,25 @@ function showNextToast() {
     toast.style.pointerEvents = 'none';
     setTimeout(showNextToast, 400);
   };
-
   toast.onclick = dismiss;
   setTimeout(dismiss, 2200);
 }
 
-// ===================================================================
-// バッジ
-// ===================================================================
 function renderBadges() {
   const grid = document.getElementById('badgeGrid');
   grid.innerHTML = '';
   let unlocked = 0;
-
-  // カテゴリ4列 + 「連続」を1列に統合
   const cols = [
     { label: 'STREAK', cats: ['streak'] },
     { label: 'PROGRESS', cats: ['progress'] },
     { label: 'SPEED', cats: ['speed'] },
     { label: 'COMBO', cats: ['combo'] },
   ];
-
-  // 最大行数を決定（一番多いカテゴリに合わせる）
   let maxRows = 0;
   cols.forEach(col => {
     const count = state.badges.filter(b => col.cats.includes(b.category)).length;
     if (count > maxRows) maxRows = count;
   });
-
   cols.forEach(col => {
     const colEl = document.createElement('div');
     colEl.className = 'badge-col';
@@ -3315,11 +3348,9 @@ function renderBadges() {
     header.className = 'badge-col-header';
     header.textContent = col.label;
     colEl.appendChild(header);
-
     const colBadges = state.badges.filter(b => col.cats.includes(b.category));
     colBadges.forEach(b => {
       if (b.unlocked) unlocked++;
-
       const el = document.createElement('div');
       el.className = 'badge' + (b.unlocked ? '' : ' locked');
       el.innerHTML = `
@@ -3349,8 +3380,6 @@ function renderBadges() {
       });
       colEl.appendChild(el);
     });
-
-    // プレースホルダで段差を埋める
     const fillCount = maxRows - colBadges.length;
     for (let i = 0; i < fillCount; i++) {
       const ph = document.createElement('div');
@@ -3370,76 +3399,61 @@ function renderBadges() {
       });
       colEl.appendChild(ph);
     }
-
     grid.appendChild(colEl);
   });
-
   document.getElementById('badgeCount').textContent = `${unlocked} / ${state.badges.length}`;
 }
 
 function getBadgeCondition(id) {
   const map = {
-    // ストリーク系
-    streak1:    '今月内に1日、日報を提出する。',
-    streak3:    '今月内に3日、日報を提出する。',
-    streak7:    '今月内に7日、日報を提出する。',
-    streak14:   '今月内に14日、日報を提出する。',
-    streak20:   '今月内に20日、日報を提出する。',
+    streak1: '今月内に1日、日報を提出する。',
+    streak3: '今月内に3日、日報を提出する。',
+    streak7: '今月内に7日、日報を提出する。',
+    streak14: '今月内に14日、日報を提出する。',
+    streak20: '今月内に20日、日報を提出する。',
     fullattend: '今月の全日（暦日すべて）日報を提出する。',
-    // 段階的達成
-    bronze:     '今月の全目標を25%まで達成する。',
-    silver:     '今月の全目標を50%まで達成する。',
-    gold:       '今月の全目標を75%まで達成する。',
-    perfect:    '今月の全目標を100%達成する。',
-    // スピード達成
-    flash:      '今月の15日までに全目標を達成する。',
-    speed:      '今月の20日までに全目標を達成する。',
-    turtle:     '今月の25日までに全目標を達成する。',
-    // 連続達成
-    stable:     '2ヶ月連続で月間目標を完全制覇する。',
-    mountain:   '3ヶ月連続で月間目標を完全制覇する。',
-    crown:      '6ヶ月連続で月間目標を完全制覇する。',
-    eternal:    '9ヶ月連続で月間目標を完全制覇する。',
-    legend:     '12ヶ月連続で月間目標を完全制覇する。',
-    // 超過達成
-    over:       '今月の全目標を120%以上達成する。',
+    bronze: '今月の全目標を25%まで達成する。',
+    silver: '今月の全目標を50%まで達成する。',
+    gold: '今月の全目標を75%まで達成する。',
+    perfect: '今月の全目標を100%達成する。',
+    flash: '今月の15日までに全目標を達成する。',
+    speed: '今月の20日までに全目標を達成する。',
+    turtle: '今月の25日までに全目標を達成する。',
+    stable: '2ヶ月連続で月間目標を完全制覇する。',
+    mountain: '3ヶ月連続で月間目標を完全制覇する。',
+    crown: '6ヶ月連続で月間目標を完全制覇する。',
+    eternal: '9ヶ月連続で月間目標を完全制覇する。',
+    legend: '12ヶ月連続で月間目標を完全制覇する。',
+    over: '今月の全目標を120%以上達成する。',
   };
-  return map[id] || '謎に包まれた紋章。条件は未だ明らかにされていない。';
+  return map[id] || '謎に包まれた紋章。';
 }
 
 function getBadgeDesc(id) {
   const map = {
-    // ストリーク系
-    streak1:    '今月、最初の日報を提出した者の証。最初の一歩を踏み出した。',
-    streak3:    '今月3日も日報を提出した者の証。習慣の入口の景色。',
-    streak7:    '今月7日も日報を提出した者の証。継続の入口。',
-    streak14:   '今月14日も日報を提出した者の証。もう三日坊主とは呼ばせない。',
-    streak20:   '今月20日も日報を提出した者の証。継続の達人。',
-    fullattend: '月の全日、日報を提出した者の伝説の証。完全皆勤賞。',
-    // 段階的達成
-    bronze:     '今月の全目標を25%達成。良いスタートだ。',
-    silver:     '今月の全目標を50%達成。半分まで来た。',
-    gold:       '今月の全目標を75%達成。あと一息で完全制覇。',
-    perfect:    '今月の全目標を100%達成。月間目標完全制覇。',
-    // スピード達成
-    flash:      '月の15日までに全目標達成。神速の商人。',
-    speed:      '月の20日までに全目標達成。鮮やかなスピード。',
-    turtle:     '月の25日までに全目標達成。早期完遂の証。',
-    // 連続達成
-    stable:     '2ヶ月連続で完全制覇。安定の覇者。',
-    mountain:   '3ヶ月連続で完全制覇。動かざる山のごとく。',
-    crown:      '6ヶ月連続で完全制覇。不動の王の証。',
-    eternal:    '9ヶ月連続で完全制覇。悠久の時を制した覇者。',
-    legend:     '12ヶ月連続で完全制覇。伝説に至った達人。',
-    // 超過達成
-    over:       '月内全目標を120%超え達成。文字通りの超過達成。',
+    streak1: '今月、最初の日報を提出した者の証。',
+    streak3: '今月3日も日報を提出した者の証。',
+    streak7: '今月7日も日報を提出した者の証。',
+    streak14: '今月14日も日報を提出した者の証。',
+    streak20: '今月20日も日報を提出した者の証。',
+    fullattend: '月の全日、日報を提出した者の証。',
+    bronze: '今月の全目標を25%達成。',
+    silver: '今月の全目標を50%達成。',
+    gold: '今月の全目標を75%達成。',
+    perfect: '今月の全目標を100%達成。',
+    flash: '月の15日までに全目標達成。',
+    speed: '月の20日までに全目標達成。',
+    turtle: '月の25日までに全目標達成。',
+    stable: '2ヶ月連続で完全制覇。',
+    mountain: '3ヶ月連続で完全制覇。',
+    crown: '6ヶ月連続で完全制覇。',
+    eternal: '9ヶ月連続で完全制覇。',
+    legend: '12ヶ月連続で完全制覇。',
+    over: '月内全目標を120%超え達成。',
   };
-  return map[id] || 'この紋章には、まだ伝説が刻まれていない。';
+  return map[id] || '伝説が刻まれていない。';
 }
 
-// ===================================================================
-// ご褒美モーダル
-// ===================================================================
 function showReward({banner, title, icon, name, desc}) {
   document.getElementById('rewardBanner').textContent = banner;
   document.getElementById('rewardTitle').textContent = title;
@@ -3452,15 +3466,12 @@ document.getElementById('rewardClose').addEventListener('click', () => {
   document.getElementById('rewardModal').classList.remove('show');
 });
 document.getElementById('rewardModal').addEventListener('click', (e) => {
-  if (e.target.id === 'rewardModal') {
-    e.currentTarget.classList.remove('show');
-  }
+  if (e.target.id === 'rewardModal') e.currentTarget.classList.remove('show');
 });
 
 // ===================================================================
-// 日報ストリーク（日付選択＋過去遡及対応）
+// 日報ストリーク
 // ===================================================================
-const TODAY = new Date();  // デモ固定: 4/25
 const DOW_SHORT = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
 const DOW_JA = ['日','月','火','水','木','金','土'];
 
@@ -3471,21 +3482,16 @@ function formatJP(d) {
   return `${d.getMonth()+1}月${d.getDate()}日(${DOW_JA[d.getDay()]})`;
 }
 
-// 連続日数を計算（今日から遡って、未提出 or 休日に当たるまで）
 function calcStreak() {
   let count = 0;
   let cursor = new Date(TODAY);
-
-  // 今日が未提出なら、昨日からカウント開始（締切前なのでまだ途切れてない）
   if (!state.submittedDates.has(dateKey(cursor))) {
     cursor.setDate(cursor.getDate() - 1);
   }
-
   while (true) {
     const k = dateKey(cursor);
     const calStatus = state.calStatus[k];
     if (calStatus === 'off' || calStatus === 'trip') {
-      // 休日はスキップ（連続が途切れない）
       cursor.setDate(cursor.getDate() - 1);
       continue;
     }
@@ -3499,7 +3505,6 @@ function calcStreak() {
   return count;
 }
 
-// 日付セレクタ生成（過去14日 + 今日 + 翌日まで）
 function populateDateSelect() {
   const sel = document.getElementById('streakDateSelect');
   sel.innerHTML = '';
@@ -3509,7 +3514,6 @@ function populateDateSelect() {
     d.setDate(d.getDate() + offset);
     candidates.push(d);
   }
-  // 新しい順に並べる
   candidates.reverse().forEach(d => {
     const k = dateKey(d);
     const submitted = state.submittedDates.has(k);
@@ -3522,8 +3526,6 @@ function populateDateSelect() {
     opt.textContent = label;
     sel.appendChild(opt);
   });
-
-  // デフォルト選択：今日が未提出なら今日、提出済みなら最も近い未提出日
   let defaultKey = dateKey(TODAY);
   if (state.submittedDates.has(defaultKey)) {
     for (let offset = -1; offset >= -14; offset--) {
@@ -3556,12 +3558,9 @@ function updateStreakBtnLabel() {
   }
 }
 
-// 直近7日の履歴グリッド
 function renderStreakHistory() {
   const container = document.getElementById('streakHistory');
   container.innerHTML = '';
-
-  // 過去7日（今日含む）
   for (let offset = -6; offset <= 0; offset++) {
     const d = new Date(TODAY);
     d.setDate(d.getDate() + offset);
@@ -3570,26 +3569,21 @@ function renderStreakHistory() {
     const isOff = calStatus === 'off' || calStatus === 'trip';
     const isSubmitted = state.submittedDates.has(k);
     const isToday = offset === 0;
-
     const cell = document.createElement('div');
     cell.className = 'streak-day-cell';
-
     let markClass = 'streak-day-mark';
     if (isSubmitted) markClass += ' submitted';
     if (isOff) markClass += ' off-day';
     if (isToday) markClass += ' today';
-
     let inner = '';
     if (isSubmitted) inner = '<span class="check">✓</span>';
     else if (isOff) inner = '<span style="font-size:14px;">🏖</span>';
     else inner = '<span style="opacity:0.4;">·</span>';
-
     cell.innerHTML = `
       <div class="streak-day-dow">${DOW_SHORT[d.getDay()]}</div>
       <div class="${markClass}" data-key="${k}">${inner}</div>
       <div class="streak-day-date">${d.getMonth()+1}/${d.getDate()}</div>
     `;
-
     if (!isOff) {
       cell.querySelector('.streak-day-mark').addEventListener('click', () => {
         document.getElementById('streakDateSelect').value = k;
@@ -3602,58 +3596,39 @@ function renderStreakHistory() {
 }
 
 function updateStreakDisplay(preserveSelection) {
-  state.streak = calcStreak();
-  document.getElementById('streakNum').textContent = state.streak;
-  // 現在の選択を保持
+  document.getElementById('streakNum').textContent = calcStreak();
   const currentKey = preserveSelection ? document.getElementById('streakDateSelect').value : null;
   populateDateSelect();
-  if (currentKey) {
-    document.getElementById('streakDateSelect').value = currentKey;
-  }
+  if (currentKey) document.getElementById('streakDateSelect').value = currentKey;
   renderStreakHistory();
   updateStreakBtnLabel();
 }
 
-// セレクタ変更時：ボタンラベル更新
 document.getElementById('streakDateSelect').addEventListener('change', updateStreakBtnLabel);
 
-// 提出ボタン
 document.getElementById('streakBtn').addEventListener('click', () => {
   const sel = document.getElementById('streakDateSelect');
   const k = sel.value;
   const wasSubmitted = state.submittedDates.has(k);
-
-  if (wasSubmitted) {
-    state.submittedDates.delete(k);
-  } else {
-    state.submittedDates.add(k);
-  }
-
+  if (wasSubmitted) state.submittedDates.delete(k);
+  else state.submittedDates.add(k);
   saveState();
-  updateStreakDisplay(true); // 選択日を保持
-
-  // 新バッジ判定（提出後）
-  if (!wasSubmitted) {
-    checkAllBadges('submission');
-  }
+  updateStreakDisplay(true);
+  if (!wasSubmitted) checkAllBadges('submission');
 });
 
 // ===================================================================
-// ランクカードのレンダリング
+// ランクカード
 // ===================================================================
 function renderRankCard() {
   const container = document.getElementById('rankCardContent');
   const yearLabel = document.getElementById('rankYearLabel');
   if (!container) return;
-
   yearLabel.textContent = `${getCurrentYear()}年`;
-
   const rank = getCurrentRank();
   const lifetime = getLifetimeTitle();
   const merchantAge = getMerchantAge();
-
   if (!rank) {
-    // 規模未設定
     container.innerHTML = `
       <div class="rank-not-set">
         <div class="rank-not-set-title">⚔ ランクシステムを始める</div>
@@ -3665,8 +3640,6 @@ function renderRankCard() {
     `;
     return;
   }
-
-  // 進捗バーの計算
   let progressPct = 100;
   let nextLine = '<span class="rank-max-badge">MAX</span>';
   if (rank.next) {
@@ -3676,33 +3649,25 @@ function renderRankCard() {
     const remaining = rank.next.amount - rank.earned;
     nextLine = `次のレベルまで あと <strong>${formatAmount(remaining)}</strong>`;
   }
-
-  // 生涯称号の進捗
   let lifetimeNextLine = '<span class="rank-max-badge">MAX</span>';
   if (lifetime.next) {
     const remaining = lifetime.next.amount - lifetime.earned;
     lifetimeNextLine = `次の称号まで あと <strong>${formatAmount(remaining)}</strong>`;
   }
-
   container.innerHTML = `
-    <!-- 今年のランク -->
     <div class="rank-section">
       <div class="rank-label">🏆 今年のランク (${rank.presetLabel})</div>
       <div class="rank-title">
         <span class="lv">Lv.${rank.current.lv}</span>${formatRankName(rank.current.name)}
         ${rank.isMax ? '<span class="rank-max-badge">MAX</span>' : ''}
       </div>
-      <div class="rank-amount">
-        年間手残り <strong>${formatAmount(rank.earned)}</strong>
-      </div>
+      <div class="rank-amount">年間手残り <strong>${formatAmount(rank.earned)}</strong></div>
       <div class="rank-progress">
         <div class="rank-progress-fill" style="width: ${progressPct}%"></div>
       </div>
       <div class="rank-next">${nextLine}</div>
       <button class="rank-scale-button" onclick="openScaleModal()">規模を変更</button>
     </div>
-
-    <!-- 生涯累計 -->
     <div class="rank-section">
       <div class="rank-label">💎 生涯累計手残り</div>
       <div class="rank-title">${formatRankName(lifetime.current.name)}</div>
@@ -3715,22 +3680,16 @@ function renderRankCard() {
   `;
 }
 
-// ===================================================================
-// 殿堂のレンダリング
-// ===================================================================
 function renderHallOfFame() {
   const card = document.getElementById('hallOfFameCard');
   const content = document.getElementById('hallOfFameContent');
   if (!card || !content) return;
-
   const history = state.earnings.yearlyHistory || {};
   const years = Object.keys(history).sort().reverse();
-
   if (years.length === 0) {
     card.style.display = 'none';
     return;
   }
-
   card.style.display = 'block';
   let html = '';
   for (const year of years) {
@@ -3748,15 +3707,10 @@ function renderHallOfFame() {
   content.innerHTML = html;
 }
 
-// ===================================================================
-// 月次実績入力 UI
-// ===================================================================
 function renderEarningsInput() {
-  // 年・月のセレクト初期化
   const yearSel = document.getElementById('earningsYear');
   const monthSel = document.getElementById('earningsMonth');
   if (!yearSel || !monthSel) return;
-
   if (yearSel.options.length === 0) {
     const currentY = getCurrentYear();
     for (let y = currentY; y >= currentY - 5; y--) {
@@ -3776,23 +3730,18 @@ function renderEarningsInput() {
     }
     monthSel.value = String(new Date().getMonth() + 1).padStart(2, '0');
   }
-
-  // 既存入力の表示
   renderEarningsHistory();
 }
 
 function renderEarningsHistory() {
   const area = document.getElementById('earningsHistoryArea');
   if (!area) return;
-
   const monthly = state.earnings.monthly || {};
   const keys = Object.keys(monthly).sort().reverse();
-
   if (keys.length === 0) {
     area.innerHTML = '<div class="earnings-empty">まだ記録がありません</div>';
     return;
   }
-
   let html = '<table class="earnings-history-table"><thead><tr><th>年月</th><th style="text-align:right;">手残り利益</th><th></th></tr></thead><tbody>';
   for (const k of keys) {
     const v = monthly[k];
@@ -3813,25 +3762,16 @@ function saveEarning() {
   const year = document.getElementById('earningsYear').value;
   const month = document.getElementById('earningsMonth').value;
   const amount = parseInt(document.getElementById('earningsAmount').value);
-
   if (isNaN(amount) || amount < 0) {
     alert('有効な金額を入力してください');
     return;
   }
-
   const key = `${year}-${month}`;
   state.earnings.monthly[key] = amount;
   saveState();
-
-  // 入力欄リセット
   document.getElementById('earningsAmount').value = '';
-
-  // 年が変わった場合の殿堂への保存（過去年だった場合）
   const currentY = getCurrentYear();
-  if (parseInt(year) < currentY) {
-    archiveYearIfComplete(parseInt(year));
-  }
-
+  if (parseInt(year) < currentY) archiveYearIfComplete(parseInt(year));
   renderRankCard();
   renderEarningsHistory();
   renderHallOfFame();
@@ -3846,17 +3786,13 @@ function deleteEarning(key) {
   renderHallOfFame();
 }
 
-// 過去年のデータを「殿堂」に保存
 function archiveYearIfComplete(year) {
   const yKey = String(year);
   const total = calcYearlyEarnings(year);
   if (total === 0) {
-    // 全部消えたなら殿堂からも削除
     delete state.earnings.yearlyHistory[yKey];
     return;
   }
-
-  // 規模が設定されていればそれを使ってLv判定
   if (state.scale && SCALE_PRESETS[state.scale]) {
     const preset = SCALE_PRESETS[state.scale];
     let current = preset.thresholds[0];
@@ -3864,28 +3800,20 @@ function archiveYearIfComplete(year) {
       if (total >= t.amount) current = t;
     }
     state.earnings.yearlyHistory[yKey] = {
-      amount: total,
-      lv: current.lv,
-      title: current.name,
+      amount: total, lv: current.lv, title: current.name,
     };
   } else {
     state.earnings.yearlyHistory[yKey] = {
-      amount: total,
-      lv: 0,
-      title: '記録のみ',
+      amount: total, lv: 0, title: '記録のみ',
     };
   }
   saveState();
 }
 
-// ===================================================================
-// 規模選択モーダル
-// ===================================================================
 function openScaleModal() {
   const overlay = document.getElementById('scaleModalOverlay');
   const container = document.getElementById('scaleOptionsContainer');
   if (!overlay || !container) return;
-
   let html = '';
   for (const [key, preset] of Object.entries(SCALE_PRESETS)) {
     const selected = state.scale === key ? ' selected' : '';
@@ -3898,17 +3826,14 @@ function openScaleModal() {
     `;
   }
   container.innerHTML = html;
-
   container.querySelectorAll('.scale-option').forEach(el => {
     el.addEventListener('click', () => {
-      const key = el.dataset.scale;
-      state.scale = key;
+      state.scale = el.dataset.scale;
       saveState();
       closeScaleModal();
       renderRankCard();
     });
   });
-
   overlay.classList.add('show');
 }
 
@@ -3917,7 +3842,6 @@ function closeScaleModal() {
   if (overlay) overlay.classList.remove('show');
 }
 
-// 初回起動時、規模未設定なら起動後に案内
 function autoOpenScaleModalIfNeeded() {
   if (!state.scale && !localStorage.getItem('quest-board-scale-prompted')) {
     setTimeout(() => {
@@ -3927,28 +3851,21 @@ function autoOpenScaleModalIfNeeded() {
   }
 }
 
-// 実績入力ボタンのバインド
 document.addEventListener('DOMContentLoaded', () => {
   const saveBtn = document.getElementById('earningsSaveBtn');
   if (saveBtn) saveBtn.addEventListener('click', saveEarning);
-
   const closeBtn = document.getElementById('scaleModalCloseBtn');
   if (closeBtn) closeBtn.addEventListener('click', closeScaleModal);
 });
 
-// ===================================================================
-// 初期設定（過去実績の引き継ぎ）
-// ===================================================================
-let setupPastYearsBuffer = []; // 編集中の過去年データ
+// 初期設定
+let setupPastYearsBuffer = [];
 
 function renderInitialSetup() {
-  // 開始時期セレクト初期化
   const yearSel = document.getElementById('setupStartYear');
   const monthSel = document.getElementById('setupStartMonth');
   if (!yearSel || !monthSel) return;
-
   if (yearSel.options.length === 0) {
-    // 空欄option
     const empty = document.createElement('option');
     empty.value = '';
     empty.textContent = '— 未設定 —';
@@ -3969,70 +3886,49 @@ function renderInitialSetup() {
       monthSel.appendChild(opt);
     }
   }
-
-  // 既存の値を反映
   if (state.earnings.startedAt) {
     const [y, m] = state.earnings.startedAt.split('-');
     yearSel.value = y;
     monthSel.value = m;
   }
-
   const pastInput = document.getElementById('setupPastLifetime');
-  if (pastInput) {
-    pastInput.value = state.earnings.pastLifetime || '';
-  }
-
-  // 過去年バッファを既存データから初期化
+  if (pastInput) pastInput.value = state.earnings.pastLifetime || '';
   setupPastYearsBuffer = [];
   const history = state.earnings.yearlyHistory || {};
   for (const [y, v] of Object.entries(history)) {
     setupPastYearsBuffer.push({ year: y, amount: v.amount });
   }
   setupPastYearsBuffer.sort((a, b) => Number(b.year) - Number(a.year));
-
   renderPastYears();
 }
 
 function renderPastYears() {
   const area = document.getElementById('setupYearlyArea');
   if (!area) return;
-
   if (setupPastYearsBuffer.length === 0) {
     area.innerHTML = '<div class="earnings-empty">過去年の実績はまだ追加されていません</div>';
     return;
   }
-
   let html = '';
   setupPastYearsBuffer.forEach((item, index) => {
     const lvInfo = state.scale && SCALE_PRESETS[state.scale]
-      ? calcLvForAmount(item.amount, state.scale)
-      : null;
+      ? calcLvForAmount(item.amount, state.scale) : null;
     html += `
       <div class="past-year-row">
-        <input type="number" class="past-year-input" placeholder="年"
-               value="${item.year}" min="2000" max="2099"
-               data-index="${index}" data-field="year">
-        <input type="number" class="past-year-amount" placeholder="年間手残り（円）"
-               value="${item.amount || ''}" min="0"
-               data-index="${index}" data-field="amount">
+        <input type="number" class="past-year-input" placeholder="年" value="${item.year}" min="2000" max="2099" data-index="${index}" data-field="year">
+        <input type="number" class="past-year-amount" placeholder="年間手残り（円）" value="${item.amount || ''}" min="0" data-index="${index}" data-field="amount">
         <span class="past-year-info">${lvInfo ? `Lv.${lvInfo.lv} ${formatRankName(lvInfo.name)}` : ''}</span>
         <button class="past-year-delete" data-index="${index}">×</button>
       </div>
     `;
   });
   area.innerHTML = html;
-
-  // イベントバインド
   area.querySelectorAll('input').forEach(input => {
     input.addEventListener('input', (e) => {
       const index = parseInt(e.target.dataset.index);
       const field = e.target.dataset.field;
-      if (field === 'year') {
-        setupPastYearsBuffer[index].year = e.target.value;
-      } else {
-        setupPastYearsBuffer[index].amount = parseInt(e.target.value) || 0;
-      }
-      // 表示更新（Lv表示）
+      if (field === 'year') setupPastYearsBuffer[index].year = e.target.value;
+      else setupPastYearsBuffer[index].amount = parseInt(e.target.value) || 0;
       renderPastYears();
     });
   });
@@ -4056,27 +3952,18 @@ function calcLvForAmount(amount, scale) {
 }
 
 function saveInitialSetup() {
-  // 開始時期
   const y = document.getElementById('setupStartYear').value;
   const m = document.getElementById('setupStartMonth').value;
-  if (y && m) {
-    state.earnings.startedAt = `${y}-${m}`;
-  } else {
-    state.earnings.startedAt = null;
-  }
-
-  // 累計
+  if (y && m) state.earnings.startedAt = `${y}-${m}`;
+  else state.earnings.startedAt = null;
   const past = parseInt(document.getElementById('setupPastLifetime').value);
   state.earnings.pastLifetime = isNaN(past) ? 0 : Math.max(0, past);
-
-  // 過去年
   const newHistory = {};
   for (const item of setupPastYearsBuffer) {
     if (!item.year || !item.amount) continue;
     const yKey = String(item.year);
     const lvInfo = state.scale && SCALE_PRESETS[state.scale]
-      ? calcLvForAmount(item.amount, state.scale)
-      : null;
+      ? calcLvForAmount(item.amount, state.scale) : null;
     newHistory[yKey] = {
       amount: item.amount,
       lv: lvInfo ? lvInfo.lv : 0,
@@ -4084,116 +3971,59 @@ function saveInitialSetup() {
     };
   }
   state.earnings.yearlyHistory = newHistory;
-
   saveState();
-
-  // 結果表示
   const result = document.getElementById('setupResult');
   result.textContent = '✓ 初期設定を保存しました';
   result.className = 'config-result show success';
-  setTimeout(() => {
-    result.classList.remove('show');
-  }, 3000);
-
-  // 関連UIを再描画
+  setTimeout(() => result.classList.remove('show'), 3000);
   renderRankCard();
   renderHallOfFame();
 }
 
-// 過去年を追加
 function addPastYearRow() {
   setupPastYearsBuffer.push({ year: getCurrentYear() - 1, amount: 0 });
   renderPastYears();
 }
 
-// 初期設定ボタンの直接バインド（DOMContentLoaded対策）
 const setupSaveBtn = document.getElementById('setupSaveBtn');
 if (setupSaveBtn) setupSaveBtn.addEventListener('click', saveInitialSetup);
 const setupAddBtn = document.getElementById('setupAddYearBtn');
 if (setupAddBtn) setupAddBtn.addEventListener('click', addPastYearRow);
 
-// ===================================================================
-// 挨拶のヘッダー（時間帯）
-// ===================================================================
-// 時間帯に応じた挨拶（ランダム）
+// 挨拶
 const GREETING_POOLS = {
-  morning:   [
-    '商人よ、目覚めの時だ',
-    'DAWN. 商いの始まり',
-    '太陽は昇った。お前はどうだ？',
-    'クエスト再開',
-    '今日も一歩、踏み出そう',
-  ],
-  noon: [
-    '商売は順調か',
-    '正午。手は止まっていないか',
-    'MIDDAY. 折り返し地点',
-    '昼餉の時。少し休んでもよい',
-    '今日の調子はどうだ',
-  ],
-  afternoon: [
-    '午後の励み',
-    'もうひと踏ん張り',
-    'AFTERNOON. 集中の時間',
-    '日が傾く前に、もう少し',
-    '日が暮れる前にやり遂げよう',
-  ],
-  evening: [
-    '今日もよく戦った',
-    'EVENING. 帳簿締めの時',
-    '日の終わり。今日の成果を確認しよう',
-    '夕暮れ。あと少しで休める',
-    'お疲れさま、旅人よ',
-  ],
-  night: [
-    'まだ立っているか',
-    '夜の戦士',
-    'LATE NIGHT. 静寂の時',
-    '無理は禁物。明日もある',
-    '夜更かしはほどほどに',
-  ],
-  deepnight: [
-    '夜明け前',
-    'DEEP NIGHT. 静寂の刻',
-    'もうすぐ朝が来る',
-    '眠らぬ商人',
-    'お前の旅、まだ続くか',
-  ],
+  morning: ['商人よ、目覚めの時だ', 'DAWN. 商いの始まり', '太陽は昇った。お前はどうだ？', 'クエスト再開', '今日も一歩、踏み出そう'],
+  noon: ['商売は順調か', '正午。手は止まっていないか', 'MIDDAY. 折り返し地点', '昼餉の時。少し休んでもよい', '今日の調子はどうだ'],
+  afternoon: ['午後の励み', 'もうひと踏ん張り', 'AFTERNOON. 集中の時間', '日が傾く前に、もう少し', '日が暮れる前にやり遂げよう'],
+  evening: ['今日もよく戦った', 'EVENING. 帳簿締めの時', '日の終わり。今日の成果を確認しよう', '夕暮れ。あと少しで休める', 'お疲れさま、旅人よ'],
+  night: ['まだ立っているか', '夜の戦士', 'LATE NIGHT. 静寂の時', '無理は禁物。明日もある', '夜更かしはほどほどに'],
+  deepnight: ['夜明け前', 'DEEP NIGHT. 静寂の刻', 'もうすぐ朝が来る', '眠らぬ商人', 'お前の旅、まだ続くか'],
 };
 
 function pickGreeting() {
   const h = new Date().getHours();
   let pool;
-  if (h >= 5 && h < 11)       pool = GREETING_POOLS.morning;
+  if (h >= 5 && h < 11) pool = GREETING_POOLS.morning;
   else if (h >= 11 && h < 14) pool = GREETING_POOLS.noon;
   else if (h >= 14 && h < 18) pool = GREETING_POOLS.afternoon;
   else if (h >= 18 && h < 22) pool = GREETING_POOLS.evening;
-  else if (h >= 22 || h < 3)  pool = GREETING_POOLS.night;
-  else                         pool = GREETING_POOLS.deepnight;
+  else if (h >= 22 || h < 3) pool = GREETING_POOLS.night;
+  else pool = GREETING_POOLS.deepnight;
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
-// 「YYYY-MM-DD」を「M月D日(曜)」に
 const WEEKDAY_LABELS = ['日', '月', '火', '水', '木', '金', '土'];
 function formatTodayLabel(d) {
-  const m = d.getMonth() + 1;
-  const day = d.getDate();
-  const w = WEEKDAY_LABELS[d.getDay()];
-  return `${m}月${day}日(${w})`;
+  return `${d.getMonth() + 1}月${d.getDate()}日(${WEEKDAY_LABELS[d.getDay()]})`;
 }
 
 function updateHeroMeta() {
   const today = new Date();
   const remaining = getRemainingWorkingDays(today);
-
-  // 挨拶を更新
   const greetingEl = document.getElementById('greeting');
   if (greetingEl) greetingEl.textContent = pickGreeting();
-
-  // プレイヤー名を更新
   const nameEl = document.getElementById('playerName');
   if (nameEl) nameEl.textContent = state.player || 'ゲスト';
-
   const rank = getCurrentRank();
   let rankLine;
   if (rank) {
@@ -4201,7 +4031,6 @@ function updateHeroMeta() {
   } else {
     rankLine = `越境貿易 <strong>商人ランク未設定</strong>`;
   }
-
   document.getElementById('heroMeta').innerHTML =
     `${formatTodayLabel(today)} ・ 月の残り稼働日 <strong>${remaining.raw}日</strong><br>` + rankLine;
   document.getElementById('progressDays').textContent = `残${remaining.raw}日`;
@@ -4223,7 +4052,6 @@ updateHeroMeta();
 updateStreakDisplay();
 autoOpenScaleModalIfNeeded();
 
-// 今日の日付を本日タブの右上に
 (function setTodayDate() {
   const d = new Date();
   const m = String(d.getMonth() + 1).padStart(2, '0');
@@ -4231,9 +4059,7 @@ autoOpenScaleModalIfNeeded();
   document.getElementById('todayDate').textContent = `${m}.${day}`;
 })();
 
-// ===================================================================
-// Service Worker 登録（PWA: オフライン対応）
-// ===================================================================
+// Service Worker
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js').catch(err => {
@@ -4242,16 +4068,13 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// ===================================================================
 // インストールバナー
-// ===================================================================
 let deferredInstallPrompt = null;
 const installBanner = document.getElementById('installBanner');
 const installBtn = document.getElementById('installBtn');
 const installClose = document.getElementById('installClose');
 const BANNER_DISMISSED_KEY = 'quest-board-install-dismissed';
 
-// Android Chrome等でインストール可能になった時
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredInstallPrompt = e;
@@ -4268,9 +4091,7 @@ installBtn.addEventListener('click', async () => {
   deferredInstallPrompt.prompt();
   const { outcome } = await deferredInstallPrompt.userChoice;
   deferredInstallPrompt = null;
-  if (outcome === 'accepted') {
-    installBanner.classList.remove('show');
-  }
+  if (outcome === 'accepted') installBanner.classList.remove('show');
 });
 
 installClose.addEventListener('click', () => {
@@ -4283,24 +4104,12 @@ function isStandalone() {
          window.navigator.standalone === true;
 }
 
-// iOS判定 → Safari限定でインストール案内バナーを出す
-function isIOS() {
-  return /iPhone|iPad|iPod/i.test(navigator.userAgent) && !window.MSStream;
-}
-function isSafari() {
-  const ua = navigator.userAgent;
-  return /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS/.test(ua);
-}
-
-// ===================================================================
-// データ書き出し（JSON エクスポート）
-// ===================================================================
+// JSON書き出し
 const copyConfigBtn = document.getElementById('copyConfigBtn');
 const updateExportBtn = document.getElementById('updateExportBtn');
 const configExport = document.getElementById('configExport');
 const deliveryResult = document.getElementById('deliveryResult');
 
-// 設定エクスポートJSON生成
 function generateExportJSON() {
   const off_days = [];
   const half_days = [];
@@ -4310,19 +4119,17 @@ function generateExportJSON() {
     else if (v === 'half') half_days.push(k);
     else if (v === 'trip') trip_days.push(k);
   }
-
+  // 互換用：現在月の目標を旧形式 goals としても出力
+  const currentGoals = getCurrentGoals();
   const config = {
-    goals: state.goals.map(g => ({
-      icon: g.icon,
-      name: g.name,
-      target: g.target,
-      done: g.done,
+    goals: currentGoals.map(g => ({
+      icon: g.icon, name: g.name, target: g.target, done: g.done,
     })),
+    goalsByMonth: state.goalsByMonth,
     off_days: off_days.sort(),
     half_days: half_days.sort(),
     trip_days: trip_days.sort(),
   };
-
   configExport.value = JSON.stringify(config, null, 2);
 }
 
@@ -4330,12 +4137,10 @@ function showResult(message, type) {
   deliveryResult.textContent = message;
   deliveryResult.className = 'config-result show ' + type;
 }
-
 function hideResult() {
   deliveryResult.classList.remove('show');
 }
 
-// JSONをクリップボードにコピー
 copyConfigBtn.addEventListener('click', async () => {
   hideResult();
   generateExportJSON();
@@ -4348,13 +4153,11 @@ copyConfigBtn.addEventListener('click', async () => {
   }
 });
 
-// 最新の進捗で再生成
 updateExportBtn.addEventListener('click', () => {
   generateExportJSON();
   showResult('✓ 最新の進捗で再生成しました', 'success');
 });
 
-// 復元（JSONからデータを上書き）
 const restoreBtn = document.getElementById('restoreBtn');
 const configImport = document.getElementById('configImport');
 
@@ -4365,40 +4168,26 @@ restoreBtn.addEventListener('click', () => {
     showResult('⚠ 復元するJSONを貼り付けてください', 'error');
     return;
   }
-
-  // JSON parse
   let imported;
   try {
     imported = JSON.parse(text);
   } catch (e) {
-    showResult('⚠ JSONの形式が不正です。コピー漏れや余分な文字がないか確認してください', 'error');
+    showResult('⚠ JSONの形式が不正です。', 'error');
     return;
   }
-
-  // 必須フィールド確認（最低限）
   if (!imported || typeof imported !== 'object') {
     showResult('⚠ データの形式が不正です', 'error');
     return;
   }
-  const hasGoals = Array.isArray(imported.goals);
+  const hasGoals = Array.isArray(imported.goals) || imported.goalsByMonth;
   const hasBadges = Array.isArray(imported.badges);
   if (!hasGoals && !hasBadges) {
     showResult('⚠ Quest BoardのJSONではないようです', 'error');
     return;
   }
-
-  // 確認ダイアログ
-  const ok = confirm(
-    '⚠ 警告\n\n' +
-    '現在のデータが完全に上書きされます。\n' +
-    '元に戻すことはできません。\n\n' +
-    '本当に復元しますか？'
-  );
+  const ok = confirm('⚠ 警告\n\n現在のデータが完全に上書きされます。\n元に戻すことはできません。\n\n本当に復元しますか？');
   if (!ok) return;
-
-  // ローカルストレージを直接書き換えてリロード
   try {
-    // submittedDates が Set だった場合の対応
     if (imported.submittedDates && !Array.isArray(imported.submittedDates)) {
       imported.submittedDates = Array.from(imported.submittedDates);
     }
@@ -4410,12 +4199,9 @@ restoreBtn.addEventListener('click', () => {
   }
 });
 
-// 初期表示
 generateExportJSON();
 
-// ===================================================================
-// プロフィール（呼び名 + リセット機能）
-// ===================================================================
+// プロフィール
 const playerNameInput = document.getElementById('playerNameInput');
 const playerLevelDisplay = document.getElementById('playerLevelDisplay');
 const resetDataBtn = document.getElementById('resetDataBtn');
@@ -4429,13 +4215,12 @@ playerNameInput.addEventListener('input', () => {
   const newName = playerNameInput.value.trim() || 'ゲスト';
   state.player = newName;
   saveState();
-  // ヘッダーのプレイヤー名も即座に更新
   const headerName = document.querySelector('.hero-header .player-name');
   if (headerName) headerName.textContent = newName;
 });
 
 resetDataBtn.addEventListener('click', () => {
-  if (confirm('本当に全データをリセットしますか？\n\n全ての進捗、目標、カレンダー、日報記録が消えます。\n（架空商品やバッジも初期状態に戻ります）')) {
+  if (confirm('本当に全データをリセットしますか？\n\n全ての進捗、目標、カレンダー、日報記録が消えます。')) {
     if (confirm('本当の本当に？\n\nこの操作は取り消せません。')) {
       localStorage.removeItem(STORAGE_KEY);
       location.reload();
